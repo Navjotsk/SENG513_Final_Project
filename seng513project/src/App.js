@@ -1,9 +1,16 @@
 import './App.css';
+import { useState } from "react";
+import Navbar from './components/NavBar';
+import Main from './components/Main';
 
 function App() {
+
+  const [location, setLocation] = useState('main');
+
   return (
     <div className="App">
-      <h1>Hello World!</h1>
+      <Navbar />
+      <Main />
     </div>
   );
 }
