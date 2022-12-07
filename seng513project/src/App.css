@@ -38,4 +38,37 @@
 .container {
   background-color: antiquewhite;
   height: 92vh;
+  position: relative;
+}
+
+.center {
+  position: absolute;
+  margin: auto;
+  height: 50%;
+  width: 50%;
+  left: 25%;
+  top: 25%;
+  text-align: center;
+}
+
+.title-text {
+  color: #00A2CA;
+  font-size: 48;
+  margin: 5%;
+}
+
+.button-container {
+  display: flex;
+  justify-content: space-around;
+}
+
+.fat-button {
+  padding: 5% 10% 5% 10%;
+  top: 5%;
+  background-color: #CBF3F0;
+  border-radius: 0.5em;
+}
+
+.fat-button:hover {
+  background-color: #85d2cd;
 }
