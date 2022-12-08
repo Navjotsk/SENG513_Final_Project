@@ -11,6 +11,53 @@
   top: 0;
 }
 
+.userLogoImage img {
+  height: 20px;
+  width: auto;
+}
+
+.mainUserInfo img {
+  height: 50px;
+  width: auto;
+}
+
+.mainUserInfo {
+  font-size: 25px;
+  border: 2px solid black;
+  width: 300px;
+  padding: 50px 50px 50px 50px;
+  align-items: center;
+}
+
+.profileButton {
+  font-size: 25px;
+  width: 300px;
+  padding: 5px 5px 5px 5px;
+
+}
+
+.friendIcon {
+  padding: 10px 10px 10px 10px;
+}
+
+.friendList {
+  border: 2px solid black;
+  padding: 15px 15px 15px 15px;
+  width: max-content;
+}
+
+.userLogoImage {
+  width: 170px;
+  display: inline-block;
+}
+
+
+
+.removeFriend {
+  font-size: 20px;
+  color: red;
+}
+
 .block {
   height: 8vh;
   width: 200px;
