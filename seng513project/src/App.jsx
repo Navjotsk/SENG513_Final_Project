@@ -3,6 +3,7 @@ import { useState } from "react";
 import Navbar from './components/NavBar';
 import Main from './components/Main';
 import Choice from './components/Choice';
+import ChatBox from './components/ChatBox';
 
 function App() {
 
@@ -15,6 +16,8 @@ function App() {
       <Navbar handleSetLocation={setLocation}/>
       {location == 'main' && <Main handleSetLocation={setLocation} />}
       {location == 'choose' && <Choice />}
+      <h1>Hello World!</h1>
+      <ChatBox/>
     </div>
   );
 }
