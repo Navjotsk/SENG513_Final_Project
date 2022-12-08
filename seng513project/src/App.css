@@ -63,6 +63,7 @@
 }
 
 .fat-button {
+  margin: 10px;
   padding: 5% 10% 5% 10%;
   top: 5%;
   background-color: #CBF3F0;
