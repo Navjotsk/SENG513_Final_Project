@@ -35,7 +35,6 @@ export default function UserInfo({user = "undefined", date ="undefined", games =
         <Button type="Reset Password" doOnClick={resetPassword} />
         <br/>
         <Button type="Delete Account" doOnClick={deleteAccount} />
-        <br/>
 
 
 

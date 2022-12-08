@@ -17,23 +17,32 @@
 }
 
 .mainUserInfo img {
-  height: 50px;
+  height: 75px;
   width: auto;
 }
 
 .mainUserInfo {
-  font-size: 25px;
   border: 2px solid black;
-  width: 300px;
+  font-size: 45px;
+  height: 700px;
+  width: 600px;
   padding: 50px 50px 50px 50px;
   align-items: center;
+  text-align: center;
 }
 
 .profileButton {
   font-size: 25px;
   width: 300px;
   padding: 5px 5px 5px 5px;
+}
 
+.UserPage {
+  display: flex;
+  grid-template-columns: 2fr 1fr;
+  grid-column-gap: 20px;
+  align-items: center;
+  justify-content: center;
 }
 
 .friendIcon {
@@ -44,6 +53,9 @@
   border: 2px solid black;
   padding: 15px 15px 15px 15px;
   width: max-content;
+  align-items: left;
+  height: 700px;
+  overflow-y: scroll;
 }
 
 .userLogoImage {
