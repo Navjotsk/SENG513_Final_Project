@@ -8,6 +8,7 @@ import SubmitField from './components/SubmitField';
 import FriendsList from './components/FriendsList';
 import UserInfo from './components/UserInfo';
 import Friend from './components/Friend';
+import UserPage from './components/UserPage';
 
 function App() {
 
@@ -24,7 +25,7 @@ function App() {
       {location == 'choose' && <Choice />}
       <h1>Hello World!</h1>
       <ChatBox/> */}
-      <UserInfo />
+      <UserPage friends={friends} />
     </div>
   );
 }
