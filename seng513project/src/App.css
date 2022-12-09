@@ -27,7 +27,6 @@
   height: 700px;
   width: 600px;
   padding: 50px 50px 50px 50px;
-  align-items: center;
   text-align: center;
   top:20%;
   background-color: #CBF3F0;
@@ -54,6 +53,10 @@
   grid-column-gap: 20px;
   align-items: center;
   justify-content: center;
+}
+
+.body {
+  background: #85d2cd;
 }
 
 .profileButton {

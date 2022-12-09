@@ -16,7 +16,7 @@ function startRequest() {
   return (
     <row class="friendIcon">
         <span class="userLogoImage">
-            <img src={userLogo} alt="..." />&nbsp;{username}&nbsp;
+            <img src={userLogo} alt="..." />{username}
         </span>
         <span class="RequestGame">
             <button onClick = {startRequest}>Request Game</button>&nbsp;

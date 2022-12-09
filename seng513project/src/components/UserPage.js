@@ -28,13 +28,21 @@ function deleteAccount () {
     window.alert("your account has been deleted. You will now be logged out...");
 }
 
+function setFriends () {
+    return ["Bob", "Mary", "Angela"];
+}
+
+var friends = setFriends();
+
 //userpage will contain the friends, friendslist, user info, and 3
-const UserPage = ( {friends} ) => {
+const UserPage = () => {
     return (
+        <body>
         <div class="UserPage">
          <span><center><UserInfo changeNickname={changeNickname} changePassword={changePassword} deleteAccount={deleteAccount}/></center></span>
          <span><center><FriendsList friends={friends} addUser={addUser} removeUser={removeUser} startGame={startGame} /></center></span>
         </div>
+        </body>
 
     )
 }
