@@ -1,11 +1,17 @@
 function Game() {
-    let temp = ["Lorem ipsum dolor sit amet, ", 
-                " adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. \nLorem ipsum dolor sit amet, ", 
-                " adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. \nLorem ipsum dolor sit amet, ", 
-                " adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. \nLorem ipsum dolor sit amet, ", 
-                " adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."];
-    
-    let type = ["verb", "adjective", "noun", "verb"]
+    let temp = ["Today I went to my favorite Taco Stand called the ",
+                " ",
+                ". Unlike most food stands, they cook and prepare the food in a ",
+                " while you ",
+                ". The best thing on the menu is the ",
+                " ",
+                ". Instead of ground beef they fill the taco with ",
+                ", cheese, and top it off with a salsa made from ",
+                ". If that doesn't make your mouth water, then it' just like ",
+                " always says: ",
+                "!"]
+                
+    let type = ["adjective", "noun", "vehicle", "verb", "colour", "noun", "food", "food", "person", "saying"]
 
     return(
         <div className="container">

@@ -119,7 +119,7 @@
 }
 
 .text-container span {
-  /*color: transparent;
-  text-shadow: 0 0 8px #000;*/
+  color: transparent;
+  text-shadow: 0 0 8px #000;
   line-height: 1.5;
 }
