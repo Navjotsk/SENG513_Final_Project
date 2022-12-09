@@ -5,6 +5,7 @@ import Main from './components/Main';
 import Choice from './components/Choice';
 import ChatBox from './components/ChatBox';
 import Game from './components/Game';
+import UserPage from './components/UserPage'
 
 function App() {
 
