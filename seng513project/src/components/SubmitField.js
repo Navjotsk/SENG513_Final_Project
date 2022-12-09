@@ -1,6 +1,5 @@
 import React from "react";
 import { useEffect, useState } from "react";
-import userLogo from './userSymbol.png';
 
 export default function SubmitField( {addUser} ) {
 

@@ -1,6 +1,6 @@
 import React from "react";
 import { useEffect, useState } from "react";
-import userLogo from './userSymbol.png';
+import userLogo from '../images/userSymbol.png';
 
 
 export default function Friend({un = "Deleted User", removeUser, startGame}) {
