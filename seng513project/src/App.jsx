@@ -1,0 +1,24 @@
+import './App.css';
+import { useState } from "react";
+import Navbar from './components/NavBar';
+import Main from './components/Main';
+import Choice from './components/Choice';
+import ChatBox from './components/ChatBox';
+import Game from './components/Game';
+
+function App() {
+
+  const [location, setLocation] = useState('main');
+
+  return (
+    <div className="App">
+      <Navbar handleSetLocation={setLocation}/>
+      {location === 'main' && <Main handleSetLocation={setLocation} />}
+      {location === 'choose' && <Choice handleSetLocation={setLocation} />}
+      {location === 'game' && <Game />}
+      {/*<ChatBox/>*/}
+    </div>
+  );
+}
+
+export default App;

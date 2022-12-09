@@ -1,38 +1,125 @@
-.App {
+*{
+  margin: 0;
+  font-family: "Trebuchet MS", Tahoma, sans-serif;
+}
+
+.bar {
+  height: 8vh;
+  width: 100%;
+  background-color: #41BBD9;
+  position: relative;
+  top: 0;
+}
+
+.block {
+  height: 8vh;
+  width: 200px;
+  background-color: #41BBD9;
+  border-color: #22ABCC;
+  border-style: outset;
+  box-sizing: border-box;
+  position: absolute;
+  top: 0;
+  line-height: 7vh;
   text-align: center;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+.block:hover {
+  border-style: inset;
+  background-color: #22ABCC;
+  border-color: #41BBD9;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+.large-text {
+  color: #FFFFFF;
+  font-size: large;
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+.container {
+  background-color: aliceblue;
+  height: 92vh;
+  position: relative;
+}
+
+.center {
+  position: absolute;
+  margin: auto;
+  height: 50%;
+  width: 50%;
+  left: 25%;
+  top: 25%;
+  text-align: center;
+}
+
+.title-text {
+  color: #00A2CA;
+  font-size: 48;
+  margin: 5%;
+}
+
+.story-title {
+  color: #00A2CA;
+  font-size: 48;
+  margin: 1%;
+}
+
+.button-container {
   display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+  justify-content: space-around;
 }
 
-.App-link {
-  color: #61dafb;
+.fat-button {
+  margin: 10px;
+  padding: 5% 10% 5% 10%;
+  top: 5%;
+  background-color: #CBF3F0;
+  border-radius: 0.5em;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.fat-button:hover {
+  background-color: #85d2cd;
+}
+
+.small-button {
+  position: absolute;
+  bottom: 4%;
+  right: 4%;
+  width: 10%;
+  padding: 1% 5% 1% 5%;
+  background-color: #41BBD9;
+  color: #FFFFFF;
+}
+
+.small-button:hover {
+  background-color: #22ABCC;
+}
+
+.game-container {
+  position: absolute;
+  margin: auto;
+  height: 80%;
+  width: 80%;
+  left: 10%;
+  top: 10%;
+  text-align: center;
+  background-color: #C0E9F2;
+}
+
+.text-container {
+  text-align: left;
+  position: absolute;
+  left: 4%;
+  background-color: #C0E9F2;
+  height: 66%;
+  width: 90%;
+  padding: 1%;
+  overflow-y: scroll;
+  font-size: large;
+  white-space: pre-wrap;
+}
+
+.text-container span {
+  /*color: transparent;
+  text-shadow: 0 0 8px #000;*/
+  line-height: 1.5;
 }
