@@ -9,7 +9,7 @@ let items = [];
 const FriendsList = ( {friends, addUser} ) => {
 
     items = friends.map((friend) =>
-        <Friend un={friend} />
+        (<><Friend un={friend} /> <br/></>)
     );
 
 
@@ -18,6 +18,7 @@ const FriendsList = ( {friends, addUser} ) => {
     
     return (
     <div class="friendList">
+        <h2>FRIENDS</h2>
         <SubmitField addUser = {addUser} />
         <span>
             <br/>

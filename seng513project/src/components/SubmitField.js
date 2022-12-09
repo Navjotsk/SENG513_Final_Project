@@ -24,9 +24,9 @@ function handleChange (event) {
     <form onSubmit={handleSubmit}>
     <label>
       Add User:
-      <input value={newUser} onchange={handleChange}/>
+      <input class="SubmitField" value={newUser} onchange={handleChange}/>
     </label>
-    <input type="submit" value="Submit" />
+    <input class="SubmitButton" type="submit" value="Submit" />
   </form>
   );
 }

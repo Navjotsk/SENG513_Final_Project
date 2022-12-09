@@ -29,6 +29,8 @@
   padding: 50px 50px 50px 50px;
   align-items: center;
   text-align: center;
+  top:20%;
+  background-color: #CBF3F0;
 }
 
 .profileButton {
@@ -45,6 +47,31 @@
   justify-content: center;
 }
 
+.profileButton {
+  background-color: #41BBD9;
+}
+
+.profileButton:hover {
+  background-color: #97E3DA
+}
+
+.SubmitField {
+  background-color: #97E3DA;
+}
+
+.friendIcon {
+  background-color: antiquewhite;
+}
+
+.removeFriend button {
+  color: #FF5349;
+}
+
+.SubmitButton {
+  background-color: #0C8677;
+  color: white;
+}
+
 .friendIcon {
   padding: 10px 10px 10px 10px;
 }
@@ -52,10 +79,10 @@
 .friendList {
   border: 2px solid black;
   padding: 15px 15px 15px 15px;
-  width: max-content;
   align-items: left;
-  height: 700px;
+  height: 770px;
   overflow-y: scroll;
+  background-color: #2EC4B6;
 }
 
 .userLogoImage {
