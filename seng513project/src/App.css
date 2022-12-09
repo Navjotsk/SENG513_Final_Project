@@ -33,6 +33,15 @@
   background-color: #CBF3F0;
 }
 
+.mainUserInfo button {
+  background-color: #41BBD9;
+  font-size: 30px;
+}
+
+.mainUserInfo button:hover {
+  background-color: #97E3DA
+}
+
 .profileButton {
   font-size: 25px;
   width: 300px;

@@ -3,9 +3,15 @@ import { useEffect, useState } from "react";
 import userLogo from './userSymbol.png';
 
 
-export default function Friend({un = "Deleted User"}) {
+export default function Friend({un = "Deleted User", removeUser, startGame}) {
 
 const [username, setUsername] = useState(un);
+function removeRequest() {
+  removeUser(un);
+}
+function startRequest() {
+  startGame(un);
+}
 
   return (
     <row class="friendIcon">
@@ -13,10 +19,10 @@ const [username, setUsername] = useState(un);
             <img src={userLogo} alt="..." />&nbsp;{username}&nbsp;
         </span>
         <span class="RequestGame">
-            <button>Request Game</button>&nbsp;
+            <button onClick = {startRequest}>Request Game</button>&nbsp;
         </span>
         <span class="removeFriend">
-            <button>X</button>
+            <button onClick = {removeRequest}>X</button>
         </span>
         <br/>
     </row>

@@ -4,18 +4,21 @@ import userLogo from './userSymbol.png';
 import Button from './Button.js';
 
 
-export default function UserInfo({user = "undefined", date ="undefined", games = 0 }) {
+export default function UserInfo({user = "undefined", date ="undefined", games = 0,changeNickname, changePassword, deleteAccount}) {
     let gameString = games + ' ';
-    function changeNickname () {
-        console.log("requested nickname change");
+    function newNickname () {
+        //console.log("requested nickname change");
+        let newname = window.prompt("enter your new nickname");
+        changeNickname(user, newname);
     }
 
     function resetPassword () {
-        console.log("requested to reset password");
+        let pass = window.prompt("enter your new password");
+        changePassword(user, pass);
     }
 
-    function deleteAccount () {
-        console.log("requested to delete account");
+    function deleteAcc () {
+        deleteAccount();
     }
 
 
@@ -30,12 +33,11 @@ export default function UserInfo({user = "undefined", date ="undefined", games =
         <>Games Played: {gameString}</>
         <br/>
         <br/>
-        <Button type="Change Nickname" doOnClick={changeNickname} />
+        <button onClick={newNickname}>Change Nickname</button>
         <br/>
-        <Button type="Reset Password" doOnClick={resetPassword} />
+        <button onClick={resetPassword}>Change Password</button>
         <br/>
-        <Button type="Delete Account" doOnClick={deleteAccount} />
-
+        <button onClick={deleteAcc}>Delete Account</button>
 
 
     </div>

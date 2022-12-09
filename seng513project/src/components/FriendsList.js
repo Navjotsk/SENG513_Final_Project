@@ -6,10 +6,10 @@ import SubmitField from "./SubmitField.js";
 
 
 let items = [];
-const FriendsList = ( {friends, addUser} ) => {
+const FriendsList = ( {friends, addUser, removeUser, startGame} ) => {
 
     items = friends.map((friend) =>
-        (<><Friend un={friend} /> <br/></>)
+        (<><Friend un={friend} removeUser={removeUser} startGame={startGame}/> <br/></>)
     );
 
 
@@ -19,7 +19,7 @@ const FriendsList = ( {friends, addUser} ) => {
     return (
     <div class="friendList">
         <h2>FRIENDS</h2>
-        <SubmitField addUser = {addUser} />
+        <SubmitField addUser = {addUser}  />
         <span>
             <br/>
             {items}
