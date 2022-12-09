@@ -4,20 +4,19 @@ import Navbar from './components/NavBar';
 import Main from './components/Main';
 import Choice from './components/Choice';
 import ChatBox from './components/ChatBox';
+import Game from './components/Game';
 
 function App() {
 
   const [location, setLocation] = useState('main');
 
-  console.log(location);
-
   return (
     <div className="App">
       <Navbar handleSetLocation={setLocation}/>
-      {location == 'main' && <Main handleSetLocation={setLocation} />}
-      {location == 'choose' && <Choice />}
-      <h1>Hello World!</h1>
-      <ChatBox/>
+      {location === 'main' && <Main handleSetLocation={setLocation} />}
+      {location === 'choose' && <Choice handleSetLocation={setLocation} />}
+      {location === 'game' && <Game />}
+      {/*<ChatBox/>*/}
     </div>
   );
 }

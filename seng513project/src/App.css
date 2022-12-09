@@ -36,7 +36,7 @@
 }
 
 .container {
-  background-color: antiquewhite;
+  background-color: aliceblue;
   height: 92vh;
   position: relative;
 }
@@ -57,12 +57,19 @@
   margin: 5%;
 }
 
+.story-title {
+  color: #00A2CA;
+  font-size: 48;
+  margin: 1%;
+}
+
 .button-container {
   display: flex;
   justify-content: space-around;
 }
 
 .fat-button {
+  margin: 10px;
   padding: 5% 10% 5% 10%;
   top: 5%;
   background-color: #CBF3F0;
@@ -71,4 +78,48 @@
 
 .fat-button:hover {
   background-color: #85d2cd;
+}
+
+.small-button {
+  position: absolute;
+  bottom: 4%;
+  right: 4%;
+  width: 10%;
+  padding: 1% 5% 1% 5%;
+  background-color: #41BBD9;
+  color: #FFFFFF;
+}
+
+.small-button:hover {
+  background-color: #22ABCC;
+}
+
+.game-container {
+  position: absolute;
+  margin: auto;
+  height: 80%;
+  width: 80%;
+  left: 10%;
+  top: 10%;
+  text-align: center;
+  background-color: #C0E9F2;
+}
+
+.text-container {
+  text-align: left;
+  position: absolute;
+  left: 4%;
+  background-color: #C0E9F2;
+  height: 66%;
+  width: 90%;
+  padding: 1%;
+  overflow-y: scroll;
+  font-size: large;
+  white-space: pre-wrap;
+}
+
+.text-container span {
+  /*color: transparent;
+  text-shadow: 0 0 8px #000;*/
+  line-height: 1.5;
 }
