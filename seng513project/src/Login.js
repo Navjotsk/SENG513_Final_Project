@@ -53,7 +53,19 @@ function Login() {
         }
         //Add info to database
         else {
-            alert("Registered")
+            let databody = {
+                "email": document.getElementById("rEmail").value,
+                "pword": document.getElementById("rPass").value
+            }
+            return fetch('http://localhost:5002/stored', {
+                method: 'POST',
+                body: JSON.stringify(databody),
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+            })
+            .then(res => res.json())
+            .then(data => console.log(data)); 
             window.location.reload(false);
         }
 
