@@ -84,6 +84,11 @@
   color: white;
 }
 
+.SubmitButton:hover {
+  background-color: #97E3DA;
+  color: black;
+}
+
 .friendIcon {
   padding: 10px 10px 10px 10px;
 }
