@@ -35,7 +35,7 @@ function ChatBox() {
 
   
   return (
-    <div className="App">
+    <div className="chatBox">
     <TextField id="outlined-basic" label="Outlined"  variant="outlined"  size="small" onChange={(event) => {
           setRoom(event.target.value);
         }}  />

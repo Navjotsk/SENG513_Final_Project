@@ -221,3 +221,12 @@
   text-shadow: 0 0 8px #000;
   line-height: 1.5;
 }
+
+.chatBox{
+    position: fixed;
+    /* position: absolute; */
+    right: 100px; bottom: 0px;
+    width: 400px;
+    height:200px;
+    padding: 5px;
+}
