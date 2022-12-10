@@ -29,8 +29,19 @@ function Login() {
         }*/
         //Once user is logged in
         else {
-            alert("Logged In")
-            window.location.reload(false);
+            let databody = {
+                "email": document.getElementById("email").value,
+                "password": document.getElementById("password").value,
+            }
+            return fetch('http://localhost:5002/login', {
+                method: 'POST',
+                body: JSON.stringify(databody),
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+            })
+            .then(res => res.json())
+            .then(data => console.log(data)); 
         }
 
         //Prevent page from refreshing on submit
@@ -51,22 +62,22 @@ function Login() {
         else if(document.getElementById("rPass").value !== document.getElementById("rRePass").value) {
             setRMessage("Please make sure the password fields match");
         }
-        //Add info to database
+        //Once user registers
         else {
-            let databody = {
+            let databody2 = {
                 "email": document.getElementById("rEmail").value,
-                "pword": document.getElementById("rPass").value
+                "password": document.getElementById("rPass").value,
+                "password2": document.getElementById("rRePass").value
             }
-            return fetch('http://localhost:5002/stored', {
+            return fetch('http://localhost:5002/register', {
                 method: 'POST',
-                body: JSON.stringify(databody),
+                body: JSON.stringify(databody2),
                 headers: {
                     'Content-Type': 'application/json'
                 },
             })
             .then(res => res.json())
             .then(data => console.log(data)); 
-            window.location.reload(false);
         }
 
         //Prevent page from refreshing on submit
