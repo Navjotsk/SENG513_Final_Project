@@ -14,10 +14,10 @@ function App() {
   return (
     <div className="App">
       <Navbar handleSetLocation={setLocation}/>
+      {/*<ChatBox/>*/}
       {location === 'main' && <Main handleSetLocation={setLocation} />}
       {location === 'choose' && <Choice handleSetLocation={setLocation} />}
       {location === 'game' && <Game />}
-      {/*<ChatBox/>*/}
     </div>
   );
 }
