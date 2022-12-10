@@ -1,4 +1,5 @@
-function Game() {
+
+function Game({ handleTypeGame }) {
     let temp = ["Today I went to my favorite Taco Stand called the ",
                 " ",
                 ". Unlike most food stands, they cook and prepare the food in a ",
@@ -20,7 +21,7 @@ function Game() {
                 <div className="text-container">
                     <form action="">
                         {type.map((value, index) => {
-                            return <span>{temp[index]}<input type="text" placeholder={value}/></span>
+                            return <span>{temp[index]}<input id={index} type="text" placeholder={value} onChange={(e) => handleTypeGame({id: index, content: e.target.value})}/></span>
                         })}
                         <span>{temp[temp.length-1]}</span>
                     </form>
