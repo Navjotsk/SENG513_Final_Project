@@ -5,6 +5,9 @@
 /.pnp
 .pnp.js
 /backend/node_modules
+/server/node_modules
+/client/node_modules
+/seng513project/
 # testing
 /coverage
 
