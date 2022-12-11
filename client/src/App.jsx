@@ -17,6 +17,7 @@ function App() {
   const [ready, setReady] = useState(false);
   const [finish, setFinish] = useState(false);
   const [otherFinish, setOtherFinish] = useState(false);
+  const [madLib, setMadlib] = useState([]);
 
   const joinGame = (data) => {
     socket.emit("joinGame", {topic: data});
@@ -47,12 +48,24 @@ function App() {
     setReady(false)
     setFinish(false)
     setOtherFinish(false)
+    setMadlib([])
   }
+
+  let id = 1; //the madlib u want to retreive
+  const getMadLib = async (id) => {
+    try {
+      const response = await fetch(`http://localhost:5000/madlibs/${id}`);
+      const jsonData = await response.json();
+      setMadlib(jsonData);
+    } catch (error) {
+      console.log(error.message);
+    }
+  };
 
   useEffect(() => {
     socket.on("gameJoined", (data) => {
       setRoom(data.room);
-      if (data.first == false) setReady(true);
+      if (data.first === false) setReady(true);
     });
 
     socket.on("playerJoined", () => {
@@ -66,14 +79,12 @@ function App() {
     socket.on("otherFinish", () => {
       setOtherFinish(true);
     });
-    
-  }, [socket]);
 
-  useEffect(() => {
     if (finish && otherFinish) revealText();
+
+    console.log(madLib)
+    
   });
-
-
 
   return (
     <div className="App">

@@ -158,19 +158,6 @@ app.get("/madlibs/:id", async (req, res) => {
   }
 });
 
-//EXAMPLE CODE TO GET MADLIB, COULD USE THIS IN YOUR REACT FILE:
-/*const [madLib, setMadlib] = useState([]);
-  let id = 1; //the madlib u want to retreive
-  const getMadLib = async (id) => {
-    try {
-      const response = await fetch(`http://localhost:5000/madlibs/${id}`);
-      const jsonData = await response.json();
-      setMadlib(jsonData);
-    } catch (error) {
-      console.log(error.message);
-    }
-  };*/
-
 server.listen(PORT, () => {
   console.log("SERVER IS RUNNING on PORT ", PORT);
 });
