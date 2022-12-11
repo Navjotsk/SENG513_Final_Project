@@ -40,9 +40,8 @@ function App() {
       <Navbar handleSetLocation={setLocation}/>
       {/*<ChatBox/>*/}
       {location === 'main' && <Main handleSetLocation={setLocation} />}
-      {location === 'choose' && <Choice handleSetLocation={setLocation} />}
-      {location === 'game' && <Game />}
-      <ChatBox/>
+      {location === 'choose' && <Choice handleSetLocation={setLocation} handleJoinGame={joinGame}/>}
+      {location === 'game' && <Game handleTypeGame={typeGame}/>}
     </div>
   );
 }
