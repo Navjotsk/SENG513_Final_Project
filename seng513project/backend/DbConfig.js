@@ -1,4 +1,4 @@
-require("odtenv").config();
+require("dotenv").config();
 
 
 const { Pool } = require("pg");

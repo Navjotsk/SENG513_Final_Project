@@ -14,12 +14,24 @@ const io = new Server(server, {
 
 const { pool } = require("./DbConfig");
 const bcrypt = require("bcrypt");
-const session = require("express-session");
-const flash = require("express-flash");
-const passport = require("passport")
-const initializePassport = require("./passportConfig")
-initializePassport(passport);
 
+const jwt = require("jsonwebtoken");
+
+
+pool.connect((err) => { //Connected Database
+
+  if (err) {
+
+    console.log(err);
+
+  }
+
+  else {
+
+    console.log("Data logging initiated!");
+  }
+
+});
 
 
 const bodyParser = require("body-parser")
@@ -30,17 +42,6 @@ app.use(cors());
 app.use(express.json())
 
 app.use(cors());
-
-app.use(session({
-  secrect: "secret",
-  resave: false,
-  saveUninitialized: false,
-}))
-
-app.use(flash());
-
-app.use(passport.session);
-app.use(passport.initialize());
 
 
 
@@ -72,41 +73,38 @@ server.listen(PORT, () => {
 
 app.post("/register", async function (req, res, next) {
 
-  class User {
-    constructor(id, email, password) {
-      this.id = id;
-      this.email = email;
-      this.password = password;
-    }
-  }
+  // class User {
+  //   constructor(email, password) {
+  //     // this.id = id;
+  //     this.email = email;
+  //     this.password = password;
+  //   }
+  // }
 
 
   // recieveing email and password for each user then assign id to them and create object user to save it to database
   console.log(req.body)
-  let userId = makeid(5);
+  // let userId = makeid(5);
   let userEmail = req.body.email
   let userPassword = req.body.password
-  let userPassword2 = req.body.password2
+  // let userPassword2 = req.body.password2
 
 
-  const user = new User(userId, userEmail, userPassword);
+  // const user = new User(userEmail, userPassword);
 
   // if name or password fields are not sent to the server, then show error
+
   let errors = [];
-  if (!email || !password) {
+  if (!userEmail || !userPassword) {
     errors.push({ message: "Please enter  all the fields" })
   }
-  // if two passwords do not match show error
-  if (userPassword != userPassword2) {
-    errors.push({ message: "Passwords do not match" })
-  }
-
   if (errors.length > 0) {
     res.jsonp({ error: errors })
   }
   else {
     // Form validation has passed
-    let hasshedPassword = await bcrypt.hash(userPassword, 10);
+    let hashedPassword = await bcrypt.hash(userPassword, 10);
+
 
 
     // if Emailed has already registered show error
@@ -114,13 +112,15 @@ app.post("/register", async function (req, res, next) {
       `SELECT * FROM users 
       WHERE email = $1`,
       [userEmail],
-      (err, results) => {
+      async (err, results) => {
         if (err) {
+
           throw err
         }
-        console.log(results.row)
+        console.log(results.rows)
 
-        if (results.row.length > 0) {
+        if (results.rows.length > 0) {
+
           errors.push({ message: "Email Already Exists" })
           res.jsonp({ error: errors })
 
@@ -128,11 +128,18 @@ app.post("/register", async function (req, res, next) {
 
         }
         else {
-          pool.query(`INSERT INTO users (email, password) VALUES($1, $2) RETURNING *`[userEmail, hasshedPassword]).catch(err => console.log(err))
-          res.send("You have registered!")
 
-          // redirect to the login page (?) need to fix this
-          // await res.redirect(/login.htlm)
+
+          console.log(userEmail, hashedPassword)
+          await pool.query('INSERT INTO users(email, password) VALUES($1, $2);', [userEmail, hashedPassword])
+          const token = jwt.sign( //Signing a jwt token
+            {
+              email: userEmail
+            },
+            process.env.SECRET_KEY
+          );
+          await res.send("You have registered!")
+
 
 
 
@@ -160,41 +167,64 @@ app.post("/register", async function (req, res, next) {
 })
 
 
-app.post("/login", passport.authenticate("local", {
-  successRedirect: "/profile",
-  failureRedirect: "/login"
+app.post("/login", async function (req, res, next) {
+  let userEmail = req.body.email
+  let userPassword = req.body.password
+
+  try {
+    const data = await pool.query(`SELECT * FROM users WHERE email= $1;`, [userEmail]) //Verifying if the user exists in the database
+    const user = data.rows;
+    if (user.length === 0) {
+      res.status(400).json({
+        error: "User is not registered, Sign Up first",
+      });
+    }
+    else {
+      bcrypt.compare(userPassword, user[0].password, (err, result) => { //Comparing the hashed password
+        if (err) {
+          res.status(500).json({
+            error: "Server error",
+          });
+        } else if (result === true) { //Checking if credentials match
+          const token = jwt.sign(
+            {
+              email: userEmail,
+            },
+            process.env.SECRET_KEY
+          );
+          res.status(200).json({
+            message: "User signed in!",
+            token: token,
+          });
+        }
+        else {
+          //Declaring the errors
+          if (result != true)
+            res.status(400).json({
+              error: "Enter correct password!",
+            });
+        }
+      })
+    }
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({
+      error: "Database error occurred while signing in!", //Database connection error
+    });
+
+  }
 
 
-}) {
-
-
-  res.jsonp({})
+  // res.jsonp({})
 })
 
-
-
-// app.post("/login", async function (req, res, next) {
-
-
-//   res.jsonp({})
-// })
-
-
-
-
-
-
-
-
-
-
-/// This fuction creates unique userIDs
-function makeid(length) {
-  var result = '';
-  var characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-  var charactersLength = characters.length;
-  for (var i = 0; i < length; i++) {
-    result += characters.charAt(Math.floor(Math.random() * charactersLength));
-  }
-  return result;
-}
+  // / This fuction creates unique userIDs
+// function makeid(length) {
+//   var result = '';
+//   var characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+//   var charactersLength = characters.length;
+//   for (var i = 0; i < length; i++) {
+//     result += characters.charAt(Math.floor(Math.random() * charactersLength));
+//   }
+//   return result;
+// }
