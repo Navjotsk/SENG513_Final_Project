@@ -33,7 +33,7 @@ function Login() {
                 "email": document.getElementById("email").value,
                 "password": document.getElementById("password").value,
             }
-            return fetch('http://localhost:5002/login', {
+            return fetch('http://localhost:5000/login', {
                 method: 'POST',
                 body: JSON.stringify(databody),
                 headers: {
@@ -69,7 +69,7 @@ function Login() {
                 "password": document.getElementById("rPass").value,
                 "password2": document.getElementById("rRePass").value
             }
-            return fetch('http://localhost:5002/register', {
+            return fetch('http://localhost:5000/register', {
                 method: 'POST',
                 body: JSON.stringify(databody2),
                 headers: {
