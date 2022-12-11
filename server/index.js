@@ -35,37 +35,56 @@ let fantasy = {
 
 const calcCount = (arg) => {
   let count;
+  let first = false;
   if (arg == 'food') {
     food.numPlayers++;
-    if ((food.numPlayers + 1)%2 == 0) food.count++;
+    if ((food.numPlayers + 1)%2 == 0) {
+      food.count++;
+      first = true;
+    }
     count = food.count;
   }
   else if (arg == 'sport') {
     sport.numPlayers++;
-    if ((sport.numPlayers + 1)%2 == 0) sport.count++;
+    if ((sport.numPlayers + 1)%2 == 0) {
+      sport.count++;
+      first = true;
+    }
     count = sport.count;
   }
   else if (arg == 'school') {
     school.numPlayers++;
-    if ((school.numPlayers + 1)%2 == 0) school.count++;
+    if ((school.numPlayers + 1)%2 == 0) {
+      school.count++;
+      first = true;
+    }
     count = school.count;
   }
   else if (arg == 'anime') {
     anime.numPlayers++;
-    if ((anime.numPlayers + 1)%2 == 0) anime.count++;
+    if ((anime.numPlayers + 1)%2 == 0) {
+      anime.count++;
+      first = true;
+    }
     count = anime.count;
   }
   else if (arg == 'games') {
     games.numPlayers++;
-    if ((games.numPlayers + 1)%2 == 0) games.count++;
+    if ((games.numPlayers + 1)%2 == 0) {
+      games.count++;
+      first = true;
+    }
     count = games.count;
   }
   else if (arg == 'fantasy') {
     fantasy.numPlayers++;
-    if ((fantasy.numPlayers + 1)%2 == 0) fantasy.count++;
+    if ((fantasy.numPlayers + 1)%2 == 0) {
+      fantasy.count++;
+      first = true;
+    }
     count = fantasy.count;
   }
-  return count;
+  return {roomNum: count, firstPlayer: first};
 }
 
 const server = http.createServer(app);
@@ -87,12 +106,17 @@ io.on("connection", (socket) => {
 
   socket.on("joinGame", (data) => {
     let currCount = calcCount(data.topic);
-    socket.join(currCount);
-    socket.emit("gameJoined", {room: currCount});
+    socket.join(currCount.roomNum);
+    socket.emit("gameJoined", {room: currCount.roomNum, first: currCount.firstPlayer});
+    if (currCount.firstPlayer == false) socket.to(currCount.roomNum).emit("playerJoined");
   });
 
   socket.on("typeGame", (data) => {
     socket.to(data.room).emit("receivedType", {id: data.id, content: data.content});
+  });
+
+  socket.on("finishGame", (data) => {
+    socket.to(data.room).emit("otherFinish");
   });
 
   socket.on("sendMessage", (data) => {
@@ -133,19 +157,6 @@ app.get("/madlibs/:id", async (req, res) => {
     console.log(err.message);
   }
 });
-
-//EXAMPLE CODE TO GET MADLIB, COULD USE THIS IN YOUR REACT FILE:
-/*const [madLib, setMadlib] = useState([]);
-  let id = 1; //the madlib u want to retreive
-  const getMadLib = async (id) => {
-    try {
-      const response = await fetch(`http://localhost:5000/madlibs/${id}`);
-      const jsonData = await response.json();
-      setMadlib(jsonData);
-    } catch (error) {
-      console.log(error.message);
-    }
-  };*/
 
 server.listen(PORT, () => {
   console.log("SERVER IS RUNNING on PORT ", PORT);

@@ -221,3 +221,7 @@
   text-shadow: 0 0 8px #000;
   line-height: 1.5;
 }
+
+.text-container p {
+  text-align: center;
+}
