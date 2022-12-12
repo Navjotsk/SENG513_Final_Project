@@ -1,21 +1,34 @@
-import React, {useState} from "react";
+import React, {useState, useEffect} from "react";
 import Friend from "./Friend.js";
 import FriendsList from "./FriendsList.js";
 import UserInfo from "./UserInfo.js";
 
 
 //userpage will contain the friends, friendslist, user info, and 3
-const UserPage = () => {
+const UserPage = ( {socket, handleSetLocation, userID}) => {
     //put some random user id's and then once it's there merge them.
     
-    const [friends, setFriends] = useState([]);
+    //const [friends, setFriends] = useState(["temp1", "temp2", "temp3"]);
+    var friends = ["temp1", "temp2", "temp3"];
     //names of friends. Add the name in register as well.
+
+    // var items = [];
+    // items = friends.map((friend) =>
+    // (<><Friend un={friend} removeUser={removeUser} startGame={startGame}/> <br/></>)
+    // );
+
+    const [items, setItems] = useState(friends.map((friend) =>
+        (<><Friend un={friend} removeUser={removeUser} startGame={startGame}/> <br/></>)
+    ));
+
+    var currentID = null;
 
     function onLoad () {
         //set the friends from the database names
-        setFriends(["test1", "test2", "test3"]);
+        friends = ["test1", "test2", "test3"];
     }
 
+    //get friends list from database and reinstantiate
     async function addUser (newUserID) {
         console.log("called the add user function");
             let databody = {
@@ -33,39 +46,44 @@ const UserPage = () => {
         return console.log(data_1); 
     }
     
+    //get friends list from database and reinstantiate
     async function removeUser (remUserID) {
-        console.log("called the remove user function");
-        let databody = {
-           // "currentUser": {UserID},
-            //remove the user ID
-            "removeUser": {remUserID},
-        }
-        const res = await fetch('http://localhost:5000/removeUser', {
-            method: 'POST',
-            body: JSON.stringify(databody),
-            headers: {
-                'Content-Type': 'application/json'
-            },
-        });
-        const data_1 = await res.json();
-        return console.log(data_1); 
-    }
+    //     for (let i = 0; i < friends.length; i++) {
+    //         if (friends[i] != remUserID) {
+    //             friends.push(friends[i]);
+    //         }
+    //     }
+    //     console.log(friends);
+    //     setItems(friends.map((friend) =>
+    //         (<><Friend un={friend} removeUser={removeUser} startGame={startGame} /> <br/></>)
+    //     ));
+    //     console.log(items);
+
+
+    //     console.log("called the remove user function");
+    //     let databody = {
+    //         "removeUser": {remUserID},
+    //     }
+    //     const res = await fetch('http://localhost:5000/removeUser', {
+    //         method: 'POST',
+    //         body: JSON.stringify(databody),
+    //         headers: {
+    //             'Content-Type': 'application/json'
+    //         },
+    //     });
+    //     const data_1 = await res.json();
+    //     return console.log(data_1); 
+     }
     
+    //send to the other user
     async function startGame (user2ID) {
-        console.log("called the start game function");
-        let databody = {
-           // "currentUser": {UserID},
-            "otherUser": {user2ID},
+        console.log("got to start game");
+         let data = {
+             user1ID : "u1",
+             user2ID : {user2ID}
         }
-        const res = await fetch('http://localhost:5000/startGame', {
-            method: 'POST',
-            body: JSON.stringify(databody),
-            headers: {
-                'Content-Type': 'application/json'
-            },
-        });
-        const data_1 = await res.json();
-        return console.log(data_1); 
+        socket.emit("startGameRequest", data);
+        handleSetLocation('choose');
     }
     
     async function changeNickname(newname) {
@@ -122,7 +140,7 @@ const UserPage = () => {
         <body>
         <div class="UserPage">
          <span><center><UserInfo changeNickname={changeNickname} changePassword={changePassword} deleteAccount={deleteAccount}/></center></span>
-         <span><center><FriendsList friends={friends} addUser={addUser} removeUser={removeUser} startGame={startGame} /></center></span>
+         <span><center><FriendsList friends={friends} items={items} addUser={addUser} removeUser={removeUser} startGame={startGame} /></center></span>
         </div>
         </body>
 

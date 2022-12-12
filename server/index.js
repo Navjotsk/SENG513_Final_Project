@@ -127,6 +127,10 @@ io.on("connection", (socket) => {
     console.log("A User disconnected")
     console.log( socket.client.conn.server.clientsCount + " users connected" );
   });
+
+   socket.on("startGame", (data) => {
+     console.log("got request to start game with" + data.user2ID.toString());
+   });
 });
 
 //DATABASE ROUTES
