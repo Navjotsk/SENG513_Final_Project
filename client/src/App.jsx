@@ -4,7 +4,7 @@ import Navbar from './components/NavBar';
 import Main from './components/Main';
 import Choice from './components/Choice';
 import Game from './components/Game';
-
+import Login from './components/Login';
 import ChatBox from './components/ChatBox';
 import UserPage from './components/UserPage'
 
@@ -91,6 +91,7 @@ function App() {
       <Navbar handleSetLocation={setLocation}/>
       {/*<ChatBox/>*/}
       {location === 'main' && <Main handleSetLocation={setLocation} />}
+      {location === 'login' && <Login handleSetLocation={setLocation}/>}
       {location === 'choose' && <Choice handleSetLocation={setLocation} handleJoinGame={joinGame}/>}
       {location === 'game' && <Game handleTypeGame={typeGame} isReady={ready} isFinish={finish} handleFinishGame={finishGame} handleFinishMain={finishToMain} isOtherFinish={otherFinish}/>}
     </div>

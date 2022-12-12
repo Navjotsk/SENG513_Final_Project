@@ -248,3 +248,101 @@
 .text-container p {
   text-align: center;
 }
+
+.wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #F5F5F5;
+  height: 100vh;
+  width: 100vw;
+}
+
+.card {
+  background-color: #41BBD9;
+  border-color: #2EC4B6;
+  border-style: solid;
+  height: 400px;
+  width: 600px;
+}
+
+.innerCard {
+  display: flex;
+  align-items: center;
+  height: 80%;
+  width: 100%;
+  color: #FFFFFF;
+  font-size: 20px;
+  font-family: 'Inter';
+  margin-left: 10%;
+  padding-top: 10px;
+}
+
+.loginButton {
+  background-color: #007794;
+  color: #FFFFFF;
+  width: 250px;
+  height: 45px;
+  border-style: none;
+  font-weight: bolder;
+  margin-right: 35px;
+  margin-top: 35px;
+  border-radius: 5px;
+}
+
+.forgetButton {
+  background-color: #41BBD9;
+  border-style: solid;
+  border-color: #FFFFFF;
+  color: #FFFFFF;
+  height: 45px;
+  width: 130px;
+  margin-left: 35px;
+  margin-top: 35px;
+  border-radius: 5px;
+}
+
+.loginError{
+  color: red;
+}
+
+.inputLogin {
+  height: 40px;
+  width: 450px;
+  border-style: none;
+  background-color: #CBF3F0;
+  border-radius: 5px;
+  margin-bottom: 10px;
+}
+
+.tabButton{
+  background-color: #FFFFFF;
+  border-style: none;
+  color: #41BBD9;
+  height: 50px;
+  width: 50%;
+  font-size: 30px;
+  font-family: 'Inter';
+}
+
+.forgotHeader{
+  margin-top: 30px;
+  margin-bottom: 30px;
+  font-size: 30px;
+  font-family: 'Inter';
+  color: #FFFFFF;
+}
+
+.forgotDescription{
+  color: #FFFFFF;
+  font-size: 20px;
+  font-family: 'Inter';
+  margin-left: 5%;
+}
+
+#forgotPassword{
+  display: none;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
