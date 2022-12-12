@@ -31,11 +31,14 @@ function App() {
   const [request, handleRequest] = useState(false);
 
   const joinGame = (data) => {
-    if (opponent == null) {
+    if (opponent == "") {
       socket.emit("joinGame", {topic: data, opponent: null});
     } else {
       socket.emit("joinGame", {topic: data, opponent: opponent} )
     }
+    //reset state variables for if user wants an opponent requested
+    handleRequest(false);
+    setOpponent("");
   };
 
   const typeGame = (data) => {

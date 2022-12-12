@@ -33,11 +33,11 @@ export default function UserInfo({user = "undefined", gamesPlayed = 0, date=0, c
     }
 
     function newNameSearch () {
-        setNewNameField(<ElicitInfo funct={newNickname} action="" />);
+        setNewNameField(<ElicitInfo funct={newNickname} action="" hidden="false" />);
     }
 
     function newPassPrompt () {
-        setResetPassField(<ElicitInfo funct={newPassword} action="" />)
+        setResetPassField(<ElicitInfo funct={newPassword} action="" hidden="true" />)
     }
 
 

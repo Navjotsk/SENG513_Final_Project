@@ -1,9 +1,15 @@
 import React from "react";
 import { useEffect, useState } from "react";
 
-export default function ElicitInfo( {funct, action} ) {
+export default function ElicitInfo( {funct, action, hidden="false"} ) {
 
 const [input, setInput] = useState("");
+let inputField = "";
+if (hidden =="true") {
+  inputField = <input class="infoField" value={input} onChange={handleChange} type="password"/>
+} else {
+  inputField = <input class="infoField" value={input} onChange={handleChange}/>
+}
 
 function handleSubmit (event) {
     //add user logic passed in
@@ -23,7 +29,7 @@ function handleChange (event) {
     <form onSubmit={handleSubmit}>
     <label>
       {action}
-      <input class="infoField" value={input} onChange={handleChange}/>
+      {inputField}
     </label>
     <input class="infoButton" type="submit" value="Submit" />
   </form>
