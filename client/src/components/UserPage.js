@@ -1,41 +1,116 @@
-import React from "react";
+import React, {useState} from "react";
 import Friend from "./Friend.js";
 import FriendsList from "./FriendsList.js";
 import UserInfo from "./UserInfo.js";
 
-function addUser (newUser) {
-    console.log("add user requested");
-}
-
-function removeUser (user) {
-    console.log("remove user requested");
-}
-
-function startGame (user) {
-    console.log("startGame requested");
-}
-
-function changeNickname(oldname, newname) {
-    console.log("nickname requested");
-}
-
-function changePassword (name, pass) {
-    console.log("password change requested");
-}
-
-function deleteAccount () {
-    console.log("delete account requested");
-    window.alert("your account has been deleted. You will now be logged out...");
-}
-
-function setFriends () {
-    return ["Bob", "Mary", "Angela"];
-}
-
-var friends = setFriends();
 
 //userpage will contain the friends, friendslist, user info, and 3
-const UserPage = () => {
+const UserPage = ({UserID}) => {
+    //put some random user id's and then once it's there merge them.
+    
+    const [friends, setFriends] = useState(["test1", "test2", "test3"]);
+
+    async function addUser (newUserID) {
+        console.log("called the add user function");
+            let databody = {
+            "currentUser": {UserID},
+            "addUser": {newUserID},
+        }
+        const res = await fetch('http://localhost:5000/addUser', {
+            method: 'POST',
+            body: JSON.stringify(databody),
+            headers: {
+                'Content-Type': 'application/json'
+            },
+        });
+        const data_1 = await res.json();
+        return console.log(data_1); 
+    }
+    
+    async function removeUser (remUserID) {
+        console.log("called the remove user function");
+        let databody = {
+            "currentUser": {UserID},
+            "removeUser": {remUserID},
+        }
+        const res = await fetch('http://localhost:5000/removeUser', {
+            method: 'POST',
+            body: JSON.stringify(databody),
+            headers: {
+                'Content-Type': 'application/json'
+            },
+        });
+        const data_1 = await res.json();
+        return console.log(data_1); 
+    }
+    
+    async function startGame (user2ID) {
+        console.log("called the start game function");
+        let databody = {
+            "currentUser": {UserID},
+            "otherUser": {user2ID},
+        }
+        const res = await fetch('http://localhost:5000/startGame', {
+            method: 'POST',
+            body: JSON.stringify(databody),
+            headers: {
+                'Content-Type': 'application/json'
+            },
+        });
+        const data_1 = await res.json();
+        return console.log(data_1); 
+    }
+    
+    async function changeNickname(newname) {
+        console.log("called the change username function");
+        let databody = {
+            "userID": {UserID},
+            "newname": {newname},
+        }
+        const res = await fetch('http://localhost:5000/changeName', {
+            method: 'POST',
+            body: JSON.stringify(databody),
+            headers: {
+                'Content-Type': 'application/json'
+            },
+        });
+        const data_1 = await res.json();
+        return console.log(data_1); 
+    }
+    
+    async function changePassword (pass) {
+        console.log("called the change password function");
+        let databody = {
+            "userID": {UserID},
+            "newpass": {pass},
+        }
+        const res = await fetch('http://localhost:5000/changeName', {
+            method: 'POST',
+            body: JSON.stringify(databody),
+            headers: {
+                'Content-Type': 'application/json'
+            },
+        });
+        const data_1 = await res.json();
+        return console.log(data_1); 
+    }
+    
+    async function deleteAccount () {
+        console.log("called the change delete account function");
+        let databody = {
+            "userID": {UserID},
+        }
+        const res = await fetch('http://localhost:5000/deleteUser', {
+            method: 'POST',
+            body: JSON.stringify(databody),
+            headers: {
+                'Content-Type': 'application/json'
+            },
+        });
+        const data_1 = await res.json();
+        return console.log(data_1); 
+    }
+
     return (
         <body>
         <div class="UserPage">

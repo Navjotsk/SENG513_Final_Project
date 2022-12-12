@@ -1,14 +1,12 @@
 import React from "react";
 import { useEffect, useState } from "react";
 
-export default function SubmitField( {addUser} ) {
+export default function SubmitField( {addUser, action} ) {
 
-const [username, setUsername] = useState(null);
-const [newUser, setNewUser] = useState(null);
+const [newUser, setNewUser] = useState("");
 
 function handleSubmit (event) {
     //add user logic passed in
-    console.log("submit");
     event.preventDefault();
     addUser(newUser);
 }
@@ -22,8 +20,8 @@ function handleChange (event) {
   return (
     <form onSubmit={handleSubmit}>
     <label>
-      Add User:
-      <input class="SubmitField" value={newUser} onchange={handleChange}/>
+      {action}
+      <input class="SubmitField" value={newUser} onChange={handleChange}/>
     </label>
     <input class="SubmitButton" type="submit" value="Submit" />
   </form>

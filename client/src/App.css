@@ -69,6 +69,13 @@
 
 .SubmitField {
   background-color: #97E3DA;
+  font-size: 12px;
+}
+
+.infoField {
+  background-color: #97E3DA;
+  font-size: 15px;
+  width: 200px;
 }
 
 .friendIcon {
@@ -82,6 +89,22 @@
 .SubmitButton {
   background-color: #0C8677;
   color: white;
+}
+
+.SubmitButton:hover {
+  background-color: #97E3DA;
+  color: black;
+}
+
+.infoButton {
+  background-color: #0C8677;
+  color: white;
+  font-size: 15px;
+}
+
+.SubmitInfo:hover {
+  background-color: #97E3DA;
+  color: black;
 }
 
 .friendIcon {
