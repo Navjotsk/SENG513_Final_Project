@@ -5,10 +5,10 @@ import Button from './Button.js';
 import ElicitInfo from "./ElicitInfo";
 
 
-export default function UserInfo({user = "undefined", date ="undefined", games = 0,changeNickname, changePassword, deleteAccount}) {
+export default function UserInfo({user = "undefined", gamesPlayed = 0, date=0, changeNickname, changePassword, deleteAccount}) {
     const [newNameField, setNewNameField] = useState(<><button onClick={newNameSearch}>Change Nickname</button><br /></>);
     const [resetPassField, setResetPassField] = useState(<><button onClick={newPassPrompt}>Change Password</button><br /></>);
-    let gameString = games + ' ';
+    const [gameString, setGameString] = useState(gamesPlayed + ' ');
 
     function newNickname (name) {
         changeNickname(name);
@@ -51,7 +51,7 @@ export default function UserInfo({user = "undefined", date ="undefined", games =
         <>Joined: {date}</>
         <br/>
         <br/>
-        <>Games Played: {gameString}</>
+        <>Games Played: {gamesPlayed}</>
         <br/>
         <br/>
         {newNameField}

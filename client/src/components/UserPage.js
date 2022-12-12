@@ -5,23 +5,18 @@ import UserInfo from "./UserInfo.js";
 
 
 //userpage will contain the friends, friendslist, user info, and 3
-const UserPage = ( {socket, handleSetLocation, userID}) => {
+const UserPage = ( {socket, handleSetLocation, handleRequest, setOpponentID, userID = "undefined", setUserID}) => {
     //put some random user id's and then once it's there merge them.
     
-    //const [friends, setFriends] = useState(["temp1", "temp2", "temp3"]);
     var friends = ["temp1", "temp2", "temp3"];
-    //names of friends. Add the name in register as well.
-
-    // var items = [];
-    // items = friends.map((friend) =>
-    // (<><Friend un={friend} removeUser={removeUser} startGame={startGame}/> <br/></>)
-    // );
 
     const [items, setItems] = useState(friends.map((friend) =>
         (<><Friend un={friend} removeUser={removeUser} startGame={startGame}/> <br/></>)
     ));
+    const [user, setUser] = useState("undefined");
+    const [gamesPlayed, setGamesPlayed] = useState(0);
+    const [currentId, setCurrentId] = useState(null);
 
-    var currentID = null;
 
     function onLoad () {
         //set the friends from the database names
@@ -82,14 +77,16 @@ const UserPage = ( {socket, handleSetLocation, userID}) => {
              user1ID : "u1",
              user2ID : {user2ID}
         }
-        socket.emit("startGameRequest", data);
+        handleRequest(true);
+        setOpponentID(user2ID);
+        console.log(user2ID);
         handleSetLocation('choose');
     }
     
     async function changeNickname(newname) {
         console.log("called the change username function");
+        setUserID(newname);
         let databody = {
-           // "userID": {UserID},
             "newname": {newname},
         }
         const res = await fetch('http://localhost:5000/changeName', {
@@ -139,7 +136,7 @@ const UserPage = ( {socket, handleSetLocation, userID}) => {
     return (
         <body>
         <div class="UserPage">
-         <span><center><UserInfo changeNickname={changeNickname} changePassword={changePassword} deleteAccount={deleteAccount}/></center></span>
+         <span><center><UserInfo user={userID} gamesPlayed={gamesPlayed} changeNickname={changeNickname} changePassword={changePassword} deleteAccount={deleteAccount}/></center></span>
          <span><center><FriendsList friends={friends} items={items} addUser={addUser} removeUser={removeUser} startGame={startGame} /></center></span>
         </div>
         </body>
