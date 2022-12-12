@@ -7,7 +7,7 @@ import ElicitInfo from "./ElicitInfo";
 
 export default function UserInfo({user = "undefined", date ="undefined", games = 0,changeNickname, changePassword, deleteAccount}) {
     const [newNameField, setNewNameField] = useState(<><button onClick={newNameSearch}>Change Nickname</button><br /></>);
-    const [resetPassField, setResetPassField] = useState(<><button onClick={resetPassword}>Change Password</button><br /></>);
+    const [resetPassField, setResetPassField] = useState(<><button onClick={newPassPrompt}>Change Password</button><br /></>);
     let gameString = games + ' ';
 
     function newNickname (name) {
@@ -16,8 +16,9 @@ export default function UserInfo({user = "undefined", date ="undefined", games =
     }
 
     function newPassword (pass) {
+        console.log(pass);
         changePassword(pass);
-        setResetPassField(<><button onClick={resetPassword}>Change Password</button><br /></>);
+        setResetPassField(<><button onClick={newPassPrompt}>Change Password</button><br /></>);
 
     }
 
@@ -27,12 +28,19 @@ export default function UserInfo({user = "undefined", date ="undefined", games =
     }
 
     function deleteAcc () {
+        window.alert("Account deletion request recieved. Logging you out...");
         deleteAccount();
     }
 
     function newNameSearch () {
         setNewNameField(<ElicitInfo funct={newNickname} action="" />);
     }
+
+    function newPassPrompt () {
+        setResetPassField(<ElicitInfo funct={newPassword} action="" />)
+    }
+
+
 
 
   return (

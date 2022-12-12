@@ -88,11 +88,12 @@ function App() {
 
   return (
     <div className="App">
-      <Navbar handleSetLocation={setLocation}/>
+      {/* <Navbar handleSetLocation={setLocation}/> */}
       {/*<ChatBox/>*/}
-      {location === 'main' && <Main handleSetLocation={setLocation} />}
+      {/* {location === 'main' && <Main handleSetLocation={setLocation} />}
       {location === 'choose' && <Choice handleSetLocation={setLocation} handleJoinGame={joinGame}/>}
-      {location === 'game' && <Game handleTypeGame={typeGame} isReady={ready} isFinish={finish} handleFinishGame={finishGame} handleFinishMain={finishToMain} isOtherFinish={otherFinish}/>}
+      {location === 'game' && <Game handleTypeGame={typeGame} isReady={ready} isFinish={finish} handleFinishGame={finishGame} handleFinishMain={finishToMain} isOtherFinish={otherFinish}/>} */}
+      <UserPage />
     </div>
   );
 }
