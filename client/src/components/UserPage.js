@@ -3,38 +3,46 @@ import Friend from "./Friend.js";
 import FriendsList from "./FriendsList.js";
 import UserInfo from "./UserInfo.js";
 
+var friends = ["temp1", "temp2", "temp3"];
+var index = 3;
 
 //userpage will contain the friends, friendslist, user info, and 3
-const UserPage = ( {socket, handleSetLocation, handleRequest, setOpponentID, userID = "undefined", setUserID}) => {
+const UserPage = ( {socket, handleSetLocation, handleRequest, setOpponentID, userID = "undefined", setUserID, token = ""}) => {
     //put some random user id's and then once it's there merge them.
-    
-    var friends = ["temp1", "temp2", "temp3"];
 
-    const [items, setItems] = useState(friends.map((friend) =>
+
+    let [items, setItems] = useState(friends.map((friend) =>
         (<><Friend un={friend} removeUser={removeUser} startGame={startGame}/> <br/></>)
     ));
     const [user, setUser] = useState("undefined");
     const [gamesPlayed, setGamesPlayed] = useState(0);
     const [currentId, setCurrentId] = useState(null);
+    const [userToken, setUserToken] = useState(token);
 
 
     function onLoad () {
         //set the friends from the database names
-        friends = ["test1", "test2", "test3"];
+        //friends = ["test1", "test2", "test3"];
     }
 
     //get friends list from database and reinstantiate
-    async function addUser (newUserID) {
+    async function addUser (newUserName) {
+        friends.push(newUserName);
+        console.log(friends);
+        setItems(friends.map((friend) =>
+            (<><Friend un={friend} removeUser={removeUser} startGame={startGame}/> <br/></>)
+        ));
         console.log("called the add user function");
             let databody = {
             //"currentUser": {UserID},
-            "addUser": {newUserID},
+            "addUser": {newUserName},
         }
         const res = await fetch('http://localhost:5000/addUser', {
             method: 'POST',
             body: JSON.stringify(databody),
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'token': userToken
             },
         });
         const data_1 = await res.json();
@@ -43,43 +51,50 @@ const UserPage = ( {socket, handleSetLocation, handleRequest, setOpponentID, use
     
     //get friends list from database and reinstantiate
     async function removeUser (remUserID) {
-    //     for (let i = 0; i < friends.length; i++) {
-    //         if (friends[i] != remUserID) {
-    //             friends.push(friends[i]);
-    //         }
-    //     }
-    //     console.log(friends);
-    //     setItems(friends.map((friend) =>
-    //         (<><Friend un={friend} removeUser={removeUser} startGame={startGame} /> <br/></>)
-    //     ));
-    //     console.log(items);
+        let temp = [];
+        for (let i = 0; i < friends.length; i++) {
+            if (friends[i] != remUserID) {
+                temp.push(friends[i]);
+            }
+        }
+        friends = [];
+        friends = temp;
+        console.log(friends);
+
+        let tempItems = [];
+        for(let i = 0; i < friends.length; i++) {
+            tempItems.push(<><Friend un={friends[i]} removeUser={removeUser} startGame={startGame} /> <br/></>);
+        }
+        setItems(...tempItems);
+
+        // setItems(friends.map((friend) =>
+        //     (<><Friend un={friend} removeUser={removeUser} startGame={startGame} /> <br/></>)
+        // ));
+        console.log(items);
 
 
-    //     console.log("called the remove user function");
-    //     let databody = {
-    //         "removeUser": {remUserID},
-    //     }
-    //     const res = await fetch('http://localhost:5000/removeUser', {
-    //         method: 'POST',
-    //         body: JSON.stringify(databody),
-    //         headers: {
-    //             'Content-Type': 'application/json'
-    //         },
-    //     });
-    //     const data_1 = await res.json();
-    //     return console.log(data_1); 
+        console.log("called the remove user function");
+        let databody = {
+            "removeUser": {remUserID},
+        }
+        const res = await fetch('http://localhost:5000/removeUser', {
+            method: 'POST',
+            body: JSON.stringify(databody),
+            headers: {
+                'Content-Type': 'application/json',
+                'token': userToken
+            },
+        });
+        const data_1 = await res.json();
+        return console.log(data_1); 
      }
     
     //send to the other user
-    async function startGame (user2ID) {
+    async function startGame (user2Name) {
         console.log("got to start game");
-         let data = {
-             user1ID : "u1",
-             user2ID : {user2ID}
-        }
         handleRequest(true);
-        setOpponentID(user2ID);
-        console.log(user2ID);
+        setOpponentID(user2Name);
+        console.log(user2Name);
         handleSetLocation('choose');
     }
     
@@ -93,7 +108,8 @@ const UserPage = ( {socket, handleSetLocation, handleRequest, setOpponentID, use
             method: 'POST',
             body: JSON.stringify(databody),
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'token': userToken
             },
         });
         const data_1 = await res.json();
@@ -110,7 +126,8 @@ const UserPage = ( {socket, handleSetLocation, handleRequest, setOpponentID, use
             method: 'POST',
             body: JSON.stringify(databody),
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'token': userToken
             },
         });
         const data_1 = await res.json();
@@ -126,7 +143,8 @@ const UserPage = ( {socket, handleSetLocation, handleRequest, setOpponentID, use
             method: 'POST',
           //  body: JSON.stringify(databody),
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'token': userToken
             },
         });
         const data_1 = await res.json();
