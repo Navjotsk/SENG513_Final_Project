@@ -249,6 +249,15 @@
   text-align: center;
 }
 
+/*Chatbox CSS*/
+.my-message {
+  background-color: #2EC4B6;
+}
+
+.other-message {
+  background-color: #00A2CA;
+}
+
 .wrapper {
   display: flex;
   align-items: center;
