@@ -122,7 +122,7 @@ const UserPage = ( {socket, handleSetLocation, handleRequest, setOpponentID, use
           //  "userID": {UserID},
             "newpass": {pass},
         }
-        const res = await fetch('http://localhost:5000/changeName', {
+        const res = await fetch('http://localhost:5000/changePassword', {
             method: 'POST',
             body: JSON.stringify(databody),
             headers: {
