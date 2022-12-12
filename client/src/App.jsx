@@ -112,6 +112,7 @@ function App() {
       <Navbar handleSetLocation={setLocation}/>
       {location === 'main' && <Main handleSetLocation={setLocation} />}
       {location === 'login' && <Login handleSetLocation={setLocation}/>}
+      {location === 'userPage' && <UserPage handleSetLocation={setLocation}/>}
       {location === 'choose' && <Choice handleSetLocation={setLocation} handleJoinGame={joinGame}/>}
       {location === 'game' && <Game handleTypeGame={typeGame} isReady={ready} isFinish={finish} handleFinishGame={finishGame} handleFinishMain={finishToMain} isOtherFinish={otherFinish}/>}
       {location === 'game' && <ChatBox handleSetInput={setInput} handleSendMessage={sendMessage} messages={messages}/>}
