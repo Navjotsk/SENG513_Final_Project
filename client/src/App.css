@@ -263,7 +263,7 @@
   align-items: center;
   justify-content: center;
   background-color: #F5F5F5;
-  height: 100vh;
+  height: 92vh;
   width: 100vw;
 }
 
@@ -271,6 +271,8 @@
   background-color: #41BBD9;
   border-color: #2EC4B6;
   border-style: solid;
+  margin-left: 50px;
+  margin-right: 50px;
   height: 400px;
   width: 600px;
 }
@@ -278,7 +280,7 @@
 .innerCard {
   display: flex;
   align-items: center;
-  height: 80%;
+  height: 85%;
   width: 100%;
   color: #FFFFFF;
   font-size: 20px;
@@ -295,7 +297,7 @@
   border-style: none;
   font-weight: bolder;
   margin-right: 35px;
-  margin-top: 35px;
+  margin-top: 10px;
   border-radius: 5px;
 }
 
@@ -313,11 +315,12 @@
 
 .loginError{
   color: red;
+  font-size: 20px;
 }
 
 .inputLogin {
-  height: 40px;
-  width: 450px;
+  height: 30px;
+  width: 80%;
   border-style: none;
   background-color: #CBF3F0;
   border-radius: 5px;
@@ -337,6 +340,7 @@
 .forgotHeader{
   margin-top: 30px;
   margin-bottom: 30px;
+  margin-left: 20px;
   font-size: 30px;
   font-family: 'Inter';
   color: #FFFFFF;
@@ -347,6 +351,10 @@
   font-size: 20px;
   font-family: 'Inter';
   margin-left: 5%;
+}
+
+.loginForms{
+  width: 100%;
 }
 
 #forgotPassword{
