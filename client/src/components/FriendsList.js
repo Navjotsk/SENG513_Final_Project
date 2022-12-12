@@ -5,12 +5,12 @@ import SubmitField from "./SubmitField.js";
 //userpage will contain the friends, friendslist, user info, and 3
 
 
-let items = [];
-const FriendsList = ( {friends, addUser, removeUser, startGame} ) => {
+// var items = [];
+const FriendsList = ( { friends, items, addUser, removeUser, startGame} ) => {
 
-    items = friends.map((friend) =>
-        (<><Friend un={friend} removeUser={removeUser} startGame={startGame}/> <br/></>)
-    );
+    // items = friends.map((friend) =>
+    //     (<><Friend un={friend} removeUser={removeUser} startGame={startGame}/> <br/></>)
+    // );
 
 
 

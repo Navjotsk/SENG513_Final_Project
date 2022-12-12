@@ -121,6 +121,10 @@ io.on("connection", (socket) => {
   socket.on("disconnect", () => {
     console.log("A User disconnected")
   });
+
+   socket.on("startGame", (data) => {
+     console.log("got request to start game with" + data.user2ID.toString());
+   });
 });
 
 //DATABASE ROUTES
