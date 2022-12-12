@@ -130,6 +130,7 @@ const UserPage = ( {socket, handleSetLocation, handleRequest, setOpponentID, use
                 'token': userToken
             },
         });
+        window.alert("your password has been changed.");
         const data_1 = await res.json();
         return console.log(data_1); 
     }
