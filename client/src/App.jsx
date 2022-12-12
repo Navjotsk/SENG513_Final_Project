@@ -19,6 +19,9 @@ function App() {
   const [otherFinish, setOtherFinish] = useState(false);
   const [madLib, setMadlib] = useState([]);
 
+  const [input, setInput] = useState("");
+  const [messages, setMessages] = useState([]);
+
   const joinGame = (data) => {
     socket.emit("joinGame", {topic: data});
   };
@@ -62,6 +65,22 @@ function App() {
     }
   };
 
+  const sendMessage = () => {
+    socket.emit("sendMessage", { text: input, room: room });
+    addMessage({me: true, text: input});
+    setInput("");
+    document.getElementById("text-field").value = "";
+  };
+
+  const addMessage = (data) => {
+    const newMessage = {
+      me: data.me,
+      text: data.text
+    }
+    const newMessages = [...messages, newMessage];
+    setMessages(newMessages);
+  };
+
   useEffect(() => {
     socket.on("gameJoined", (data) => {
       setRoom(data.room);
@@ -80,20 +99,22 @@ function App() {
       setOtherFinish(true);
     });
 
-    if (finish && otherFinish) revealText();
+    socket.on("receivedMessage", (data) => {
+      addMessage({me: false, text: data});
+    });
 
-    console.log(madLib)
+    if (finish && otherFinish) revealText();
     
   });
 
   return (
     <div className="App">
       <Navbar handleSetLocation={setLocation}/>
-      {/*<ChatBox/>*/}
       {location === 'main' && <Main handleSetLocation={setLocation} />}
       {location === 'login' && <Login handleSetLocation={setLocation}/>}
       {location === 'choose' && <Choice handleSetLocation={setLocation} handleJoinGame={joinGame}/>}
       {location === 'game' && <Game handleTypeGame={typeGame} isReady={ready} isFinish={finish} handleFinishGame={finishGame} handleFinishMain={finishToMain} isOtherFinish={otherFinish}/>}
+      {location === 'game' && <ChatBox handleSetInput={setInput} handleSendMessage={sendMessage} messages={messages}/>}
     </div>
   );
 }

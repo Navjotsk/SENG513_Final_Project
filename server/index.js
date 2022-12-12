@@ -120,7 +120,7 @@ io.on("connection", (socket) => {
   });
 
   socket.on("sendMessage", (data) => {
-    socket.to(data.room).emit("receivedMessage", data);
+    socket.to(data.room).emit("receivedMessage", data.text);
   });
 
   socket.on("disconnect", () => {
