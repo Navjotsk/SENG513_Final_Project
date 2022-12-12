@@ -5,15 +5,21 @@ import UserInfo from "./UserInfo.js";
 
 
 //userpage will contain the friends, friendslist, user info, and 3
-const UserPage = ({UserID}) => {
+const UserPage = () => {
     //put some random user id's and then once it's there merge them.
     
-    const [friends, setFriends] = useState(["test1", "test2", "test3"]);
+    const [friends, setFriends] = useState([]);
+    //names of friends. Add the name in register as well.
+
+    function onLoad () {
+        //set the friends from the database names
+        setFriends(["test1", "test2", "test3"]);
+    }
 
     async function addUser (newUserID) {
         console.log("called the add user function");
             let databody = {
-            "currentUser": {UserID},
+            //"currentUser": {UserID},
             "addUser": {newUserID},
         }
         const res = await fetch('http://localhost:5000/addUser', {
@@ -30,7 +36,8 @@ const UserPage = ({UserID}) => {
     async function removeUser (remUserID) {
         console.log("called the remove user function");
         let databody = {
-            "currentUser": {UserID},
+           // "currentUser": {UserID},
+            //remove the user ID
             "removeUser": {remUserID},
         }
         const res = await fetch('http://localhost:5000/removeUser', {
@@ -47,7 +54,7 @@ const UserPage = ({UserID}) => {
     async function startGame (user2ID) {
         console.log("called the start game function");
         let databody = {
-            "currentUser": {UserID},
+           // "currentUser": {UserID},
             "otherUser": {user2ID},
         }
         const res = await fetch('http://localhost:5000/startGame', {
@@ -64,7 +71,7 @@ const UserPage = ({UserID}) => {
     async function changeNickname(newname) {
         console.log("called the change username function");
         let databody = {
-            "userID": {UserID},
+           // "userID": {UserID},
             "newname": {newname},
         }
         const res = await fetch('http://localhost:5000/changeName', {
@@ -81,7 +88,7 @@ const UserPage = ({UserID}) => {
     async function changePassword (pass) {
         console.log("called the change password function");
         let databody = {
-            "userID": {UserID},
+          //  "userID": {UserID},
             "newpass": {pass},
         }
         const res = await fetch('http://localhost:5000/changeName', {
@@ -97,12 +104,12 @@ const UserPage = ({UserID}) => {
     
     async function deleteAccount () {
         console.log("called the change delete account function");
-        let databody = {
-            "userID": {UserID},
-        }
+       // let databody = {
+           // "userID": {UserID},
+       // }
         const res = await fetch('http://localhost:5000/deleteUser', {
             method: 'POST',
-            body: JSON.stringify(databody),
+          //  body: JSON.stringify(databody),
             headers: {
                 'Content-Type': 'application/json'
             },
