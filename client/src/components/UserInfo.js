@@ -2,14 +2,23 @@ import React from "react";
 import { useEffect, useState } from "react";
 import userLogo from '../images/userSymbol.png';
 import Button from './Button.js';
+import ElicitInfo from "./ElicitInfo";
 
 
 export default function UserInfo({user = "undefined", date ="undefined", games = 0,changeNickname, changePassword, deleteAccount}) {
+    const [newNameField, setNewNameField] = useState(<><button onClick={newNameSearch}>Change Nickname</button><br /></>);
+    const [resetPassField, setResetPassField] = useState(<><button onClick={resetPassword}>Change Password</button><br /></>);
     let gameString = games + ' ';
-    function newNickname () {
-        //console.log("requested nickname change");
-        let newname = window.prompt("enter your new nickname");
-        changeNickname(user, newname);
+
+    function newNickname (name) {
+        changeNickname(name);
+        setNewNameField(<><button onClick={newNameSearch}>Change Nickname</button><br /></>)
+    }
+
+    function newPassword (pass) {
+        changePassword(pass);
+        setResetPassField(<><button onClick={resetPassword}>Change Password</button><br /></>);
+
     }
 
     function resetPassword () {
@@ -19,6 +28,10 @@ export default function UserInfo({user = "undefined", date ="undefined", games =
 
     function deleteAcc () {
         deleteAccount();
+    }
+
+    function newNameSearch () {
+        setNewNameField(<ElicitInfo funct={newNickname} action="" />);
     }
 
 
@@ -33,10 +46,8 @@ export default function UserInfo({user = "undefined", date ="undefined", games =
         <>Games Played: {gameString}</>
         <br/>
         <br/>
-        <button onClick={newNickname}>Change Nickname</button>
-        <br/>
-        <button onClick={resetPassword}>Change Password</button>
-        <br/>
+        {newNameField}
+        {resetPassField}
         <button onClick={deleteAcc}>Delete Account</button>
 
 

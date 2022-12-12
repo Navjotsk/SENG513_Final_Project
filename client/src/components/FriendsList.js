@@ -19,7 +19,7 @@ const FriendsList = ( {friends, addUser, removeUser, startGame} ) => {
     return (
     <div class="friendList">
         <h2>FRIENDS</h2>
-        <SubmitField addUser = {addUser}  />
+        <SubmitField addUser = {addUser} action="Add User"  />
         <span>
             <br/>
             {items}
