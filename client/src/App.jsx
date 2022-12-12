@@ -41,6 +41,10 @@ function App() {
     setOpponent("");
   };
 
+  const requestedFriend = (newUserName) => {
+    socket.emit("friendRequest", {user: newUserName, requestor: userID});
+  }
+
   const typeGame = (data) => {
     socket.emit("typeGame", {id: data.id, content: data.content, room: room});
 
@@ -132,6 +136,13 @@ function App() {
 
     });
 
+    socket.on("requestedFriend", (data) => {
+      if (userID == data.user) {
+        window.alert(data.requestor + " has added you as a friend!")
+      }
+
+    });
+
     if (finish && otherFinish) revealText();
     if (meReady && otherReady && madLib.length !== 0) setReady(true);
     
@@ -150,8 +161,8 @@ function App() {
     <div className="App">
       <Navbar handleSetLocation={setLocation}/>
       {location === 'main' && <Main handleSetLocation={setLocation} />}
-      {location === 'login' && <UserPage handleSetLocation={setLocation} handleRequest={handleRequest} setOpponentID={setOpponent} userID = {userID} setUserID={setUserID}/>}
-      {location === 'userPage' && <UserPage handleSetLocation={setLocation} handleRequest={handleRequest} setOpponentID={setOpponent} userID = {userID} setUserID={setUserID}/>}
+      {location === 'login' && <UserPage handleSetLocation={setLocation} handleRequest={handleRequest} setOpponentID={setOpponent} userID = {userID} setUserID={setUserID} requestedFriend={requestedFriend}/>}
+      {location === 'userPage' && <UserPage handleSetLocation={setLocation} handleRequest={handleRequest} setOpponentID={setOpponent} userID = {userID} setUserID={setUserID} requestedFriend={requestedFriend}/>}
       {location === 'choose' && <Choice handleSetLocation={setLocation} handleJoinGame={joinGame}/>}
       {location === 'game' && <Game handleTypeGame={typeGame} isReady={ready} isFinish={finish} handleFinishGame={finishGame} handleFinishMain={finishToMain} isOtherFinish={otherFinish} madLib={madLib}/>}
       {location === 'game' && chatOpen && <ChatBox handleSetInput={setInput} handleSendMessage={sendMessage} messages={messages} handleSetChatOpen={setChatOpen}/>}
