@@ -4,6 +4,7 @@ const http = require("http");
 const cors = require("cors");
 const { Server } = require("socket.io");
 const pool = require("./db"); 
+const e = require("express");
 
 app.use(cors());
 app.use(express.json()); 
@@ -107,7 +108,12 @@ io.on("connection", (socket) => {
   socket.on("joinGame", (data) => {
     let currCount = calcCount(data.topic);
     socket.join(currCount.roomNum);
-    socket.emit("gameJoined", {room: currCount.roomNum, first: currCount.firstPlayer});
+    if (data.opponent !=null) {
+      socket.emit("gameJoined", {room: currCount.roomNum, first: currCount.firstPlayer});
+      socket.broadcast.emit("requestedToJoin", {user: data.opponent, room: currCount.roomNum});
+    } else {
+      socket.emit("gameJoined", {room: currCount.roomNum, first: currCount.firstPlayer});
+    }
     if (currCount.firstPlayer == false) socket.to(currCount.roomNum).emit("playerJoined");
   });
 
