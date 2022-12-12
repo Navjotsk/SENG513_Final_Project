@@ -37,6 +37,11 @@ function Login({ handleSetLocation }) {
             //Change to the profile page
             handleSetLocation('userPage');
 
+            //Change Navbar to the logged in version
+            window.parent.document.getElementById('loginBar').style.display = "none";
+            window.parent.document.getElementById('logoutBar').style.display = "block";
+            window.parent.document.getElementById('profileBar').style.display = "block";
+
             //Get values from database
             return fetch('http://localhost:5000/login', {
                 method: 'POST',
