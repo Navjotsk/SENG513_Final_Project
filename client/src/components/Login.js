@@ -49,7 +49,7 @@ function Login({ handleSetLocation }) {
             .then(data => console.log(data)); 
         }
 
-        //Prevent page from refreshing on submit
+        //Prevent page from refreshing on submit if it isn't valid
         event.preventDefault();
     };
 
@@ -60,7 +60,7 @@ function Login({ handleSetLocation }) {
     const handleRegister = event => {
 
         //If email or password is blank give error
-        if(document.getElementById("rEmail").value === "" || document.getElementById("rPass").value === "" || document.getElementById("rRePass").value === "") {
+        if(document.getElementById("rName").value === "" || document.getElementById("rEmail").value === "" || document.getElementById("rPass").value === "" || document.getElementById("rRePass").value === "") {
             setRMessage("Please fill out all of the fields");
         }
         //If Passwords don't Match
@@ -70,6 +70,7 @@ function Login({ handleSetLocation }) {
         //Once user registers
         else {
             let databody2 = {
+                "name": document.getElementById("rName").value,
                 "email": document.getElementById("rEmail").value,
                 "password": document.getElementById("rPass").value,
                 "password2": document.getElementById("rRePass").value
@@ -85,7 +86,7 @@ function Login({ handleSetLocation }) {
             .then(data => console.log(data)); 
         }
 
-        //Prevent page from refreshing on submit
+        //Prevent page from refreshing on submit if it isn't valid
         event.preventDefault();
     };
 
@@ -130,7 +131,7 @@ function Login({ handleSetLocation }) {
                 {/* If Login tab is clicked */}
                 {!isShown && (
                     <div className="innerCard">
-                        <form onSubmit={handleSubmit}>
+                        <form className="loginForms" onSubmit={handleSubmit}>
                             <label>
                                 EMAIL:
                                 <br />
@@ -154,7 +155,13 @@ function Login({ handleSetLocation }) {
                 {/* If Register tab is clicked */}
                 {isShown && (
                     <div className="innerCard">
-                        <form onSubmit={handleRegister}>
+                        <form className="loginForms" onSubmit={handleRegister}>
+                            <label>
+                                NAME:
+                                <br />
+                                <input type="text" id="rName" className="inputLogin"/>
+                            </label>
+                            <br />
                             <label>
                                 EMAIL:
                                 <br />
@@ -186,7 +193,7 @@ function Login({ handleSetLocation }) {
                 <h1 className="forgotHeader">FORGOT PASSWORD</h1>
                 <label className="forgotDescription">We will send you an email with instructions on how to reset your password.</label>
                 <div className="innerCard">
-                    <form onSubmit={handleForgot}>
+                    <form className="loginForms" onSubmit={handleForgot}>
                         <label>
                             EMAIL:
                             <br />
