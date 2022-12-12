@@ -7,7 +7,7 @@ var friends = ["temp1", "temp2", "temp3"];
 var index = 3;
 
 //userpage will contain the friends, friendslist, user info, and 3
-const UserPage = ( {socket, handleSetLocation, handleRequest, setOpponentID, userID = "undefined", setUserID, token = ""}) => {
+const UserPage = ( {socket, handleSetLocation, handleRequest, setOpponentID, userID = "undefined", setUserID, token = "", requestedFriend}) => {
     //put some random user id's and then once it's there merge them.
 
 
@@ -37,6 +37,7 @@ const UserPage = ( {socket, handleSetLocation, handleRequest, setOpponentID, use
             //"currentUser": {UserID},
             "addUser": {newUserName},
         }
+        requestedFriend(newUserName);
         const res = await fetch('http://localhost:5000/addUser', {
             method: 'POST',
             body: JSON.stringify(databody),

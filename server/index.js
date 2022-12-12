@@ -137,6 +137,13 @@ io.on("connection", (socket) => {
    socket.on("startGame", (data) => {
      console.log("got request to start game with" + data.user2ID.toString());
    });
+
+   socket.on("friendRequest", (data) => {
+    socket.broadcast.emit("requestedFriend", data);
+    console.log(data.user);
+    console.log(data.requestor);
+
+   });
 });
 
 //DATABASE ROUTES
