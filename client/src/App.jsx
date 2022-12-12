@@ -26,8 +26,16 @@ function App() {
   const [messages, setMessages] = useState([]);
   const [chatOpen, setChatOpen] = useState(false);
 
+  const [userID, setUserID] = useState("");
+  const [opponent, setOpponent] = useState("");
+  const [request, handleRequest] = useState(false);
+
   const joinGame = (data) => {
-    socket.emit("joinGame", {topic: data});
+    if (opponent == null) {
+      socket.emit("joinGame", {topic: data, opponent: null});
+    } else {
+      socket.emit("joinGame", {topic: data, opponent: opponent} )
+    }
   };
 
   const typeGame = (data) => {
@@ -114,6 +122,13 @@ function App() {
       addMessage({me: false, text: data});
     });
 
+    socket.on("requestedToJoin", (data) => {
+      if (userID == data.user) {
+        window.alert("requested to join room " + data.room);
+      }
+
+    });
+
     if (finish && otherFinish) revealText();
     if (meReady && otherReady && madLib.length !== 0) setReady(true);
     
@@ -132,8 +147,8 @@ function App() {
     <div className="App">
       <Navbar handleSetLocation={setLocation}/>
       {location === 'main' && <Main handleSetLocation={setLocation} />}
-      {location === 'login' && <Login handleSetLocation={setLocation}/>}
-      {location === 'userPage' && <UserPage handleSetLocation={setLocation}/>}
+      {location === 'login' && <UserPage handleSetLocation={setLocation} handleRequest={handleRequest} setOpponentID={setOpponent} userID = {userID} setUserID={setUserID}/>}
+      {location === 'userPage' && <UserPage handleSetLocation={setLocation} handleRequest={handleRequest} setOpponentID={setOpponent} userID = {userID} setUserID={setUserID}/>}
       {location === 'choose' && <Choice handleSetLocation={setLocation} handleJoinGame={joinGame}/>}
       {location === 'game' && <Game handleTypeGame={typeGame} isReady={ready} isFinish={finish} handleFinishGame={finishGame} handleFinishMain={finishToMain} isOtherFinish={otherFinish} madLib={madLib}/>}
       {location === 'game' && chatOpen && <ChatBox handleSetInput={setInput} handleSendMessage={sendMessage} messages={messages} handleSetChatOpen={setChatOpen}/>}
