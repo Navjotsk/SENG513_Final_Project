@@ -355,3 +355,21 @@
   align-items: center;
   flex-direction: column;
 }
+
+.chatBox{
+    position: fixed;
+    right: 0px; bottom: 0px;
+    width: 200px;
+    height:200px;
+    background-color:rgb(255, 255, 255);
+    padding: 5px;
+}
+
+.messageBox{
+    position: fixed;
+    right: 0px; bottom: 0px;
+    width: 200px;
+    height:80px;
+    background-color:rgb(255, 255, 255);
+    padding: 5px;
+}

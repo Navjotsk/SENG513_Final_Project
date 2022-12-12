@@ -1,7 +1,7 @@
 import {useState} from 'react';
 
 //Function for login/register/forgot password
-function Login() {
+function Login({ handleSetLocation }) {
 
     //Show login or register page based on which tab is clicked
     const [isShown, setIsShown] = useState(false);
@@ -28,10 +28,16 @@ function Login() {
         }*/
         //Once user is logged in
         else {
+            //Set email and password based on entry
             let databody = {
                 "email": document.getElementById("email").value,
                 "password": document.getElementById("password").value,
             }
+
+            //Change to the profile page
+            handleSetLocation('userPage');
+
+            //Get values from database
             return fetch('http://localhost:5000/login', {
                 method: 'POST',
                 body: JSON.stringify(databody),

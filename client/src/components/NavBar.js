@@ -5,7 +5,7 @@ function Navbar({ handleSetLocation }) {
                 <p className="large-text" onClick={() => handleSetLocation('main')}>GAMETITLE</p>
             </div>
             <div className="block" style={{right: '0'}}>
-                <p className="large-text">LOGIN</p>
+                <p className="large-text" onClick={() => handleSetLocation('login')}>LOGIN</p>
             </div>
         </div>
     )
