@@ -14,6 +14,7 @@ const io = new Server(server, {
 
 const { pool } = require("./DbConfig");
 const bcrypt = require("bcrypt");
+const tokenVerifier = require("./token_verification");
 
 const jwt = require("jsonwebtoken");
 
@@ -86,6 +87,7 @@ app.post("/register", async function (req, res, next) {
   console.log(req.body)
   // let userId = makeid(5);
   let userEmail = req.body.email
+  let username = req.body.username
   let userPassword = req.body.password
   // let userPassword2 = req.body.password2
 
@@ -131,10 +133,15 @@ app.post("/register", async function (req, res, next) {
 
 
           console.log(userEmail, hashedPassword)
-          await pool.query('INSERT INTO users(email, password) VALUES($1, $2);', [userEmail, hashedPassword])
+          await pool.query('INSERT INTO users(email, password, username) VALUES($1, $2);', [userEmail, hashedPassword, username])
+          const data = await pool.query(`SELECT * FROM users WHERE email= $1;`, [userEmail]) //retreiving userID from database
+          let user = data.rows;
+          let userId = data.rows[0].id
           const token = jwt.sign( //Signing a jwt token
             {
-              email: userEmail
+              email: userEmail,
+              id: userId
+
             },
             process.env.SECRET_KEY
           );
@@ -173,7 +180,8 @@ app.post("/login", async function (req, res, next) {
 
   try {
     const data = await pool.query(`SELECT * FROM users WHERE email= $1;`, [userEmail]) //Verifying if the user exists in the database
-    const user = data.rows;
+    let user = data.rows;
+    let userId = data.rows[0].id
     if (user.length === 0) {
       res.status(400).json({
         error: "User is not registered, Sign Up first",
@@ -189,6 +197,7 @@ app.post("/login", async function (req, res, next) {
           const token = jwt.sign(
             {
               email: userEmail,
+              id: userId
             },
             process.env.SECRET_KEY
           );
@@ -218,13 +227,68 @@ app.post("/login", async function (req, res, next) {
   // res.jsonp({})
 })
 
-  // / This fuction creates unique userIDs
-// function makeid(length) {
-//   var result = '';
-//   var characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-//   var charactersLength = characters.length;
-//   for (var i = 0; i < length; i++) {
-//     result += characters.charAt(Math.floor(Math.random() * charactersLength));
-//   }
-//   return result;
-// }
+app.post("/profile", tokenVerifier, async function (req, res, next) {
+  //  browser sends token >>retrieve userid form token
+  let userId = req.tokenData.id
+
+  // server sends username,list of freinds, gameplayed
+  const data = await pool.query(`SELECT * FROM users WHERE id= $1;`, [userId])
+
+  let username = data.rows[0].username;
+  let gameplayed = data.rows[0].gameplayed;
+  const friendlist = await pool.query(`SELECT u2.username, u2.id FROM friends f 
+    JOIN users u1 ON f.userid = u1.id 
+    JOIN users u2 ON f.friendid = u2.id WHERE f.userid = $1;`, [userId])
+  console.log(friendlist.rows)
+  res.json({ friends: friendlist.rows, username: username, gameplayed: gameplayed })
+
+})
+
+app.post("/removefriend", async function (req, res, next) {
+  //  browser sends token >> server retrieves userid form token
+  // server needs to get friend ID from browser
+  let userId = req.tokenData.id
+  let freindId = req.freindId
+  // test:
+  // let userId = 1;
+  // let friendId = 12345;
+
+  await pool.query('DELETE FROM friends WHERE (userid = $1 AND friendid=$2);', [userId, friendId])
+  await pool.query('DELETE FROM friends WHERE (userid = $1 AND friendid=$2);', [friendId, userId])
+
+
+  const friendlist = await pool.query(`SELECT u2.username, u2.id FROM friends f 
+    JOIN users u1 ON f.userid = u1.id 
+    JOIN users u2 ON f.friendid = u2.id WHERE f.userid = $1;`, [userId])
+
+  res.json({ friends: friendlist.rows, })
+  console.log(friendlist)
+
+})
+
+
+app.post("/addfriend", tokenVerifier, async function (req, res, next) {
+  //  browser sends token >> server retrieves userid form token
+  // server needs to get friend ID from browser
+  let userId = req.tokenData.id
+  let freindId = req.freindId
+
+  // test:
+  // let userId = 1;
+  // let friendId = 12345;
+
+  // we need to add thses two in database
+
+  await pool.query('INSERT INTO friends(userid, friendid) VALUES($1, $2);', [userId, friendId])
+  await pool.query('INSERT INTO friends(userid, friendid) VALUES($1, $2);', [friendId, userId])
+
+
+  const friendlist = await pool.query(`SELECT u2.username, u2.id FROM friends f 
+    JOIN users u1 ON f.userid = u1.id 
+    JOIN users u2 ON f.friendid = u2.id WHERE f.userid = $1;`, [userId])
+
+  res.json({ friends: friendlist.rows, })
+  console.log(friendlist)
+
+})
+
