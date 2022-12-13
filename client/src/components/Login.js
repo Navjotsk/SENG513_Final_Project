@@ -65,7 +65,7 @@ function Login({ handleSetLocation }) {
     const handleRegister = event => {
 
         //If email or password is blank give error
-        if(document.getElementById("rName").value === "" || document.getElementById("rEmail").value === "" || document.getElementById("rPass").value === "" || document.getElementById("rRePass").value === "") {
+        if(document.getElementById("rEmail").value === "" || document.getElementById("rPass").value === "" || document.getElementById("rRePass").value === "") {
             setRMessage("Please fill out all of the fields");
         }
         //If Passwords don't Match
