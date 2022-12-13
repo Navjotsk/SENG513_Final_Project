@@ -32,12 +32,12 @@ function App() {
   const [request, handleRequest] = useState(false);
 
   const joinGame = (data) => {
-    if (data.room != undefined) {
+    if (data.room !== undefined) {
       console.log('in undefined');
       socket.emit("joinGame", {topic: 'joinRequest', room: data.room})
       setLocation('game');
     }
-    else if (opponent == "") {
+    else if (opponent === "") {
       socket.emit("joinGame", {topic: data, opponent: null, requestor: null});
     }
     else {
@@ -119,27 +119,27 @@ function App() {
     let id = -1;
     if (data > 7000) id = data%1000;
     else if (data > 6000) {
-      if (data%2 == 1) id = 11;
+      if (data%2 === 1) id = 11;
       else id = 12;
     }
     else if (data > 5000) {
-      if (data%2 == 1) id = 9;
+      if (data%2 === 1) id = 9;
       else id = 10;
     }
     else if (data > 4000) {
-      if (data%2 == 1) id = 7;
+      if (data%2 === 1) id = 7;
       else id = 8;
     }
     else if (data > 3000) {
-      if (data%2 == 1) id = 5;
+      if (data%2 === 1) id = 5;
       else id = 6;
     }
     else if (data > 2000) {
-      if (data%2 == 1) id = 3;
+      if (data%2 === 1) id = 3;
       else id = 4;
     }
     else if (data > 1000) {
-      if (data%2 == 1) id = 1;
+      if (data%2 === 1) id = 1;
       else id = 2;
     }
     return id;

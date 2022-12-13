@@ -36,7 +36,7 @@ const UserPage = ( { handleSetLocation, handleRequest, setOpponentID, userName =
 
         //logic to show and update friends in the front end
         for (let i = 0; i < friends.length; i++) {
-            if (friends[i] == newUserName) {
+            if (friends[i] === newUserName) {
                 console.log(friends[i]);
                 console.log(newUserName);
                 window.alert("you cannot add a user twice");
@@ -74,7 +74,7 @@ const UserPage = ( { handleSetLocation, handleRequest, setOpponentID, userName =
         let temp = [];
         let itemCopy = [];
         for (let i = 0; i < friends.length; i++) {
-            if (friends[i].id != remUserID && friends[i].username != remUserName) {
+            if (friends[i].id !== remUserID && friends[i].username !== remUserName) {
                 let data = {"username": friends[i].username, "id": friends[i].id}
                 temp.push(data);
                 itemCopy.push(<><Friend un={friends[i].username} removeUser={removeUser} startGame={startGame} id={friends[i].id} /><br /></>)
@@ -85,7 +85,7 @@ const UserPage = ( { handleSetLocation, handleRequest, setOpponentID, userName =
         console.log(friends);
 
         //the below line of code was formulated using help from https://www.youtube.com/watch?v=E1E08i2UJGI
-        let copyItems = ([...itemCopy].filter(friend => friend.id != remUserID));
+        let copyItems = ([...itemCopy].filter(friend => friend.id !== remUserID));
         setItems(copyItems);
         window.alert("You have removed " + remUserName);
         removedFriend(remUserID);
