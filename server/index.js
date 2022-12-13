@@ -352,7 +352,7 @@ app.post("/profile", tokenVerifier, async function (req, res, next) {
 
 })
 
-app.post("/removefriend", async function (req, res, next) {
+app.post("/removefriend", tokenVerifier, async function (req, res, next) {
   //  browser sends token >> server retrieves userid form token
   // server needs to get friend ID from browser
   let userId = req.tokenData.id
@@ -376,7 +376,7 @@ app.post("/removefriend", async function (req, res, next) {
 })
 
 
-app.post("/addfriend", async function (req, res, next) {
+app.post("/addfriend", tokenVerifier, async function (req, res, next) {
   //  browser sends token >> server retrieves userid form token
   // server needs to get friend username from browser and finds friend ID from DB
   let userId = req.tokenData.id
