@@ -15,6 +15,8 @@ function App() {
   const [location, setLocation] = useState('main');
   const [room, setRoom] = useState(-1);
   const [ready, setReady] = useState(false);
+  const [meReady, setMeReady] = useState(false);
+  const [otherReady, setOtherReady] = useState(false);
   const [finish, setFinish] = useState(false);
   const [otherFinish, setOtherFinish] = useState(false);
   const [madLib, setMadlib] = useState([]);
@@ -37,11 +39,15 @@ function App() {
   };
 
   const revealText = () => {
-    let dom_el = document.querySelectorAll('.text-container span');
-    let length = dom_el.length;
-    for(let i = 0 ; i < length ; i++) {
-        dom_el[i].style.color = '#000000';
-        dom_el[i].style.textShadow = 'none';
+    let dom_span = document.querySelectorAll('.text-container span');
+    let dom_input = document.querySelectorAll('.text-container input');
+    for(let i = 0 ; i < dom_span.length ; i++) {
+        dom_span[i].style.color = '#000000';
+        dom_span[i].style.textShadow = 'none';
+    }
+    let story = madLib.story_sentence;
+    for(let i = 0 ; i < dom_input.length ; i++) {
+      dom_span[i].innerHTML = `${story[i]}<b>${dom_input[i].value}</b>`
     }
   }
 
@@ -54,7 +60,6 @@ function App() {
     setMadlib([])
   }
 
-  let id = 1; //the madlib u want to retreive
   const getMadLib = async (id) => {
     try {
       const response = await fetch(`http://localhost:5000/madlibs/${id}`);
@@ -84,11 +89,13 @@ function App() {
   useEffect(() => {
     socket.on("gameJoined", (data) => {
       setRoom(data.room);
-      if (data.first === false) setReady(true);
+      getMadLib(Number(data.room));
+      setMeReady(true);
+      if (data.first == false) setOtherReady(true);
     });
 
     socket.on("playerJoined", () => {
-      setReady(true);
+      setOtherReady(true);
     });
 
     socket.on("receivedType", (data) => {
@@ -104,6 +111,7 @@ function App() {
     });
 
     if (finish && otherFinish) revealText();
+    if (meReady && otherReady && madLib.length !== 0) setReady(true);
     
   });
 
@@ -114,7 +122,7 @@ function App() {
       {location === 'login' && <Login handleSetLocation={setLocation}/>}
       {location === 'userPage' && <UserPage handleSetLocation={setLocation}/>}
       {location === 'choose' && <Choice handleSetLocation={setLocation} handleJoinGame={joinGame}/>}
-      {location === 'game' && <Game handleTypeGame={typeGame} isReady={ready} isFinish={finish} handleFinishGame={finishGame} handleFinishMain={finishToMain} isOtherFinish={otherFinish}/>}
+      {location === 'game' && <Game handleTypeGame={typeGame} isReady={ready} isFinish={finish} handleFinishGame={finishGame} handleFinishMain={finishToMain} isOtherFinish={otherFinish} madLib={madLib}/>}
       {location === 'game' && <ChatBox handleSetInput={setInput} handleSendMessage={sendMessage} messages={messages}/>}
     </div>
   );

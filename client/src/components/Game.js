@@ -1,30 +1,20 @@
 
-function Game({ handleTypeGame, isReady, isFinish, handleFinishGame, handleFinishMain, isOtherFinish }) {
-    let temp = ["Today I went to my favorite Taco Stand called the ",
-                " ",
-                ". Unlike most food stands, they cook and prepare the food in a ",
-                " while you ",
-                ". The best thing on the menu is the ",
-                " ",
-                ". Instead of ground beef they fill the taco with ",
-                ", cheese, and top it off with a salsa made from ",
-                ". If that doesn't make your mouth water, then it' just like ",
-                " always says: ",
-                "!"]
-                
-    let type = ["adjective", "noun", "vehicle", "verb", "colour", "noun", "food", "food", "person", "saying"]
-
+function Game({ handleTypeGame, isReady, isFinish, handleFinishGame, handleFinishMain, isOtherFinish, madLib }) {
+    let title = madLib.type;
+    let story = madLib.story_sentence;
+    let fill = madLib.fill_word;
+    
     return(
         <div className="container">
             <div className="game-container">
-                <h1 className="story-title">TACOS? TACOS!</h1>
+                <h1 className="story-title">{title}</h1>
                 <div className="text-container">
                     {isReady ? (
                     <form action="">
-                        {type.map((value, index) => {
-                            return <span key={"string"+index}>{temp[index]}<input id={index} type="text" placeholder={value} onChange={(e) => handleTypeGame({id: index, content: e.target.value})}/></span>
+                        {fill.map((value, index) => {
+                            return <span id={"story"+index} key={"string"+index}>{story[index]}<input id={index} type="text" placeholder={value} onChange={(e) => handleTypeGame({id: index, content: e.target.value})}/></span>
                         })}
-                        <span key="stringlast">{temp[temp.length-1]}</span>
+                        <span key="stringlast">{story[story.length-1]}</span>
                     </form>
                     ) : (
                         <p>Waiting for 2nd player...</p>
