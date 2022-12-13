@@ -82,9 +82,12 @@ function App() {
     setLocation('main')
     setRoom(-1)
     setReady(false)
+    setMeReady(false)
+    setOtherReady(false)
     setFinish(false)
     setOtherFinish(false)
     setMadlib([])
+    setMessages([])
   }
 
   const getMadLib = async (id) => {
