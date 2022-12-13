@@ -238,6 +238,7 @@
   overflow-y: scroll;
   font-size: large;
   white-space: pre-wrap;
+  /*referenced: https://www.arungudelli.com/tutorial/css/disable-text-selection-in-html-using-user-select-css-property/*/
   user-select: none; /* supported by Chrome and Opera */
   -webkit-user-select: none; /* Safari */
   -khtml-user-select: none; /* Konqueror HTML */
@@ -281,7 +282,6 @@
 .display-box {
   height: 90%;
   overflow-y: scroll;
-  overflow: hidden;
 }
 
 .messageBox{
@@ -302,6 +302,10 @@
   padding-right: 10px;
   border: none;
   background-color: #cfcfcf;
+}
+
+#send-button:hover {
+  background-color: #b8b8b8;
 }
 
 .my-message {

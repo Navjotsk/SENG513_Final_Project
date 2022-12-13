@@ -1,5 +1,5 @@
 function ChatBox({ handleSetInput, handleSendMessage, messages, handleSetChatOpen }) {
-   
+
   return (
     <div className="chatBox" > 
       <div className='display-box' onClick={() => handleSetChatOpen(false)}>
@@ -13,8 +13,6 @@ function ChatBox({ handleSetInput, handleSendMessage, messages, handleSetChatOpe
               )
             })}
       </div>
-    
-    
     
       <div className="messageBox">
         <input id="text-field" onChange={(event) => {handleSetInput(event.target.value);}} />
