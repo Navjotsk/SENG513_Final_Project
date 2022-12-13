@@ -5,7 +5,7 @@ import Button from './Button.js';
 import ElicitInfo from "./ElicitInfo";
 
 
-export default function UserInfo({user = "undefined", gamesPlayed = 0, date=0, changeNickname, changePassword, deleteAccount, joinaRoom}) {
+export default function UserInfo({user = "undefined", userID = "0", gamesPlayed = 0, date=0, changeNickname, changePassword, deleteAccount, joinaRoom}) {
     const [newNameField, setNewNameField] = useState(<><button onClick={newNameSearch}>Change Nickname</button><br /></>);
     const [resetPassField, setResetPassField] = useState(<><button onClick={newPassPrompt}>Change Password</button><br /></>);
     const [gameString, setGameString] = useState(gamesPlayed + ' ');
@@ -55,7 +55,7 @@ export default function UserInfo({user = "undefined", gamesPlayed = 0, date=0, c
 
   return (
     <div class="mainUserInfo">
-        <img src={userLogo} alt="..." />&nbsp;{user}&nbsp;
+        <img src={userLogo} alt="..." />&nbsp;{user}&nbsp;{userID}
         <br/>
         <br/>
         <>Joined: {date}</>
@@ -64,7 +64,7 @@ export default function UserInfo({user = "undefined", gamesPlayed = 0, date=0, c
         <>Games Played: {gamesPlayed}</>
         <br/>
         <br/>
-        {newNameField}
+        {/* {newNameField} */}
         {resetPassField}
         <button onClick={deleteAcc}>Delete Account</button>
         <br/>

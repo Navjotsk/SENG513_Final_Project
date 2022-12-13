@@ -42,8 +42,8 @@ function App() {
     setOpponent("");
   };
 
-  const requestedFriend = (newUserName) => {
-    socket.emit("friendRequest", {user: newUserName, requestor: userName});
+  const requestedFriend = (newUserID) => {
+    socket.emit("friendRequest", {user: newUserID, requestor: userName});
   }
 
   const removedFriend = (removeID) => {
@@ -142,7 +142,7 @@ function App() {
     });
 
     socket.on("requestedFriend", (data) => {
-      if (userName == data.user) {
+      if (userID == data.user) {
         window.alert(data.requestor + " is following you!");
       }
     });
