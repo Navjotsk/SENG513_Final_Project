@@ -90,10 +90,29 @@ function App() {
     setMessages(newMessages);
   };
 
+  // reference: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Math/random
+  const getRandomInt = (min, max) => {
+    min = Math.ceil(min);
+    max = Math.floor(max);
+    return Math.floor(Math.random() * (max - min) + min);
+  }
+
+  const getId = (data) => {
+    let id = -1;
+    if (data > 7000) id = getRandomInt(1, 13);
+    else if (data > 6000) id = getRandomInt(11, 13);
+    else if (data > 5000) id = getRandomInt(9, 11);
+    else if (data > 4000) id = getRandomInt(7, 9);
+    else if (data > 3000) id = getRandomInt(5, 7);
+    else if (data > 2000) id = getRandomInt(3, 5);
+    else if (data > 1000) id = getRandomInt(1, 3);
+    return id;
+  }
+
   useEffect(() => {
     socket.on("gameJoined", (data) => {
       setRoom(data.room);
-      getMadLib(Number(data.room));
+      getMadLib(getId(Number(data.room)));
       setMeReady(true);
       if (data.first == false) setOtherReady(true);
     });
