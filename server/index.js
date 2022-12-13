@@ -20,7 +20,7 @@ let school = {
   numPlayers: 0,
   count: 3000
 }
-let anime = {
+let animal = {
   numPlayers: 0,
   count: 4000
 }
@@ -60,13 +60,13 @@ const calcCount = (arg) => {
     }
     count = school.count;
   }
-  else if (arg == 'anime') {
-    anime.numPlayers++;
-    if ((anime.numPlayers + 1)%2 == 0) {
-      anime.count++;
+  else if (arg == 'animal') {
+    animal.numPlayers++;
+    if ((animal.numPlayers + 1)%2 == 0) {
+      animal.count++;
       first = true;
     }
-    count = anime.count;
+    count = animal.count;
   }
   else if (arg == 'games') {
     games.numPlayers++;
@@ -97,16 +97,11 @@ const io = new Server(server, {
 });
 
 io.on("connection", (socket) => {
-  console.log( socket.client.conn.server.clientsCount + " users connected" );
-
-  socket.on("joinRoom", (data) => {
-    socket.join(data);
-    console.log(`User Joined: ${data}`)
-  });
 
   socket.on("joinGame", (data) => {
     let currCount = calcCount(data.topic);
     socket.join(currCount.roomNum);
+
     socket.emit("gameJoined", {room: currCount.roomNum, first: currCount.firstPlayer});
     if (currCount.firstPlayer == false) socket.to(currCount.roomNum).emit("playerJoined");
   });
