@@ -33,9 +33,9 @@ function App() {
 
   const joinGame = (data) => {
     if (opponent == "") {
-      socket.emit("joinGame", {topic: data, opponent: null});
+      socket.emit("joinGame", {topic: data, opponent: null, requestor: null});
     } else {
-      socket.emit("joinGame", {topic: data, opponent: opponent} )
+      socket.emit("joinGame", {topic: data, opponent: opponent, requestor: userName} )
     }
     //reset state variables for if user wants an opponent requested
     handleRequest(false);
@@ -136,17 +136,22 @@ function App() {
 
     socket.on("requestedToJoin", (data) => {
       if (userName == data.user) {
-        window.alert("requested to join room " + data.room);
+        window.alert(data.requestor + " requested you to join room " + data.room);
       }
 
     });
 
     socket.on("requestedFriend", (data) => {
       if (userName == data.user) {
-        window.alert(data.requestor + " has added you as a friend!");
+        window.alert(data.requestor + " is following you!");
       }
-
     });
+
+    socket.on("unfollowed", (data) => {
+      if (userID == data.user) {
+        window.alert(data.requestor + " has unfollowed you!");
+      }
+    })
 
     if (finish && otherFinish) revealText();
     if (meReady && otherReady && madLib.length !== 0) setReady(true);
@@ -166,8 +171,8 @@ function App() {
     <div className="App">
       <Navbar handleSetLocation={setLocation}/>
       {location === 'main' && <Main handleSetLocation={setLocation} />}
-      {location === 'login' && <UserPage handleSetLocation={setLocation} handleRequest={handleRequest} setOpponentID={setOpponent} userName = {userName} setUserName={setUserName} requestedFriend={requestedFriend}/>}
-      {location === 'userPage' && <UserPage handleSetLocation={setLocation} handleRequest={handleRequest} setOpponentID={setOpponent} userID = {userID} setUserID={setUserID} requestedFriend={requestedFriend}/>}
+      {location === 'login' && <UserPage handleSetLocation={setLocation} handleRequest={handleRequest} setOpponentID={setOpponent} userName = {userName} setUserName={setUserName} requestedFriend={requestedFriend} removedFriend={removedFriend}/>}
+      {location === 'userPage' && <UserPage handleSetLocation={setLocation} handleRequest={handleRequest} setOpponentID={setOpponent} userID = {userID} setUserID={setUserID} requestedFriend={requestedFriend} removedFriend={removedFriend}/>}
       {location === 'choose' && <Choice handleSetLocation={setLocation} handleJoinGame={joinGame}/>}
       {location === 'game' && <Game handleTypeGame={typeGame} isReady={ready} isFinish={finish} handleFinishGame={finishGame} handleFinishMain={finishToMain} isOtherFinish={otherFinish} madLib={madLib}/>}
       {location === 'game' && chatOpen && <ChatBox handleSetInput={setInput} handleSendMessage={sendMessage} messages={messages} handleSetChatOpen={setChatOpen}/>}

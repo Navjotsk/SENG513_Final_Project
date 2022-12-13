@@ -110,7 +110,7 @@ io.on("connection", (socket) => {
     socket.join(currCount.roomNum);
     if (data.opponent !=null) {
       socket.emit("gameJoined", {room: currCount.roomNum, first: currCount.firstPlayer});
-      socket.broadcast.emit("requestedToJoin", {user: data.opponent, room: currCount.roomNum});
+      socket.broadcast.emit("requestedToJoin", {user: data.opponent, room: currCount.roomNum, requestor: data.requestor});
     } else {
       socket.emit("gameJoined", {room: currCount.roomNum, first: currCount.firstPlayer});
     }
@@ -142,6 +142,11 @@ io.on("connection", (socket) => {
     socket.broadcast.emit("requestedFriend", data);
     console.log(data.user);
     console.log(data.requestor);
+
+   });
+
+   socket.on("removedFriend", (data) => {
+    socket.broadcast.emit("unfollowed", data);
 
    });
 });

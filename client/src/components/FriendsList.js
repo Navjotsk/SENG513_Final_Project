@@ -18,7 +18,7 @@ const FriendsList = ( { friends, items, addUser, removeUser, startGame} ) => {
     
     return (
     <div class="friendList">
-        <h2>FRIENDS</h2>
+        <h2>FOLLOWING</h2>
         <SubmitField addUser = {addUser} action="Add User"  />
         <span>
             <br/>
