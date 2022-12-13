@@ -58,7 +58,6 @@ function App() {
 
   const typeGame = (data) => {
     socket.emit("typeGame", {id: data.id, content: data.content, room: room});
-
   };
 
   const finishGame = (data) => {

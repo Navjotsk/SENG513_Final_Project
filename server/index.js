@@ -125,7 +125,7 @@ io.on("connection", (socket) => {
     }
     else {
       socket.join(Number(data.room));
-      socket.emit("gameJoined", {room: data.room, first: false});
+      socket.emit("gameJoined", {room: Number(data.room), first: false});
       socket.to(Number(data.room)).emit("playerJoined");
     }
     
