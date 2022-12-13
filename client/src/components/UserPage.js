@@ -7,11 +7,11 @@ var friends = ["temp1", "temp2", "temp3"];
 var index = 3;
 
 //userpage will contain the friends, friendslist, user info, and 3
-const UserPage = ( {socket, handleSetLocation, handleRequest, setOpponentID, userID = "undefined", setUserID, token = "", requestedFriend}) => {
+const UserPage = ( { handleSetLocation, handleRequest, setOpponentID, userID = "undefined", setUserID, token = "", requestedFriend}) => {
     //put some random user id's and then once it's there merge them.
 
 
-    let [items, setItems] = useState(friends.map((friend) =>
+    const [items, setItems] = useState(friends.map((friend) =>
         (<><Friend un={friend} removeUser={removeUser} startGame={startGame}/> <br/></>)
     ));
     const [user, setUser] = useState("undefined");
@@ -27,8 +27,16 @@ const UserPage = ( {socket, handleSetLocation, handleRequest, setOpponentID, use
 
     //get friends list from database and reinstantiate
     async function addUser (newUserName) {
-        friends.push(newUserName);
         console.log(friends);
+        for (let i = 0; i < friends.length; i++) {
+            if (friends[i] == newUserName) {
+                console.log(friends[i]);
+                console.log(newUserName);
+                window.alert("you cannot add a user twice");
+                return;
+            }
+        }
+        friends.push(newUserName);
         setItems(friends.map((friend) =>
             (<><Friend un={friend} removeUser={removeUser} startGame={startGame}/> <br/></>)
         ));
@@ -64,14 +72,16 @@ const UserPage = ( {socket, handleSetLocation, handleRequest, setOpponentID, use
 
         let tempItems = [];
         for(let i = 0; i < friends.length; i++) {
+            console.log(friends[i]);
+            console.log();
             tempItems.push(<><Friend un={friends[i]} removeUser={removeUser} startGame={startGame} /> <br/></>);
         }
-        setItems(...tempItems);
+        console.log(tempItems.length);
+        setItems(...tempItems.slice(0));
 
         // setItems(friends.map((friend) =>
         //     (<><Friend un={friend} removeUser={removeUser} startGame={startGame} /> <br/></>)
         // ));
-        console.log(items);
 
 
         console.log("called the remove user function");
