@@ -26,13 +26,38 @@ function App() {
   const [messages, setMessages] = useState([]);
   const [chatOpen, setChatOpen] = useState(false);
 
+  const [userID, setUserID] = useState("");
+  const [userName, setUserName] = useState("");
+  const [opponent, setOpponent] = useState("");
+  const [request, handleRequest] = useState(false);
+
   const joinGame = (data) => {
-    socket.emit("joinGame", {topic: data});
+    if (data.room !== undefined) {
+      console.log('in undefined');
+      socket.emit("joinGame", {topic: 'joinRequest', room: data.room})
+      setLocation('game');
+    }
+    else if (opponent === "") {
+      socket.emit("joinGame", {topic: data, opponent: null, requestor: null});
+    }
+    else {
+      socket.emit("joinGame", {topic: 'request', opponent: opponent, requestor: userName} )
+    }
+    //reset state variables for if user wants an opponent requested
+    handleRequest(false);
+    setOpponent("");
   };
+
+  const requestedFriend = (newUserName) => {
+    socket.emit("friendRequest", {user: newUserName, requestor: userName});
+  }
+
+  const removedFriend = (removeID) => {
+    socket.emit("friendRemoved", {userID: removeID, requestor: userName});
+  }
 
   const typeGame = (data) => {
     socket.emit("typeGame", {id: data.id, content: data.content, room: room});
-
   };
 
   const finishGame = (data) => {
@@ -90,22 +115,33 @@ function App() {
     setMessages(newMessages);
   };
 
-  // reference: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Math/random
-  const getRandomInt = (min, max) => {
-    min = Math.ceil(min);
-    max = Math.floor(max);
-    return Math.floor(Math.random() * (max - min) + min);
-  }
-
   const getId = (data) => {
     let id = -1;
-    if (data > 7000) id = getRandomInt(1, 13);
-    else if (data > 6000) id = getRandomInt(11, 13);
-    else if (data > 5000) id = getRandomInt(9, 11);
-    else if (data > 4000) id = getRandomInt(7, 9);
-    else if (data > 3000) id = getRandomInt(5, 7);
-    else if (data > 2000) id = getRandomInt(3, 5);
-    else if (data > 1000) id = getRandomInt(1, 3);
+    if (data > 7000) id = data%1000;
+    else if (data > 6000) {
+      if (data%2 === 1) id = 11;
+      else id = 12;
+    }
+    else if (data > 5000) {
+      if (data%2 === 1) id = 9;
+      else id = 10;
+    }
+    else if (data > 4000) {
+      if (data%2 === 1) id = 7;
+      else id = 8;
+    }
+    else if (data > 3000) {
+      if (data%2 === 1) id = 5;
+      else id = 6;
+    }
+    else if (data > 2000) {
+      if (data%2 === 1) id = 3;
+      else id = 4;
+    }
+    else if (data > 1000) {
+      if (data%2 === 1) id = 1;
+      else id = 2;
+    }
     return id;
   }
 
@@ -133,6 +169,25 @@ function App() {
       addMessage({me: false, text: data});
     });
 
+    socket.on("requestedToJoin", (data) => {
+      if (userName == data.user) {
+        window.alert(data.requestor + " requested you to join room " + data.room);
+      }
+
+    });
+
+    socket.on("requestedFriend", (data) => {
+      if (userName == data.user) {
+        window.alert(data.requestor + " is following you!");
+      }
+    });
+
+    socket.on("unfollowed", (data) => {
+      if (userID == data.user) {
+        window.alert(data.requestor + " has unfollowed you!");
+      }
+    })
+
     if (finish && otherFinish) revealText();
     if (meReady && otherReady && madLib.length !== 0) setReady(true);
     
@@ -151,8 +206,8 @@ function App() {
     <div className="App">
       <Navbar handleSetLocation={setLocation}/>
       {location === 'main' && <Main handleSetLocation={setLocation} />}
-      {location === 'login' && <Login handleSetLocation={setLocation}/>}
-      {location === 'userPage' && <UserPage handleSetLocation={setLocation}/>}
+      {location === 'login' && <UserPage handleSetLocation={setLocation} handleRequest={handleRequest} setOpponentID={setOpponent} userName = {userName} setUserName={setUserName} requestedFriend={requestedFriend} removedFriend={removedFriend}  handleJoinGame={joinGame}/>}
+      {location === 'userPage' && <UserPage handleSetLocation={setLocation} handleRequest={handleRequest} setOpponentID={setOpponent} userID = {userID} setUserID={setUserID} requestedFriend={requestedFriend} removedFriend={removedFriend} handleJoinGame={joinGame}/>}
       {location === 'choose' && <Choice handleSetLocation={setLocation} handleJoinGame={joinGame}/>}
       {location === 'game' && <Game handleTypeGame={typeGame} isReady={ready} isFinish={finish} handleFinishGame={finishGame} handleFinishMain={finishToMain} isOtherFinish={otherFinish} madLib={madLib}/>}
       {location === 'game' && chatOpen && <ChatBox handleSetInput={setInput} handleSendMessage={sendMessage} messages={messages} handleSetChatOpen={setChatOpen}/>}

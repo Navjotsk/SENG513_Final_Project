@@ -4,6 +4,7 @@ const http = require("http");
 const cors = require("cors");
 const { Server } = require("socket.io");
 const pool = require("./db"); 
+const e = require("express");
 
 app.use(cors());
 app.use(express.json()); 
@@ -20,7 +21,7 @@ let school = {
   numPlayers: 0,
   count: 3000
 }
-let animal = {
+let anime = {
   numPlayers: 0,
   count: 4000
 }
@@ -31,6 +32,10 @@ let games = {
 let fantasy = {
   numPlayers: 0,
   count: 6000
+}
+let request = {
+  numPlayers: 0,
+  count: 7000
 }
 
 const calcCount = (arg) => {
@@ -60,13 +65,13 @@ const calcCount = (arg) => {
     }
     count = school.count;
   }
-  else if (arg == 'animal') {
-    animal.numPlayers++;
-    if ((animal.numPlayers + 1)%2 == 0) {
-      animal.count++;
+  else if (arg == 'anime') {
+    anime.numPlayers++;
+    if ((anime.numPlayers + 1)%2 == 0) {
+      anime.count++;
       first = true;
     }
-    count = animal.count;
+    count = anime.count;
   }
   else if (arg == 'games') {
     games.numPlayers++;
@@ -84,6 +89,12 @@ const calcCount = (arg) => {
     }
     count = fantasy.count;
   }
+  else if (arg == 'request') {
+    request.numPlayers += 2;
+    request.count++;
+    first = true;
+    count = request.count;
+  }
   return {roomNum: count, firstPlayer: first};
 }
 
@@ -97,13 +108,27 @@ const io = new Server(server, {
 });
 
 io.on("connection", (socket) => {
+  console.log( socket.client.conn.server.clientsCount + " users connected" );
 
+  // player request to join game
   socket.on("joinGame", (data) => {
-    let currCount = calcCount(data.topic);
-    socket.join(currCount.roomNum);
-
-    socket.emit("gameJoined", {room: currCount.roomNum, first: currCount.firstPlayer});
-    if (currCount.firstPlayer == false) socket.to(currCount.roomNum).emit("playerJoined");
+    if (data.topic != 'joinRequest') {
+      let currCount = calcCount(data.topic);
+      socket.join(currCount.roomNum);
+      if (data.opponent != null) {
+        socket.emit("gameJoined", {room: currCount.roomNum, first: currCount.firstPlayer});
+        socket.broadcast.emit("requestedToJoin", {user: data.opponent, room: currCount.roomNum, requestor: data.requestor});
+      } else {
+        socket.emit("gameJoined", {room: currCount.roomNum, first: currCount.firstPlayer});
+      }
+      if (currCount.firstPlayer == false) socket.to(currCount.roomNum).emit("playerJoined");
+    }
+    else {
+      socket.join(Number(data.room));
+      socket.emit("gameJoined", {room: Number(data.room), first: false});
+      socket.to(Number(data.room)).emit("playerJoined");
+    }
+    
   });
 
   socket.on("typeGame", (data) => {
@@ -120,7 +145,24 @@ io.on("connection", (socket) => {
 
   socket.on("disconnect", () => {
     console.log("A User disconnected")
+    console.log( socket.client.conn.server.clientsCount + " users connected" );
   });
+
+   socket.on("startGame", (data) => {
+     console.log("got request to start game with" + data.user2ID.toString());
+   });
+
+   socket.on("friendRequest", (data) => {
+    socket.broadcast.emit("requestedFriend", data);
+    console.log(data.user);
+    console.log(data.requestor);
+
+   });
+
+   socket.on("removedFriend", (data) => {
+    socket.broadcast.emit("unfollowed", data);
+
+   });
 });
 
 //DATABASE ROUTES
