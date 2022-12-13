@@ -33,12 +33,12 @@ let fantasy = {
   numPlayers: 0,
   count: 6000
 }
+let request = {
+  numPlayers: 0,
+  count: 7000
+}
 
-const calcCount = (arg, request) => {
-  let inc = 1;
-  if (request) {
-    inc = 2;
-  }
+const calcCount = (arg) => {
   let count;
   let first = false;
   if (arg == 'food') {
@@ -52,7 +52,7 @@ const calcCount = (arg, request) => {
   else if (arg == 'sport') {
     sport.numPlayers++;
     if ((sport.numPlayers + 1)%2 == 0) {
-      sport.count += inc;
+      sport.count++;
       first = true;
     }
     count = sport.count;
@@ -60,7 +60,7 @@ const calcCount = (arg, request) => {
   else if (arg == 'school') {
     school.numPlayers++;
     if ((school.numPlayers + 1)%2 == 0) {
-      school.count += inc;
+      school.count++;
       first = true;
     }
     count = school.count;
@@ -68,7 +68,7 @@ const calcCount = (arg, request) => {
   else if (arg == 'anime') {
     anime.numPlayers++;
     if ((anime.numPlayers + 1)%2 == 0) {
-      anime.count += inc;
+      anime.count++;
       first = true;
     }
     count = anime.count;
@@ -76,7 +76,7 @@ const calcCount = (arg, request) => {
   else if (arg == 'games') {
     games.numPlayers++;
     if ((games.numPlayers + 1)%2 == 0) {
-      games.count += inc;
+      games.count++;
       first = true;
     }
     count = games.count;
@@ -84,10 +84,16 @@ const calcCount = (arg, request) => {
   else if (arg == 'fantasy') {
     fantasy.numPlayers++;
     if ((fantasy.numPlayers + 1)%2 == 0) {
-      fantasy.count += inc;
+      fantasy.count++;
       first = true;
     }
     count = fantasy.count;
+  }
+  else if (arg == 'request') {
+    request.numPlayers += 2;
+    request.count++;
+    first = true;
+    count = request.count;
   }
   return {roomNum: count, firstPlayer: first};
 }
@@ -104,28 +110,25 @@ const io = new Server(server, {
 io.on("connection", (socket) => {
   console.log( socket.client.conn.server.clientsCount + " users connected" );
 
-  socket.on("joinRoom", (data) => {
-    socket.join(data);
-    console.log(`User Joined: ${data}`)
-  });
-
+  // player request to join game
   socket.on("joinGame", (data) => {
-    let request = false;
-    if (data.opponent != null) {request = true;}
-    let currCount = calcCount(data.topic, request);
-    socket.join(currCount.roomNum);
-    if (data.opponent !=null) {
-      socket.emit("gameJoined", {room: currCount.roomNum, first: currCount.firstPlayer});
-      socket.broadcast.emit("requestedToJoin", {user: data.opponent, room: currCount.roomNum, requestor: data.requestor});
-    } else {
-      socket.emit("gameJoined", {room: currCount.roomNum, first: currCount.firstPlayer});
+    if (data.topic != 'joinRequest') {
+      let currCount = calcCount(data.topic);
+      socket.join(currCount.roomNum);
+      if (data.opponent != null) {
+        socket.emit("gameJoined", {room: currCount.roomNum, first: currCount.firstPlayer});
+        socket.broadcast.emit("requestedToJoin", {user: data.opponent, room: currCount.roomNum, requestor: data.requestor});
+      } else {
+        socket.emit("gameJoined", {room: currCount.roomNum, first: currCount.firstPlayer});
+      }
+      if (currCount.firstPlayer == false) socket.to(currCount.roomNum).emit("playerJoined");
     }
-    if (currCount.firstPlayer == false) socket.to(currCount.roomNum).emit("playerJoined");
-  });
-
-  socket.on("joinRoom", (data) => {
-    socket.join(data.rm);
-    socket.emit("gameJoined", {room: data.rm, first: true});
+    else {
+      socket.join(Number(data.room));
+      socket.emit("gameJoined", {room: data.room, first: false});
+      socket.to(Number(data.room)).emit("playerJoined");
+    }
+    
   });
 
   socket.on("typeGame", (data) => {
@@ -169,7 +172,6 @@ app.get("/madlibs", async (req, res) => {
   try {
     const allMadlibs = await pool.query("SELECT * FROM madlibs");
     res.json(allMadlibs.rows);
-    console.log(allMadlibs.rows);
   } catch (err) {
     console.log(err.message);
   }
@@ -178,14 +180,12 @@ app.get("/madlibs", async (req, res) => {
 //get madlib row by id ex. /madlibs/1
 app.get("/madlibs/:id", async (req, res) => {
   try {
-    console.log(req.params);
     const { id } = req.params;
     const madlib = await pool.query("SELECT * FROM madlibs WHERE id = $1", [
       id,
     ]);
 
     res.json(madlib.rows[0]);
-    console.log(madlib.rows[0]);
   } catch (err) {
     console.log(err.message);
   }

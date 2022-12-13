@@ -32,10 +32,16 @@ function App() {
   const [request, handleRequest] = useState(false);
 
   const joinGame = (data) => {
-    if (opponent == "") {
+    if (data.room != undefined) {
+      console.log('in undefined');
+      socket.emit("joinGame", {topic: 'joinRequest', room: data.room})
+      setLocation('game');
+    }
+    else if (opponent == "") {
       socket.emit("joinGame", {topic: data, opponent: null, requestor: null});
-    } else {
-      socket.emit("joinGame", {topic: data, opponent: opponent, requestor: userName} )
+    }
+    else {
+      socket.emit("joinGame", {topic: 'request', opponent: opponent, requestor: userName} )
     }
     //reset state variables for if user wants an opponent requested
     handleRequest(false);
@@ -110,10 +116,40 @@ function App() {
     setMessages(newMessages);
   };
 
+  const getId = (data) => {
+    let id = -1;
+    if (data > 7000) id = data%1000;
+    else if (data > 6000) {
+      if (data%2 == 1) id = 11;
+      else id = 12;
+    }
+    else if (data > 5000) {
+      if (data%2 == 1) id = 9;
+      else id = 10;
+    }
+    else if (data > 4000) {
+      if (data%2 == 1) id = 7;
+      else id = 8;
+    }
+    else if (data > 3000) {
+      if (data%2 == 1) id = 5;
+      else id = 6;
+    }
+    else if (data > 2000) {
+      if (data%2 == 1) id = 3;
+      else id = 4;
+    }
+    else if (data > 1000) {
+      if (data%2 == 1) id = 1;
+      else id = 2;
+    }
+    return id;
+  }
+
   useEffect(() => {
     socket.on("gameJoined", (data) => {
       setRoom(data.room);
-      getMadLib(Number(data.room));
+      getMadLib(getId(Number(data.room)));
       setMeReady(true);
       if (data.first == false) setOtherReady(true);
     });
@@ -171,8 +207,8 @@ function App() {
     <div className="App">
       <Navbar handleSetLocation={setLocation}/>
       {location === 'main' && <Main handleSetLocation={setLocation} />}
-      {location === 'login' && <UserPage handleSetLocation={setLocation} handleRequest={handleRequest} setOpponentID={setOpponent} userName = {userName} setUserName={setUserName} requestedFriend={requestedFriend} removedFriend={removedFriend}/>}
-      {location === 'userPage' && <UserPage handleSetLocation={setLocation} handleRequest={handleRequest} setOpponentID={setOpponent} userID = {userID} setUserID={setUserID} requestedFriend={requestedFriend} removedFriend={removedFriend}/>}
+      {location === 'login' && <UserPage handleSetLocation={setLocation} handleRequest={handleRequest} setOpponentID={setOpponent} userName = {userName} setUserName={setUserName} requestedFriend={requestedFriend} removedFriend={removedFriend}  handleJoinGame={joinGame}/>}
+      {location === 'userPage' && <UserPage handleSetLocation={setLocation} handleRequest={handleRequest} setOpponentID={setOpponent} userID = {userID} setUserID={setUserID} requestedFriend={requestedFriend} removedFriend={removedFriend} handleJoinGame={joinGame}/>}
       {location === 'choose' && <Choice handleSetLocation={setLocation} handleJoinGame={joinGame}/>}
       {location === 'game' && <Game handleTypeGame={typeGame} isReady={ready} isFinish={finish} handleFinishGame={finishGame} handleFinishMain={finishToMain} isOtherFinish={otherFinish} madLib={madLib}/>}
       {location === 'game' && chatOpen && <ChatBox handleSetInput={setInput} handleSendMessage={sendMessage} messages={messages} handleSetChatOpen={setChatOpen}/>}
