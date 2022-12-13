@@ -1,7 +1,7 @@
 import {useState} from 'react';
 
 //Function for login/register/forgot password
-function Login({ handleSetLocation }) {
+function Login({ handleSetLocation, handleLoginInfo, handleProfileInfo}) {
 
     //Show login or register page based on which tab is clicked
     const [isShown, setIsShown] = useState(false);
@@ -14,6 +14,10 @@ function Login({ handleSetLocation }) {
 
     //How to set error Message 
     const [message, setMessage] = useState('');
+
+    //Setters for login and profile result
+    const [loginResult, setLoginResult] = useState([]);
+    const [profileResult, setProfileResult] = useState([]);
 
     //If Login form is submitted
     const handleSubmit = event => {
@@ -40,17 +44,17 @@ function Login({ handleSetLocation }) {
             //Fetch from login and set the response to postId
             fetch('http://localhost:5000/login', requestOptions)
                 .then(response => response.json())
-                .then(data => this.setState({ postId: data.id }));
-
-            handleLoginInfo(postId);
+                .then((result) => {setLoginResult(result);})
 
             //If email or password is not in database give error
-            if(postId === "you have to register first") {
+            if(loginResult === "you have to register first") {
                 setMessage("Incorrect Email and/or Password");
             } 
             else {
-                //Change to the profile page
+                
+                //Change to the profile page and send login details
                 handleSetLocation('userPage');
+                handleLoginInfo(loginResult);
 
                 //Change Navbar to the logged in version
                 window.parent.document.getElementById('loginBar').style.display = "none";
@@ -61,15 +65,15 @@ function Login({ handleSetLocation }) {
                 const requestOptions2 = {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(postId),
+                    body: JSON.stringify(loginResult),
                 };
 
                 //Fetch from login and set the response to postId
                 fetch('http://localhost:5000/profile', requestOptions2)
                     .then(response => response.json())
-                    .then(data => this.setState({ postId2: data.id }));
+                    .then((result) => {setProfileResult(result);})
 
-                handleProfileInfo(postId2);
+                handleProfileInfo(profileResult);
             }
         }
 
@@ -110,6 +114,8 @@ function Login({ handleSetLocation }) {
             fetch('http://localhost:5000/register', requestOptions)
                 .then(response => response.json())
                 .then(data => this.setState({ postData: data.id }));
+
+            window.location.reload();
         }
 
         //Prevent page from refreshing on submit if it isn't valid
