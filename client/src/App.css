@@ -238,6 +238,11 @@
   overflow-y: scroll;
   font-size: large;
   white-space: pre-wrap;
+  user-select: none; /* supported by Chrome and Opera */
+  -webkit-user-select: none; /* Safari */
+  -khtml-user-select: none; /* Konqueror HTML */
+  -moz-user-select: none; /* Firefox */
+  -ms-user-select: none; /* Internet Explorer/Edge */
 }
 
 .text-container span {
@@ -251,12 +256,74 @@
 }
 
 /*Chatbox CSS*/
+.chatBox{
+  position: fixed;
+  right: 0px; bottom: 0px;
+  width: 230px;
+  height: 50%;
+  padding: 10px;
+  background-color: #CBF3F0;
+  border-radius: 5px 0 0 0;
+}
+
+.closed-chat{
+  position: fixed;
+  right: 0px; bottom: 0px;
+  width: 230px;
+  height: 30px;
+  background-color: #2EC4B6;
+  border-radius: 5px 0 0 0;
+  text-align: center;
+  padding-top: 5px;
+  color: #FFFFFF;
+}
+
+.display-box {
+  height: 90%;
+  overflow-y: scroll;
+  overflow: hidden;
+}
+
+.messageBox{
+  position: fixed;
+  right: 5px; bottom: 0px;
+  padding: 5px;
+  height: 4%;
+  display: flex;
+}
+
+#text-field {
+  width: 200px;
+  border: none;
+}
+
+#send-button {
+  padding-left: 10px;
+  padding-right: 10px;
+  border: none;
+  background-color: #cfcfcf;
+}
+
 .my-message {
   background-color: #2EC4B6;
+  padding: 4px;
+  border-radius: 2px;
+  width: 70%;
+  right: 0;
+  margin-right: 0;
+  margin-left: auto;
+  margin-bottom: 10px;
 }
 
 .other-message {
   background-color: #00A2CA;
+  padding: 4px;
+  border-radius: 2px;
+  width: 70%;
+  left: 0;
+  margin-right: auto;
+  margin-left: 0;
+  margin-bottom: 10px;
 }
 
 .wrapper {
@@ -363,22 +430,4 @@
   justify-content: center;
   align-items: center;
   flex-direction: column;
-}
-
-.chatBox{
-    position: fixed;
-    right: 0px; bottom: 0px;
-    width: 200px;
-    height:200px;
-    background-color:rgb(255, 255, 255);
-    padding: 5px;
-}
-
-.messageBox{
-    position: fixed;
-    right: 0px; bottom: 0px;
-    width: 200px;
-    height:80px;
-    background-color:rgb(255, 255, 255);
-    padding: 5px;
 }

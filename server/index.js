@@ -120,7 +120,6 @@ io.on("connection", (socket) => {
 
   socket.on("disconnect", () => {
     console.log("A User disconnected")
-    console.log( socket.client.conn.server.clientsCount + " users connected" );
   });
 });
 
@@ -131,7 +130,6 @@ app.get("/madlibs", async (req, res) => {
   try {
     const allMadlibs = await pool.query("SELECT * FROM madlibs");
     res.json(allMadlibs.rows);
-    console.log(allMadlibs.rows);
   } catch (err) {
     console.log(err.message);
   }
@@ -140,14 +138,12 @@ app.get("/madlibs", async (req, res) => {
 //get madlib row by id ex. /madlibs/1
 app.get("/madlibs/:id", async (req, res) => {
   try {
-    console.log(req.params);
     const { id } = req.params;
     const madlib = await pool.query("SELECT * FROM madlibs WHERE id = $1", [
       id,
     ]);
 
     res.json(madlib.rows[0]);
-    console.log(madlib.rows[0]);
   } catch (err) {
     console.log(err.message);
   }
