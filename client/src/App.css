@@ -24,7 +24,7 @@
 .mainUserInfo {
   border: 2px solid black;
   font-size: 45px;
-  height: 700px;
+  height: 70vh;
   width: 600px;
   padding: 50px 50px 50px 50px;
   text-align: center;
@@ -49,10 +49,21 @@
 
 .UserPage {
   display: flex;
+  flex-direction: row;
   grid-template-columns: 2fr 1fr;
   grid-column-gap: 20px;
   align-items: center;
   justify-content: center;
+}
+
+.usercenter {
+  position: absolute;
+  margin: auto;
+  height: 90%;
+  width: 90%;
+  left: 5%;
+  top: 5%;
+  text-align: center;
 }
 
 .body {
@@ -115,7 +126,7 @@
   border: 2px solid black;
   padding: 15px 15px 15px 15px;
   align-items: left;
-  height: 770px;
+  height: 80vh;
   overflow-y: scroll;
   background-color: #2EC4B6;
 }

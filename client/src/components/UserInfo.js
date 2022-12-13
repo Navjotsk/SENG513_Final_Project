@@ -54,7 +54,7 @@ export default function UserInfo({user = "undefined", gamesPlayed = 0, date=0, c
 
 
   return (
-    <div class="mainUserInfo">
+    <div className="mainUserInfo">
         <img src={userLogo} alt="..." />&nbsp;{user}&nbsp;
         <br/>
         <br/>

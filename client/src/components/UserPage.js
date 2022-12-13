@@ -162,12 +162,14 @@ const UserPage = ( { handleSetLocation, handleRequest, setOpponentID, userName =
     }
 
     return (
-        <body>
-        <div class="UserPage">
-         <span><center><UserInfo user={userName} gamesPlayed={gamesPlayed} changeNickname={changeNickname} changePassword={changePassword} deleteAccount={deleteAccount} joinaRoom = {joinaRoom}/></center></span>
-         <span><center><FriendsList friends={friends} items={items} addUser={addUser} removeUser={removeUser} startGame={startGame} /></center></span>
+        <div className="container">
+            <div className="usercenter">
+                <div className="UserPage">
+                    <UserInfo user={userName} gamesPlayed={gamesPlayed} changeNickname={changeNickname} changePassword={changePassword} deleteAccount={deleteAccount} joinaRoom = {joinaRoom}/>
+                    <FriendsList friends={friends} items={items} addUser={addUser} removeUser={removeUser} startGame={startGame} />
+                </div>
+            </div>
         </div>
-        </body>
 
     )
 }
