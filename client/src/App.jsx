@@ -73,10 +73,12 @@ function App() {
   };
 
   const sendMessage = () => {
-    socket.emit("sendMessage", { text: input, room: room });
-    addMessage({me: true, text: input});
-    setInput("");
-    document.getElementById("text-field").value = "";
+    if (input !== "") {
+      socket.emit("sendMessage", { text: input, room: room });
+      addMessage({me: true, text: input});
+      setInput("");
+      document.getElementById("text-field").value = "";
+    }
   };
 
   const addMessage = (data) => {
@@ -116,6 +118,15 @@ function App() {
     if (meReady && otherReady && madLib.length !== 0) setReady(true);
     
   });
+/*
+  let el = document.getElementById("text-field");
+  if (el) {
+    el.addEventListener("keydown", (event) => {
+      event.preventDefault();
+      if (event.key === 'Enter') {
+          document.getElementById("send-button").click();
+      }
+  })}*/
 
   return (
     <div className="App">

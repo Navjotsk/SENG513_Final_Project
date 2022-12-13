@@ -1,4 +1,3 @@
-
 function Game({ handleTypeGame, isReady, isFinish, handleFinishGame, handleFinishMain, isOtherFinish, madLib }) {
     let title = madLib.type;
     let story = madLib.story_sentence;
