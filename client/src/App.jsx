@@ -18,6 +18,8 @@ function App() {
   const [finish, setFinish] = useState(false);
   const [otherFinish, setOtherFinish] = useState(false);
   const [madLib, setMadlib] = useState([]);
+  const [loginInfo, setLoginInfo] = useState("");
+  const [profileInfo, setProfileInfo] = useState("");
 
   const [input, setInput] = useState("");
   const [messages, setMessages] = useState([]);
@@ -111,7 +113,7 @@ function App() {
     <div className="App">
       <Navbar handleSetLocation={setLocation}/>
       {location === 'main' && <Main handleSetLocation={setLocation} />}
-      {location === 'login' && <Login handleSetLocation={setLocation}/>}
+      {location === 'login' && <Login handleSetLocation={setLocation} handleLoginInfo={setLoginInfo} handleProfileInfo={setProfileInfo}/>}
       {location === 'userPage' && <UserPage handleSetLocation={setLocation}/>}
       {location === 'choose' && <Choice handleSetLocation={setLocation} handleJoinGame={joinGame}/>}
       {location === 'game' && <Game handleTypeGame={typeGame} isReady={ready} isFinish={finish} handleFinishGame={finishGame} handleFinishMain={finishToMain} isOtherFinish={otherFinish}/>}

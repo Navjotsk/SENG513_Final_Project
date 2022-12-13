@@ -22,11 +22,7 @@ function Login({ handleSetLocation }) {
         if(document.getElementById("email").value === "" || document.getElementById("password").value === "") {
             setMessage("Please enter your Email and Password");
         }
-        //If email or password is not in database give error
-        /*else if (not in database) {
-            setMessage("Incorrect Email and/or Password");
-        }*/
-        //Once user is logged in
+        //Once login is filled out
         else {
             //Set email and password based on entry
             let databody = {
@@ -34,24 +30,47 @@ function Login({ handleSetLocation }) {
                 "password": document.getElementById("password").value,
             }
 
-            //Change to the profile page
-            handleSetLocation('userPage');
-
-            //Change Navbar to the logged in version
-            window.parent.document.getElementById('loginBar').style.display = "none";
-            window.parent.document.getElementById('logoutBar').style.display = "block";
-            window.parent.document.getElementById('profileBar').style.display = "block";
-
-            //Get values from database
-            return fetch('http://localhost:5000/login', {
+            //Post databody to database
+            const requestOptions = {
                 method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(databody),
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-            })
-            .then(res => res.json())
-            .then(data => console.log(data)); 
+            };
+
+            //Fetch from login and set the response to postId
+            fetch('http://localhost:5000/login', requestOptions)
+                .then(response => response.json())
+                .then(data => this.setState({ postId: data.id }));
+
+            handleLoginInfo(postId);
+
+            //If email or password is not in database give error
+            if(postId === "you have to register first") {
+                setMessage("Incorrect Email and/or Password");
+            } 
+            else {
+                //Change to the profile page
+                handleSetLocation('userPage');
+
+                //Change Navbar to the logged in version
+                window.parent.document.getElementById('loginBar').style.display = "none";
+                window.parent.document.getElementById('logoutBar').style.display = "block";
+                window.parent.document.getElementById('profileBar').style.display = "block";
+
+                //Post databody to database
+                const requestOptions2 = {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(postId),
+                };
+
+                //Fetch from login and set the response to postId
+                fetch('http://localhost:5000/profile', requestOptions2)
+                    .then(response => response.json())
+                    .then(data => this.setState({ postId2: data.id }));
+
+                handleProfileInfo(postId2);
+            }
         }
 
         //Prevent page from refreshing on submit if it isn't valid
@@ -75,20 +94,22 @@ function Login({ handleSetLocation }) {
         //Once user registers
         else {
             let databody2 = {
-                "name": document.getElementById("rName").value,
+                "username": document.getElementById("rName").value,
                 "email": document.getElementById("rEmail").value,
                 "password": document.getElementById("rPass").value,
-                "password2": document.getElementById("rRePass").value
             }
-            return fetch('http://localhost:5000/register', {
+
+            //Post databody to database
+            const requestOptions = {
                 method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(databody2),
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-            })
-            .then(res => res.json())
-            .then(data => console.log(data)); 
+            };
+
+            //Fetch from register and set the response to postId
+            fetch('http://localhost:5000/register', requestOptions)
+                .then(response => response.json())
+                .then(data => this.setState({ postData: data.id }));
         }
 
         //Prevent page from refreshing on submit if it isn't valid
