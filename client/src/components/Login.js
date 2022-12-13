@@ -146,7 +146,7 @@ function Login({ handleSetLocation }) {
                             <label>
                                 PASSWORD:
                                 <br />
-                                <input type="text" id="password" className="inputLogin"/>
+                                <input type = "password" id="password" className="inputLogin"/>
                             </label>
                             <br></br>
                             <label className="loginError">{message}</label>
@@ -176,13 +176,13 @@ function Login({ handleSetLocation }) {
                             <label>
                                 PASSWORD:
                                 <br />
-                                <input type="text" id="rPass" className="inputLogin"/>
+                                <input type = "password" id="rPass" className="inputLogin"/>
                             </label>
                             <br />
                             <label>
                                 RE-ENTER PASSWORD:
                                 <br />
-                                <input type="text" id="rRePass" className="inputLogin"/>
+                                <input type = "password" id="rRePass" className="inputLogin"/>
                             </label>
                             <br />
                             <label className="loginError">{registerMessage}</label>

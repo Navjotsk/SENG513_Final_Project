@@ -195,15 +195,6 @@ function App() {
     if (meReady && otherReady && madLib.length !== 0) setReady(true);
     
   });
-/*
-  let el = document.getElementById("text-field");
-  if (el) {
-    el.addEventListener("keydown", (event) => {
-      event.preventDefault();
-      if (event.key === 'Enter') {
-          document.getElementById("send-button").click();
-      }
-  })}*/
 
   return (
     <div className="App">
