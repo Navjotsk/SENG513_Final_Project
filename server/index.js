@@ -336,7 +336,7 @@ app.post("/login", async function (req, res, next) {
 })
 
 app.post("/profile", tokenVerifier, async function (req, res, next) {
-  //  browser sends token >>retrieve userid form token
+  //  browser sends token >> server decodes token and gets userid
   let userId = req.tokenData.id
 
   // server sends username,list of freinds, gameplayed
@@ -356,14 +356,14 @@ app.post("/removefriend", tokenVerifier, async function (req, res, next) {
   //  browser sends token >> server retrieves userid form token
   // server needs to get friend ID from browser
   let userId = req.tokenData.id
-  let freindId = req.freindId
+  let friendId = req.freindId
 
   // test:
   // let userId = 1;
   // let friendId = 4;
 
   await pool.query('DELETE FROM friends WHERE (userid = $1 AND friendid=$2);', [userId, friendId])
-  await pool.query('DELETE FROM friends WHERE (userid = $1 AND friendid=$2);', [friendId, userId])
+  // await pool.query('DELETE FROM friends WHERE (userid = $1 AND friendid=$2);', [friendId, userId])
 
 
   const friendlist = await pool.query(`SELECT u2.username, u2.id FROM friends f 
@@ -396,7 +396,7 @@ app.post("/addfriend", tokenVerifier, async function (req, res, next) {
   // we need to add thses two in database
 
   await pool.query('INSERT INTO friends(userid, friendid) VALUES($1, $2);', [userId, friendId])
-  await pool.query('INSERT INTO friends(userid, friendid) VALUES($1, $2);', [friendId, userId])
+  // await pool.query('INSERT INTO friends(userid, friendid) VALUES($1, $2);', [friendId, userId])
 
 
   const friendlist = await pool.query(`SELECT u2.username, u2.id FROM friends f 
