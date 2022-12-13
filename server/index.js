@@ -408,3 +408,22 @@ app.post("/addfriend", tokenVerifier, async function (req, res, next) {
 
 })
 
+
+app.post("/deleteaccount", tokenVerifier, async function (req, res, next) {
+
+  //decoding token recieved form browser
+
+  let userId = req.tokenData.id
+  // let userId = 12345;
+
+
+  await pool.query('DELETE FROM users WHERE id=$1;', [userId])
+
+
+
+  res.json("user has been removed from DB")
+  // console.log("deleted")
+
+
+})
+
