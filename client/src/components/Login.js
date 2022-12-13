@@ -161,12 +161,14 @@ function Login({ handleSetLocation }) {
                 {isShown && (
                     <div className="innerCard">
                         <form className="loginForms" onSubmit={handleRegister}>
+                            {/*
                             <label>
                                 NAME:
                                 <br />
                                 <input type="text" id="rName" className="inputLogin"/>
                             </label>
                             <br />
+                            */}
                             <label>
                                 EMAIL:
                                 <br />
