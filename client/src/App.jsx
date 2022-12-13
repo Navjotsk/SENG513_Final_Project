@@ -210,7 +210,7 @@ function App() {
       <Navbar handleSetLocation={setLocation}/>
       {location === 'main' && <Main handleSetLocation={setLocation} />}
       {location === 'login' && <Login handleSetLocation={setLocation}/>}
-      {location === 'userPage' && <UserPage handleSetLocation={setLocation} handleRequest={handleRequest} setOpponentID={setOpponent} userID = {userID} setUserID={setUserID} requestedFriend={requestedFriend} removedFriend={removedFriend} handleJoinGame={joinGame}/>}
+      {location === 'userPage' && <UserPage handleSetLocation={setLocation} handleRequest={handleRequest} setOpponentID={setOpponent} userName = {userName} setUserName={setUserName} requestedFriend={requestedFriend} removedFriend={removedFriend}/>}
       {location === 'choose' && <Choice handleSetLocation={setLocation} handleJoinGame={joinGame}/>}
       {location === 'game' && <Game handleTypeGame={typeGame} isReady={ready} isFinish={finish} handleFinishGame={finishGame} handleFinishMain={finishToMain} isOtherFinish={otherFinish} madLib={madLib}/>}
       {location === 'game' && chatOpen && <ChatBox handleSetInput={setInput} handleSendMessage={sendMessage} messages={messages} handleSetChatOpen={setChatOpen}/>}
