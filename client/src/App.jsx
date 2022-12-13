@@ -7,6 +7,7 @@ import Game from './components/Game';
 import Login from './components/Login';
 import ChatBox from './components/ChatBox';
 import UserPage from './components/UserPage'
+import ClosedChat from './components/ClosedChat';
 
 import io from 'socket.io-client';
 const socket = io.connect("http://localhost:5000");
@@ -23,6 +24,7 @@ function App() {
 
   const [input, setInput] = useState("");
   const [messages, setMessages] = useState([]);
+  const [chatOpen, setChatOpen] = useState(false);
 
   const joinGame = (data) => {
     socket.emit("joinGame", {topic: data});
@@ -123,7 +125,8 @@ function App() {
       {location === 'userPage' && <UserPage handleSetLocation={setLocation}/>}
       {location === 'choose' && <Choice handleSetLocation={setLocation} handleJoinGame={joinGame}/>}
       {location === 'game' && <Game handleTypeGame={typeGame} isReady={ready} isFinish={finish} handleFinishGame={finishGame} handleFinishMain={finishToMain} isOtherFinish={otherFinish} madLib={madLib}/>}
-      {location === 'game' && <ChatBox handleSetInput={setInput} handleSendMessage={sendMessage} messages={messages}/>}
+      {location === 'game' && chatOpen && <ChatBox handleSetInput={setInput} handleSendMessage={sendMessage} messages={messages} handleSetChatOpen={setChatOpen}/>}
+      {location === 'game' && !chatOpen && <ClosedChat handleSetChatOpen={setChatOpen}/>}
     </div>
   );
 }

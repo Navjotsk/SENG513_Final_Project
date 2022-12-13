@@ -1,26 +1,25 @@
-import TextField from '@mui/material/TextField';
-import Button from '@mui/material/Button';
-
-function ChatBox({ handleSetInput, handleSendMessage, messages }) {
+function ChatBox({ handleSetInput, handleSendMessage, messages, handleSetChatOpen }) {
    
   return (
-    <div className="chatBox"> 
-    {messages.map((object, i) => {
-          return (
-            object.me ? (
-              <div key={"message"+i} className='my-message'>{object.text}</div>
-            ) : (
-              <div key={"message"+i}className='other-message'>{object.text}</div>
-            )
-          )
-        })}
-    <div className="messageBox">
-      <TextField id="text-field" label="Outlined" variant="outlined"  size="small" onChange={(event) => {
-          handleSetInput(event.target.value);
-        }}  />
-            
-      <Button variant="contained" onClick={handleSendMessage}>Send Message</Button>
-        </div>
+    <div className="chatBox" > 
+      <div className='display-box' onClick={() => handleSetChatOpen(false)}>
+        {messages.map((object, i) => {
+              return (
+                object.me ? (
+                  <div key={"message"+i} className='my-message'>{object.text}</div>
+                ) : (
+                  <div key={"message"+i}className='other-message'>{object.text}</div>
+                )
+              )
+            })}
+      </div>
+    
+    
+    
+      <div className="messageBox">
+        <input id="text-field" onChange={(event) => {handleSetInput(event.target.value);}} />
+        <button id="send-button" onClick={handleSendMessage}>S</button>
+      </div>
     </div>
   );
 }
