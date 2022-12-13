@@ -34,7 +34,11 @@ let fantasy = {
   count: 6000
 }
 
-const calcCount = (arg) => {
+const calcCount = (arg, request) => {
+  let inc = 1;
+  if (request) {
+    inc = 2;
+  }
   let count;
   let first = false;
   if (arg == 'food') {
@@ -48,7 +52,7 @@ const calcCount = (arg) => {
   else if (arg == 'sport') {
     sport.numPlayers++;
     if ((sport.numPlayers + 1)%2 == 0) {
-      sport.count++;
+      sport.count += inc;
       first = true;
     }
     count = sport.count;
@@ -56,7 +60,7 @@ const calcCount = (arg) => {
   else if (arg == 'school') {
     school.numPlayers++;
     if ((school.numPlayers + 1)%2 == 0) {
-      school.count++;
+      school.count += inc;
       first = true;
     }
     count = school.count;
@@ -64,7 +68,7 @@ const calcCount = (arg) => {
   else if (arg == 'anime') {
     anime.numPlayers++;
     if ((anime.numPlayers + 1)%2 == 0) {
-      anime.count++;
+      anime.count += inc;
       first = true;
     }
     count = anime.count;
@@ -72,7 +76,7 @@ const calcCount = (arg) => {
   else if (arg == 'games') {
     games.numPlayers++;
     if ((games.numPlayers + 1)%2 == 0) {
-      games.count++;
+      games.count += inc;
       first = true;
     }
     count = games.count;
@@ -80,7 +84,7 @@ const calcCount = (arg) => {
   else if (arg == 'fantasy') {
     fantasy.numPlayers++;
     if ((fantasy.numPlayers + 1)%2 == 0) {
-      fantasy.count++;
+      fantasy.count += inc;
       first = true;
     }
     count = fantasy.count;
@@ -106,7 +110,9 @@ io.on("connection", (socket) => {
   });
 
   socket.on("joinGame", (data) => {
-    let currCount = calcCount(data.topic);
+    let request = false;
+    if (data.opponent != null) {request = true;}
+    let currCount = calcCount(data.topic, request);
     socket.join(currCount.roomNum);
     if (data.opponent !=null) {
       socket.emit("gameJoined", {room: currCount.roomNum, first: currCount.firstPlayer});
@@ -115,6 +121,11 @@ io.on("connection", (socket) => {
       socket.emit("gameJoined", {room: currCount.roomNum, first: currCount.firstPlayer});
     }
     if (currCount.firstPlayer == false) socket.to(currCount.roomNum).emit("playerJoined");
+  });
+
+  socket.on("joinRoom", (data) => {
+    socket.join(data.rm);
+    socket.emit("gameJoined", {room: data.rm, first: true});
   });
 
   socket.on("typeGame", (data) => {
