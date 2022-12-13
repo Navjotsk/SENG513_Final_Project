@@ -8,7 +8,7 @@ import UserInfo from "./UserInfo.js";
 var index = 3;
 var friends = [{"username": "bob", "id": "12345"}, {"username": "Tanya", "id": "1000"}];
 //userpage will contain the friends, friendslist, user info, and 3
-const UserPage = ( { handleSetLocation, handleRequest, setOpponentID, userName = "undefined", setUserName, token = "", requestedFriend}) => {
+const UserPage = ( { handleSetLocation, handleRequest, setOpponentID, userName = "undefined", setUserName, token = "", requestedFriend, removedFriend}) => {
     //put some random user id's and then once it's there merge them.
 
 
@@ -85,6 +85,7 @@ const UserPage = ( { handleSetLocation, handleRequest, setOpponentID, userName =
         let copyItems = ([...itemCopy].filter(friend => friend.id != remUserID));
         setItems(copyItems);
         window.alert("You have removed " + remUserName);
+        removedFriend(remUserID);
        // return console.log(data_1); 
     }
 
