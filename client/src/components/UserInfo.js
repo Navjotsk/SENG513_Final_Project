@@ -58,10 +58,9 @@ export default function UserInfo({user = "undefined", gamesPlayed = 0, date=0, c
         <img src={userLogo} alt="..." />&nbsp;{user}&nbsp;
         <br/>
         <br/>
-        <>Joined: {date}</>
+        <p>Joined: 2022-12-13</p>
         <br/>
-        <br/>
-        <>Games Played: {gamesPlayed}</>
+        <p>Games Played: {gamesPlayed}</p>
         <br/>
         <br/>
         {newNameField}

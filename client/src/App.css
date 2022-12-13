@@ -23,7 +23,7 @@
 
 .mainUserInfo {
   border: 2px solid black;
-  font-size: 45px;
+  font-size: 30px;
   height: 70vh;
   width: 600px;
   padding: 50px 50px 50px 50px;
@@ -35,6 +35,8 @@
 .mainUserInfo button {
   background-color: #41BBD9;
   font-size: 30px;
+  margin-bottom: 10px;
+  width: 80%;
 }
 
 .mainUserInfo button:hover {
