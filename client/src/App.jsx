@@ -27,6 +27,7 @@ function App() {
   const [chatOpen, setChatOpen] = useState(false);
 
   const [userID, setUserID] = useState("");
+  const [userName, setUserName] = useState("");
   const [opponent, setOpponent] = useState("");
   const [request, handleRequest] = useState(false);
 
@@ -42,7 +43,11 @@ function App() {
   };
 
   const requestedFriend = (newUserName) => {
-    socket.emit("friendRequest", {user: newUserName, requestor: userID});
+    socket.emit("friendRequest", {user: newUserName, requestor: userName});
+  }
+
+  const removedFriend = (removeID) => {
+    socket.emit("friendRemoved", {userID: removeID, requestor: userName});
   }
 
   const typeGame = (data) => {
@@ -130,15 +135,15 @@ function App() {
     });
 
     socket.on("requestedToJoin", (data) => {
-      if (userID == data.user) {
+      if (userName == data.user) {
         window.alert("requested to join room " + data.room);
       }
 
     });
 
     socket.on("requestedFriend", (data) => {
-      if (userID == data.user) {
-        window.alert(data.requestor + " has added you as a friend!")
+      if (userName == data.user) {
+        window.alert(data.requestor + " has added you as a friend!");
       }
 
     });
@@ -161,7 +166,7 @@ function App() {
     <div className="App">
       <Navbar handleSetLocation={setLocation}/>
       {location === 'main' && <Main handleSetLocation={setLocation} />}
-      {location === 'login' && <UserPage handleSetLocation={setLocation} handleRequest={handleRequest} setOpponentID={setOpponent} userID = {userID} setUserID={setUserID} requestedFriend={requestedFriend}/>}
+      {location === 'login' && <UserPage handleSetLocation={setLocation} handleRequest={handleRequest} setOpponentID={setOpponent} userName = {userName} setUserName={setUserName} requestedFriend={requestedFriend}/>}
       {location === 'userPage' && <UserPage handleSetLocation={setLocation} handleRequest={handleRequest} setOpponentID={setOpponent} userID = {userID} setUserID={setUserID} requestedFriend={requestedFriend}/>}
       {location === 'choose' && <Choice handleSetLocation={setLocation} handleJoinGame={joinGame}/>}
       {location === 'game' && <Game handleTypeGame={typeGame} isReady={ready} isFinish={finish} handleFinishGame={finishGame} handleFinishMain={finishToMain} isOtherFinish={otherFinish} madLib={madLib}/>}

@@ -28,7 +28,7 @@ export default function UserInfo({user = "undefined", gamesPlayed = 0, date=0, c
     }
 
     function deleteAcc () {
-        window.alert("Account deletion request recieved. Logging you out...");
+        window.alert("Account deletion request recieved.");
         deleteAccount();
     }
 
