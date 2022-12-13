@@ -103,6 +103,14 @@ function Login({ handleSetLocation }) {
         document.getElementById("forgotPassword").style = 'display: flex';
     };
 
+    //If back to login button is clicked
+    const backLogin = event => {
+
+        //Hide login page and show forgot password page
+        document.getElementById("signIn").style = 'display: block';
+        document.getElementById("forgotPassword").style = 'display: none';
+    };
+
     //How to set error Message
     const [forgotMessage, setFMessage] = useState('');
 
@@ -210,6 +218,7 @@ function Login({ handleSetLocation }) {
                         <label className="loginError">{forgotMessage}</label>
                         <br />
                         <input type="submit" value="Email Me" className="loginButton"/>
+                        <button onClick={backLogin} className="forgetButton">Back To Login</button>
                     </form>
                 </div>
             </div>
