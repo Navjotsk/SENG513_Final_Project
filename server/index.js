@@ -37,101 +37,119 @@ pool.connect((err) => {
 
 let food = {
   numPlayers: 0,
-  count: 1000,
-};
+  count: 1000
+}
 let sport = {
   numPlayers: 0,
-  count: 2000,
-};
+  count: 2000
+}
 let school = {
   numPlayers: 0,
-  count: 3000,
-};
+  count: 3000
+}
 let anime = {
   numPlayers: 0,
-  count: 4000,
-};
+  count: 4000
+}
 let games = {
   numPlayers: 0,
-  count: 5000,
-};
+  count: 5000
+}
 let fantasy = {
   numPlayers: 0,
-  count: 6000,
-};
+  count: 6000
+}
+let request = {
+  numPlayers: 0,
+  count: 7000
+}
 
 const calcCount = (arg) => {
   let count;
   let first = false;
-  if (arg == "food") {
+  if (arg == 'food') {
     food.numPlayers++;
-    if ((food.numPlayers + 1) % 2 == 0) {
+    if ((food.numPlayers + 1)%2 == 0) {
       food.count++;
       first = true;
     }
     count = food.count;
-  } else if (arg == "sport") {
+  }
+  else if (arg == 'sport') {
     sport.numPlayers++;
-    if ((sport.numPlayers + 1) % 2 == 0) {
+    if ((sport.numPlayers + 1)%2 == 0) {
       sport.count++;
       first = true;
     }
     count = sport.count;
-  } else if (arg == "school") {
+  }
+  else if (arg == 'school') {
     school.numPlayers++;
-    if ((school.numPlayers + 1) % 2 == 0) {
+    if ((school.numPlayers + 1)%2 == 0) {
       school.count++;
       first = true;
     }
     count = school.count;
-  } else if (arg == "anime") {
+  }
+  else if (arg == 'anime') {
     anime.numPlayers++;
-    if ((anime.numPlayers + 1) % 2 == 0) {
+    if ((anime.numPlayers + 1)%2 == 0) {
       anime.count++;
       first = true;
     }
     count = anime.count;
-  } else if (arg == "games") {
+  }
+  else if (arg == 'games') {
     games.numPlayers++;
-    if ((games.numPlayers + 1) % 2 == 0) {
+    if ((games.numPlayers + 1)%2 == 0) {
       games.count++;
       first = true;
     }
     count = games.count;
-  } else if (arg == "fantasy") {
+  }
+  else if (arg == 'fantasy') {
     fantasy.numPlayers++;
-    if ((fantasy.numPlayers + 1) % 2 == 0) {
+    if ((fantasy.numPlayers + 1)%2 == 0) {
       fantasy.count++;
       first = true;
     }
     count = fantasy.count;
   }
-  return { roomNum: count, firstPlayer: first };
-};
+  else if (arg == 'request') {
+    request.numPlayers += 2;
+    request.count++;
+    first = true;
+    count = request.count;
+  }
+  return {roomNum: count, firstPlayer: first};
+}
 
 io.on("connection", (socket) => {
-  console.log(socket.client.conn.server.clientsCount + " users connected");
+  console.log( socket.client.conn.server.clientsCount + " users connected" );
 
-  socket.on("joinRoom", (data) => {
-    socket.join(data);
-    console.log(`User Joined: ${data}`);
-  });
-
+  // player request to join game
   socket.on("joinGame", (data) => {
-    let currCount = calcCount(data.topic);
-    socket.join(currCount.roomNum);
-    socket.emit("gameJoined", {
-      room: currCount.roomNum,
-      first: currCount.firstPlayer,
-    });
-    if (currCount.firstPlayer == false)
-      socket.to(currCount.roomNum).emit("playerJoined");
+    if (data.topic != 'joinRequest') {
+      let currCount = calcCount(data.topic);
+      socket.join(currCount.roomNum);
+      if (data.opponent != null) {
+        socket.emit("gameJoined", {room: currCount.roomNum, first: currCount.firstPlayer});
+        socket.broadcast.emit("requestedToJoin", {user: data.opponent, room: currCount.roomNum, requestor: data.requestor});
+      } else {
+        socket.emit("gameJoined", {room: currCount.roomNum, first: currCount.firstPlayer});
+      }
+      if (currCount.firstPlayer == false) socket.to(currCount.roomNum).emit("playerJoined");
+    }
+    else {
+      socket.join(Number(data.room));
+      socket.emit("gameJoined", {room: Number(data.room), first: false});
+      socket.to(Number(data.room)).emit("playerJoined");
+    }
+    
   });
 
   socket.on("typeGame", (data) => {
-    socket
-      .to(data.room)
-      .emit("receivedType", { id: data.id, content: data.content });
+    socket.to(data.room).emit("receivedType", {id: data.id, content: data.content});
   });
 
   socket.on("finishGame", (data) => {
@@ -143,9 +161,25 @@ io.on("connection", (socket) => {
   });
 
   socket.on("disconnect", () => {
-    console.log("A User disconnected");
-    console.log(socket.client.conn.server.clientsCount + " users connected");
+    console.log("A User disconnected")
+    console.log( socket.client.conn.server.clientsCount + " users connected" );
   });
+
+   socket.on("startGame", (data) => {
+     console.log("got request to start game with" + data.user2ID.toString());
+   });
+
+   socket.on("friendRequest", (data) => {
+    socket.broadcast.emit("requestedFriend", data);
+    console.log(data.user);
+    console.log(data.requestor);
+
+   });
+
+   socket.on("removedFriend", (data) => {
+    socket.broadcast.emit("unfollowed", data);
+
+   });
 });
 
 //DATABASE ROUTES
@@ -328,7 +362,7 @@ app.post("/removefriend", tokenVerifier, async function (req, res, next) {
   let data = await pool.query(`SELECT * FROM users WHERE id= $1;`, [
     friendId,
   ]);
-  let friendusernname = data.rows[0].username
+  //let friendusernname = data.rows[0].username
 
   // test:
   // let userId = 1;
@@ -354,42 +388,19 @@ app.post("/removefriend", tokenVerifier, async function (req, res, next) {
       [userId]
     );
 
-    res.json({ friends: friendlist.rows, friendusername: friendUsername });
+    res.json({ friends: friendlist.rows });
     console.log(friendlist);
   }
 });
 
-
-app.post("/addfriend", async function (req, res, next) {
+app.post("/addfriend", tokenVerifier, async function (req, res, next) {
   //  browser sends token >> server retrieves userid form token
   // server needs to get friend username from browser and finds friend ID from DB
-  let userId = req.tokenData.id
-  let friendId = req.body.friendID
-  // let userId = 1;
-  // let friendId = 4;
-  let data = await pool.query(`SELECT * FROM users WHERE id= $1;`, [friendId])
-  let friendusernname = data.rows[0].username
-
-
-  if (data.rows.length === 0) {
-    res.status(400).json({
-      error: "User does not exist",
-    });
-  }
-  else {
-    await pool.query('INSERT INTO friends(userid, friendid) VALUES($1, $2);', [userId, friendId])
-
-
-
-    const friendlist = await pool.query(`SELECT u2.username, u2.id FROM friends f 
-      JOIN users u1 ON f.userid = u1.id 
-      JOIN users u2 ON f.friendid = u2.id WHERE f.userid = $1;`, [userId])
-
-    res.json({ friends: friendlist.rows, friendusername: friendUsername.rows[0] })
-    console.log(friendlist)
-
-
-  }
+  let userId = req.tokenData.id;
+  let friendId = req.body.friendID;
+  let data = await pool.query(`SELECT * FROM users WHERE id= $1;`, [
+    friendId,
+  ]);
 
 
   // test:
@@ -398,7 +409,23 @@ app.post("/addfriend", async function (req, res, next) {
 
 
 
-})
+  await pool.query("INSERT INTO friends(userid, friendid) VALUES($1, $2);", [
+    userId,
+    friendId,
+  ]);
+
+
+  const friendlist = await pool.query(
+    `SELECT u2.username, u2.id FROM friends f 
+    JOIN users u1 ON f.userid = u1.id 
+    JOIN users u2 ON f.friendid = u2.id WHERE f.userid = $1;`,
+    [userId]
+  );
+
+  res.json({ friends: friendlist.rows, friendusername: data.rows[0].username });
+  console.log(friendlist);
+});
+
 app.post("/deleteaccount", tokenVerifier, async function (req, res, next) {
   //decoding token recieved form browser
 
@@ -429,4 +456,28 @@ app.post("/changedpassword", tokenVerifier, async function (req, res, next) {
   ]);
 
   await res.json("password has been changed!");
+});
+
+//get all madlib rows from db
+app.get("/madlibs", async (req, res) => {
+  try {
+    const allMadlibs = await pool.query("SELECT * FROM madlibs");
+    res.json(allMadlibs.rows);
+  } catch (err) {
+    console.log(err.message);
+  }
+});
+
+//get madlib row by id ex. /madlibs/1
+app.get("/madlibs/:id", async (req, res) => {
+  try {
+    const { id } = req.params;
+    const madlib = await pool.query("SELECT * FROM madlibs WHERE id = $1", [
+      id,
+    ]);
+
+    res.json(madlib.rows[0]);
+  } catch (err) {
+    console.log(err.message);
+  }
 });

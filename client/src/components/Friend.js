@@ -10,6 +10,7 @@ function removeRequest() {
   removeUser(id, un);
 }
 function startRequest() {
+  console.log(un);
   startGame(un);
 }
 

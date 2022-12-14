@@ -37,8 +37,91 @@ const UserPage = ({
   //the useeffect function was formulated using https://www.w3schools.com/react/react_useeffect.asp
   useEffect(() => {
     //used https://coursework.vschool.io/mapping-components-in-react/ to help me determine how to populate items using map.
+    setFriends(profileInfo.friends);
+    setGamesPlayed(profileInfo.gameplayed);
+    setUserToken(token);
+    setUserID(profileInfo.userID);
+    setUserName(profileInfo.username);
+    console.log("profileinfo",profileInfo);
+    console.log("token", userToken);
+  }, []);
+
+  useEffect(() => {
+    //used https://coursework.vschool.io/mapping-components-in-react/ to help me determine how to populate items using map.
+    if (friends != null) {
+      setItems(
+        friends.map((friend) => (
+          <>
+            <Friend
+              un={friend.username}
+              removeUser={removeUser}
+              startGame={startGame}
+              id={friend.id}
+            />{" "}
+            <br />
+          </>
+        ))
+      );
+    }
+  }, [friends]);
+
+  useEffect (() => {
+    setFriends(profileInfo.friends);
+    setGamesPlayed(profileInfo.gameplayed);
+    setUserToken(token);
+    setUserID(profileInfo.userID + " ");
+    setUserName(profileInfo.username);
+  }, [profileInfo])
+
+  //this function will add a user to the friends list and send the userID to the database to populate
+  async function addUser(newUserID) {
+    //logic to show and update friends in the front end
+    if (friends != null) {
+      for (let i = 0; i < friends.length; i++) {
+        if (friends[i].username === data_1.friendusername) {
+          console.log(friends[i].username);
+          console.log(data_1.friendusername);
+          window.alert("you cannot add a user twice");
+          return;
+        }
+      }
+    }
+    var intID = parseInt(newUserID);
+    console.log(intID);
+    //  logic to update the database
+    let databody = {
+      friendID: intID,
+    };
+    requestedFriend(newUserID);
+    const res = await fetch("http://localhost:5000/addfriend", {
+      method: "POST",
+      body: JSON.stringify(databody),
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": userToken,
+      },
+    });
+    const data_1 = await res.json();
+    console.log(data_1);
+    //the database should return the user's name who has this ID
+    if (data_1.friendusername == null || data_1.friendusername == "") {
+      window.alert("user does not exist!");
+      return;
+    }
+
+
+    //change so that you are getting the ID from the database of that user
+    let temp = [];
+    if (friends !=null) {
+      temp= [...friends];
+    } else {
+      temp = [];
+    }
+    console.log("friendusername",data_1.friendusername);
+    temp.push({ username: data_1.friendusername, id: newUserID });
+    setFriends([...temp]);
     // setItems(
-    //   friends.map((friend) => (
+    //   temp.map((friend) => (
     //     <>
     //       <Friend
     //         un={friend.username}
@@ -50,61 +133,7 @@ const UserPage = ({
     //     </>
     //   ))
     // );
-    setUserID(profileInfo.userID + " ");
-    setUserName(profileInfo.username);
-
-    console.log(profileInfo);
-  }, []);
-
-  //this function will add a user to the friends list and send the userID to the database to populate
-  async function addUser(newUserID) {
-    //  logic to update the database
-    let databody = {
-      friend: { newUserID },
-    };
-    requestedFriend(newUserID);
-    const res = await fetch("http://localhost:5000/addfriend", {
-      method: "POST",
-      body: JSON.stringify(databody),
-      headers: {
-        "Content-Type": "application/json",
-        tokenData: userToken,
-      },
-    });
-    const data_1 = await res.json();
-    //the database should return the user's name who has this ID
-    if (data_1.friendusername == null || data_1.friendusername == "") {
-      window.alert("user does not exist!");
-      return;
-    }
-
-    //logic to show and update friends in the front end
-    for (let i = 0; i < friends.length; i++) {
-      if (friends[i].username === data_1.friendusername) {
-        console.log(friends[i].username);
-        console.log(data_1.friendusername);
-        window.alert("you cannot add a user twice");
-        return;
-      }
-    }
-    //change so that you are getting the ID from the database of that user
-    let temp = [...friends];
-    temp.push({ username: data_1.friendusername, id: newUserID });
-    setFriends([...temp]);
-    setItems(
-      temp.map((friend) => (
-        <>
-          <Friend
-            un={friend.username}
-            removeUser={removeUser}
-            startGame={startGame}
-            id={friend.id}
-          />{" "}
-          <br />
-        </>
-      ))
-    );
-    requestedFriend(newUserID);
+    // requestedFriend(newUserID);
     //return console.log(data_1);
   }
 
@@ -112,14 +141,14 @@ const UserPage = ({
   async function removeUser(remUserID, remUserName) {
     console.log("called the remove user function");
     let databody = {
-      freindID: { remUserID },
+      freindID: remUserID,
     };
     const res = await fetch("http://localhost:5000/removefriend", {
       method: "POST",
       body: JSON.stringify(databody),
       headers: {
         "Content-Type": "application/json",
-        tokenData: userToken,
+        Authorization: userToken,
       },
     });
     const data_1 = await res.json();
@@ -153,8 +182,8 @@ const UserPage = ({
     console.log(friends);
 
     //the below line of code was formulated using help from https://www.youtube.com/watch?v=E1E08i2UJGI
-    let copyItems = [...itemCopy].filter((friend) => friend.id !== remUserID);
-    setItems(copyItems);
+    // let copyItems = [...itemCopy].filter((friend) => friend.id !== remUserID);
+    // setItems(copyItems);
     removedFriend(remUserID);
     // return console.log(data_1);
   }
@@ -197,18 +226,18 @@ const UserPage = ({
     console.log("called the change password function");
     let databody = {
       //  "userID": {UserID},
-      newpassword: { pass },
+      newpassword: pass,
     };
     const res = await fetch("http://localhost:5000/changedpassword", {
       method: "POST",
       body: JSON.stringify(databody),
       headers: {
         "Content-Type": "application/json",
-        tokenData: userToken,
+         Authorization: userToken,
       },
     });
     const data_1 = await res.json();
-    if (data_1.contains("changed")) {
+    if (data_1.includes("changed")) {
       window.alert("your password has been changed.");
     } else {
       window.alert("error in changing your password. Please try again later.");

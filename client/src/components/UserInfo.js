@@ -53,10 +53,8 @@ export default function UserInfo({user = "undefined", id, gamesPlayed = 0, date=
 
   return (
     <div className="mainUserInfo">
-        <img src={userLogo} alt="..." />&nbsp;{user}&nbsp;{id}
+        <img src={userLogo} alt="..." />&nbsp;Name: {user}&nbsp;User Id: {id}
         <br/>
-        <br/>
-        <p>Joined: 2022-12-13</p>
         <br/>
         <p>Games Played: {gamesPlayed}</p>
         <br/>

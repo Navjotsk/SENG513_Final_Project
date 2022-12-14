@@ -160,7 +160,7 @@ function App() {
     });
 
     socket.on("receivedType", (data) => {
-      document.getElementById(data.id).value = data.content;
+      document.getElementById(data.id).value = data.content; 
     });
 
     socket.on("otherFinish", () => {
@@ -168,19 +168,18 @@ function App() {
     });
 
     socket.on("receivedMessage", (data) => {
-      addMessage({ me: false, text: data });
+      addMessage({me: false, text: data});
     });
 
     socket.on("requestedToJoin", (data) => {
       if (userName == data.user) {
-        window.alert(
-          data.requestor + " requested you to join room " + data.room
-        );
+        window.alert(data.requestor + " requested you to join room " + data.room);
       }
+
     });
 
     socket.on("requestedFriend", (data) => {
-      if (userID == data.user) {
+      if (userName == data.user) {
         window.alert(data.requestor + " is following you!");
       }
     });
@@ -189,12 +188,11 @@ function App() {
       if (userID == data.user) {
         window.alert(data.requestor + " has unfollowed you!");
       }
-    });
+    })
 
     if (finish && otherFinish) revealText();
     if (meReady && otherReady && madLib.length !== 0) setReady(true);
-
-    console.log(profileInfo);
+    
   });
 
   return (
