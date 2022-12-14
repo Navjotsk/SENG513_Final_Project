@@ -23,8 +23,8 @@
 
 .mainUserInfo {
   border: 2px solid black;
-  font-size: 45px;
-  height: 700px;
+  font-size: 30px;
+  height: 70vh;
   width: 600px;
   padding: 50px 50px 50px 50px;
   text-align: center;
@@ -35,6 +35,9 @@
 .mainUserInfo button {
   background-color: #41BBD9;
   font-size: 30px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  width: 80%;
 }
 
 .mainUserInfo button:hover {
@@ -49,10 +52,21 @@
 
 .UserPage {
   display: flex;
+  flex-direction: row;
   grid-template-columns: 2fr 1fr;
   grid-column-gap: 20px;
   align-items: center;
   justify-content: center;
+}
+
+.usercenter {
+  position: absolute;
+  margin: auto;
+  height: 90%;
+  width: 90%;
+  left: 5%;
+  top: 5%;
+  text-align: center;
 }
 
 .body {
@@ -109,13 +123,15 @@
 
 .friendIcon {
   padding: 10px 10px 10px 10px;
+  display: flex;
+  flex-direction: row;
 }
 
 .friendList {
   border: 2px solid black;
   padding: 15px 15px 15px 15px;
   align-items: left;
-  height: 770px;
+  height: 80vh;
   overflow-y: scroll;
   background-color: #2EC4B6;
 }
@@ -187,6 +203,7 @@
 .button-container {
   display: flex;
   justify-content: space-around;
+  flex-wrap: wrap;
 }
 
 .fat-button {
@@ -237,6 +254,12 @@
   overflow-y: scroll;
   font-size: large;
   white-space: pre-wrap;
+  /*referenced: https://www.arungudelli.com/tutorial/css/disable-text-selection-in-html-using-user-select-css-property/*/
+  user-select: none; /* supported by Chrome and Opera */
+  -webkit-user-select: none; /* Safari */
+  -khtml-user-select: none; /* Konqueror HTML */
+  -moz-user-select: none; /* Firefox */
+  -ms-user-select: none; /* Internet Explorer/Edge */
 }
 
 .text-container span {
@@ -250,19 +273,84 @@
 }
 
 /*Chatbox CSS*/
+.chatBox{
+  position: fixed;
+  right: 0px; bottom: 0px;
+  width: 230px;
+  height: 50%;
+  padding: 10px;
+  background-color: #CBF3F0;
+  border-radius: 5px 0 0 0;
+}
+
+.closed-chat{
+  position: fixed;
+  right: 0px; bottom: 0px;
+  width: 230px;
+  height: 30px;
+  background-color: #2EC4B6;
+  border-radius: 5px 0 0 0;
+  text-align: center;
+  padding-top: 5px;
+  color: #FFFFFF;
+}
+
+.display-box {
+  height: 90%;
+  overflow-y: scroll;
+}
+
+.messageBox{
+  position: fixed;
+  right: 5px; bottom: 0px;
+  padding: 5px;
+  height: 4%;
+  display: flex;
+}
+
+#text-field {
+  width: 200px;
+  border: none;
+}
+
+#send-button {
+  padding-left: 10px;
+  padding-right: 10px;
+  border: none;
+  background-color: #cfcfcf;
+}
+
+#send-button:hover {
+  background-color: #b8b8b8;
+}
+
 .my-message {
   background-color: #2EC4B6;
+  padding: 4px;
+  border-radius: 2px;
+  width: 70%;
+  right: 0;
+  margin-right: 0;
+  margin-left: auto;
+  margin-bottom: 10px;
 }
 
 .other-message {
   background-color: #00A2CA;
+  padding: 4px;
+  border-radius: 2px;
+  width: 70%;
+  left: 0;
+  margin-right: auto;
+  margin-left: 0;
+  margin-bottom: 10px;
 }
 
 .wrapper {
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: #F5F5F5;
+  background-color: aliceblue;
   height: 92vh;
   width: 100vw;
 }
@@ -362,22 +450,4 @@
   justify-content: center;
   align-items: center;
   flex-direction: column;
-}
-
-.chatBox{
-    position: fixed;
-    right: 0px; bottom: 0px;
-    width: 200px;
-    height:200px;
-    background-color:rgb(255, 255, 255);
-    padding: 5px;
-}
-
-.messageBox{
-    position: fixed;
-    right: 0px; bottom: 0px;
-    width: 200px;
-    height:80px;
-    background-color:rgb(255, 255, 255);
-    padding: 5px;
 }

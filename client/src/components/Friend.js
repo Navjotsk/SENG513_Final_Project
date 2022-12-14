@@ -2,12 +2,12 @@ import React from "react";
 import { useEffect, useState } from "react";
 import userLogo from '../images/userSymbol.png';
 
+//one friend is one component representing an entry in the friendslist
+export default function Friend({un = "Deleted User", removeUser, startGame, id}) {
 
-export default function Friend({un = "Deleted User", removeUser, startGame}) {
 
-const [username, setUsername] = useState(un);
 function removeRequest() {
-  removeUser(un);
+  removeUser(id, un);
 }
 function startRequest() {
   startGame(un);
@@ -16,7 +16,7 @@ function startRequest() {
   return (
     <row class="friendIcon">
         <span class="userLogoImage">
-            <img src={userLogo} alt="..." />{username}
+            <img src={userLogo} alt="..." />{un}
         </span>
         <span class="RequestGame">
             <button onClick = {startRequest}>Request Game</button>&nbsp;
