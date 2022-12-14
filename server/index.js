@@ -227,7 +227,7 @@ app.post("/register", async function (req, res, next) {
 
           throw err
         }
-        console.log(results.rows)
+        // console.log(results.rows)
 
         if (results.rows.length > 0) {
 
@@ -379,36 +379,43 @@ app.post("/removefriend", tokenVerifier, async function (req, res, next) {
 })
 
 
-app.post("/addfriend", tokenVerifier, async function (req, res, next) {
+app.post("/addfriend", async function (req, res, next) {
   //  browser sends token >> server retrieves userid form token
   // server needs to get friend username from browser and finds friend ID from DB
   let userId = req.tokenData.id
   let friendId = req.body.friendID
-  let friendUsername = await pool.query(`SELECT * FROM users WHERE id= $1;`, [friendId])
-
-  // testing friends by their user name
-  // let friendusername = req.friendusername
   // let userId = 1;
-  // let friendusername = "samin"
-  // let friend = await pool.query(`SELECT * FROM users WHERE username= $1;`, [friendusername])
-  // // let friendId = friend.rows[0].id
+  // let friendId = 4;
+  let data = await pool.query(`SELECT * FROM users WHERE id= $1;`, [friendId])
+  let friendusernname = data.rows[0].username
+
+
+  if (data.rows.length === 0) {
+    res.status(400).json({
+      error: "User does not exist",
+    });
+  }
+  else {
+    await pool.query('INSERT INTO friends(userid, friendid) VALUES($1, $2);', [userId, friendId])
+
+
+
+    const friendlist = await pool.query(`SELECT u2.username, u2.id FROM friends f 
+      JOIN users u1 ON f.userid = u1.id 
+      JOIN users u2 ON f.friendid = u2.id WHERE f.userid = $1;`, [userId])
+
+    res.json({ friends: friendlist.rows, friendusername: friendUsername.rows[0] })
+    console.log(friendlist)
+
+
+  }
+
 
   // test:
   // let userId = 1;
   // let friendId = 4;
 
-  // we need to add thses two in database
 
-  await pool.query('INSERT INTO friends(userid, friendid) VALUES($1, $2);', [userId, friendId])
-  // await pool.query('INSERT INTO friends(userid, friendid) VALUES($1, $2);', [friendId, userId])
-
-
-  const friendlist = await pool.query(`SELECT u2.username, u2.id FROM friends f 
-    JOIN users u1 ON f.userid = u1.id 
-    JOIN users u2 ON f.friendid = u2.id WHERE f.userid = $1;`, [userId])
-
-  res.json({ friends: friendlist.rows, friendusername: friendUsername })
-  console.log(friendlist)
 
 })
 
