@@ -253,7 +253,8 @@ app.post("/register", async function (req, res, next) {
             },
             process.env.SECRET_KEY
           );
-          await res.send("You have registered!")
+          await res.jsonp({ message: "You have registered!", userid: userId })
+          // res.send("You have registered!")
 
 
 
@@ -312,6 +313,7 @@ app.post("/login", async function (req, res, next) {
           res.status(200).json({
             message: "User signed in!",
             token: token,
+            userid: userId
           });
         }
         else {
@@ -357,6 +359,7 @@ app.post("/removefriend", tokenVerifier, async function (req, res, next) {
   // server needs to get friend ID from browser
   let userId = req.tokenData.id
   let friendId = req.freindId
+  let friendUsername = await pool.query(`SELECT * FROM users WHERE id= $1;`, [friendId])
 
   // test:
   // let userId = 1;
@@ -370,7 +373,7 @@ app.post("/removefriend", tokenVerifier, async function (req, res, next) {
     JOIN users u1 ON f.userid = u1.id 
     JOIN users u2 ON f.friendid = u2.id WHERE f.userid = $1;`, [userId])
 
-  res.json({ friends: friendlist.rows, })
+  res.json({ friends: friendlist.rows, friendusername: friendUsername })
   console.log(friendlist)
 
 })
@@ -381,6 +384,7 @@ app.post("/addfriend", tokenVerifier, async function (req, res, next) {
   // server needs to get friend username from browser and finds friend ID from DB
   let userId = req.tokenData.id
   let friendId = req.body.friendID
+  let friendUsername = await pool.query(`SELECT * FROM users WHERE id= $1;`, [friendId])
 
   // testing friends by their user name
   // let friendusername = req.friendusername
@@ -403,7 +407,7 @@ app.post("/addfriend", tokenVerifier, async function (req, res, next) {
     JOIN users u1 ON f.userid = u1.id 
     JOIN users u2 ON f.friendid = u2.id WHERE f.userid = $1;`, [userId])
 
-  res.json({ friends: friendlist.rows, })
+  res.json({ friends: friendlist.rows, friendusername: friendUsername })
   console.log(friendlist)
 
 })
@@ -414,15 +418,41 @@ app.post("/deleteaccount", tokenVerifier, async function (req, res, next) {
   //decoding token recieved form browser
 
   let userId = req.tokenData.id
-  // let userId = 12345;
+  // let userId = 6;
 
-
+  // deleting from table users will also deletes from friends(FK)
   await pool.query('DELETE FROM users WHERE id=$1;', [userId])
+
 
 
 
   res.json("user has been removed from DB")
   // console.log("deleted")
+
+
+})
+
+app.post("/changedpassword", tokenVerifier, async function (req, res, next) {
+
+  //decoding token recieved form browser
+
+  let userId = req.tokenData.id
+  let newPassword = req.body.newpassword;
+  // testing:
+  // let newPassword = "1";
+  // let userId = 6
+
+  let newHashedPassword = await bcrypt.hash(newPassword, 10);
+
+
+
+  await pool.query('UPDATE users SET password= $1 WHERE id=$2;', [newHashedPassword, userId])
+
+
+
+
+  await res.json("password has been changed!")
+
 
 
 })
