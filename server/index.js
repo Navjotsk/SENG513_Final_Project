@@ -325,30 +325,40 @@ app.post("/removefriend", tokenVerifier, async function (req, res, next) {
   // server needs to get friend ID from browser
   let userId = req.tokenData.id;
   let friendId = req.freindID;
-  let friendUsername = await pool.query(`SELECT * FROM users WHERE id= $1;`, [
+  let data = await pool.query(`SELECT * FROM users WHERE id= $1;`, [
     friendId,
   ]);
+  let friendusernname = data.rows[0].username
 
   // test:
   // let userId = 1;
   // let friendId = 4;
 
-  await pool.query("DELETE FROM friends WHERE (userid = $1 AND friendid=$2);", [
-    userId,
-    friendId,
-  ]);
-  // await pool.query('DELETE FROM friends WHERE (userid = $1 AND friendid=$2);', [friendId, userId])
+  if (data.rows.length === 0) {
+    res.status(400).json({
+      error: "User does not exist",
+    });
+  }
+  else {
 
-  const friendlist = await pool.query(
-    `SELECT u2.username, u2.id FROM friends f 
-    JOIN users u1 ON f.userid = u1.id 
-    JOIN users u2 ON f.friendid = u2.id WHERE f.userid = $1;`,
-    [userId]
-  );
+    await pool.query("DELETE FROM friends WHERE (userid = $1 AND friendid=$2);", [
+      userId,
+      friendId,
+    ]);
 
-  res.json({ friends: friendlist.rows, friendusername: friendUsername });
-  console.log(friendlist);
+
+    const friendlist = await pool.query(
+      `SELECT u2.username, u2.id FROM friends f 
+      JOIN users u1 ON f.userid = u1.id 
+      JOIN users u2 ON f.friendid = u2.id WHERE f.userid = $1;`,
+      [userId]
+    );
+
+    res.json({ friends: friendlist.rows, friendusername: friendUsername });
+    console.log(friendlist);
+  }
 });
+
 
 app.post("/addfriend", async function (req, res, next) {
   //  browser sends token >> server retrieves userid form token
