@@ -10,7 +10,7 @@ import UserInfo from "./UserInfo.js";
 const UserPage = ( { handleSetLocation, handleRequest, setOpponentID, userName = "undefined", setUserName, token, requestedFriend, removedFriend, profileInfo, handleJoinGame, setUserID}) => {
     //put some random user id's and then once it's there merge them.
 
-    var profileInfo = { friends: [{"username": "bob", "id": "12345"}, {"username": "Tanya", "id": "1000"}], username: "bobby", gameplayed: 0, userID: 1234 }
+    var profileInfo = { friends: [{"username": "bob", "id": 12345}, {"username": "Tanya", "id": 1000}], username: "bobby", gamesPlayed: 0, userID: 1234 }
 
     //var friendslist = [{"username": "jim", "id": "12345"}, {"username": "cam", "id": "1000"}, {"username": "jon", "id": "39939"}];
     //var friends = [{"username": "bob", "id": "12345"}, {"username": "Tanya", "id": "1000"}];
@@ -60,7 +60,7 @@ const UserPage = ( { handleSetLocation, handleRequest, setOpponentID, userName =
         }
         //change so that you are getting the ID from the database of that user
         let temp = [...friends];
-        temp.push({"username":data_1.userName, "id":newUserID});
+        temp.push({"username":data_1.userName, "id":parseInt(newUserID)});
         setFriends([...temp]);
         setItems(temp.map((friend) =>
             (<><Friend un={friend.username} removeUser={removeUser} startGame={startGame} id={friend.id}/> <br/></>)
@@ -180,7 +180,7 @@ const UserPage = ( { handleSetLocation, handleRequest, setOpponentID, userName =
         <div className="container">
             <div className="usercenter">
                 <div className="UserPage">
-                    <UserInfo user={userName} gamesPlayed={gamesPlayed} changePassword={changePassword} deleteAccount={deleteAccount} joinaRoom = {joinaRoom}/>
+                    <UserInfo user={userName} id={profileInfo.userID.toString()} gamesPlayed={gamesPlayed} changePassword={changePassword} deleteAccount={deleteAccount} joinaRoom = {joinaRoom}/>
                     <FriendsList friends={friends} items={items} addUser={addUser} removeUser={removeUser} startGame={startGame} />
                 </div>
             </div>
