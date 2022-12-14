@@ -35,7 +35,7 @@ const UserPage = ( { handleSetLocation, handleRequest, setOpponentID, userName =
             "friend": {newUserID},
         }
         requestedFriend(newUserID);
-        const res = await fetch('http://localhost:5000/addUser', {
+        const res = await fetch('http://localhost:5000/addfriend', {
             method: 'POST',
             body: JSON.stringify(databody),
             headers: {
@@ -75,7 +75,7 @@ const UserPage = ( { handleSetLocation, handleRequest, setOpponentID, userName =
         let databody = {
             "freindID": {remUserID},
         }
-        const res = await fetch('http://localhost:5000/removeUser', {
+        const res = await fetch('http://localhost:5000/removefriend', {
             method: 'POST',
             body: JSON.stringify(databody),
             headers: {
