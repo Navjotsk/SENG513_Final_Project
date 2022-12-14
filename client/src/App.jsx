@@ -21,6 +21,8 @@ function App() {
   const [finish, setFinish] = useState(false);
   const [otherFinish, setOtherFinish] = useState(false);
   const [madLib, setMadlib] = useState([]);
+  const [loginInfo, setLoginInfo] = useState("");
+  const [profileInfo, setProfileInfo] = useState("");
 
   const [input, setInput] = useState("");
   const [messages, setMessages] = useState([]);
