@@ -25,6 +25,8 @@ function App() {
   const [input, setInput] = useState("");
   const [messages, setMessages] = useState([]);
   const [chatOpen, setChatOpen] = useState(false);
+  const [loginInfo, setLoginInfo] = useState("");
+  const [profileInfo, setProfileInfo] = useState("");
 
   const [userID, setUserID] = useState("");
   const [userName, setUserName] = useState("");
@@ -48,8 +50,8 @@ function App() {
     setOpponent("");
   };
 
-  const requestedFriend = (newUserName) => {
-    socket.emit("friendRequest", {user: newUserName, requestor: userName});
+  const requestedFriend = (newUserID) => {
+    socket.emit("friendRequest", {user: newUserID, requestor: userName});
   }
 
   const removedFriend = (removeID) => {
@@ -180,7 +182,7 @@ function App() {
     });
 
     socket.on("requestedFriend", (data) => {
-      if (userName == data.user) {
+      if (userID == data.user) {
         window.alert(data.requestor + " is following you!");
       }
     });
@@ -200,8 +202,8 @@ function App() {
     <div className="App">
       <Navbar handleSetLocation={setLocation}/>
       {location === 'main' && <Main handleSetLocation={setLocation} />}
-      {location === 'login' && <Login handleSetLocation={setLocation}/>}
-      {location === 'userPage' && <UserPage handleSetLocation={setLocation} handleRequest={handleRequest} setOpponentID={setOpponent} userName = {userName} setUserName={setUserName} requestedFriend={requestedFriend} removedFriend={removedFriend} handleJoinGame={joinGame}/>}
+      {location === 'login' && <Login handleSetLocation={setLocation} handleLoginInfo={setLoginInfo} handleProfileInfo={setProfileInfo}/>}
+      {location === 'userPage' && <UserPage handleSetLocation={setLocation} handleRequest={handleRequest} setOpponentID={setOpponent} userName = {userName} setUserName={setUserName} token={loginInfo.token} requestedFriend={requestedFriend} removedFriend={removedFriend} profileInfo={profileInfo} handleJoinGame={joinGame}/>}
       {location === 'choose' && <Choice handleSetLocation={setLocation} handleJoinGame={joinGame}/>}
       {location === 'game' && <Game handleTypeGame={typeGame} isReady={ready} isFinish={finish} handleFinishGame={finishGame} handleFinishMain={finishToMain} isOtherFinish={otherFinish} madLib={madLib}/>}
       {location === 'game' && chatOpen && <ChatBox handleSetInput={setInput} handleSendMessage={sendMessage} messages={messages} handleSetChatOpen={setChatOpen}/>}

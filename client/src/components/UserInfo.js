@@ -5,16 +5,16 @@ import Button from './Button.js';
 import ElicitInfo from "./ElicitInfo";
 
 
-export default function UserInfo({user = "undefined", gamesPlayed = 0, date=0, changeNickname, changePassword, deleteAccount, joinaRoom}) {
-    const [newNameField, setNewNameField] = useState(<><button onClick={newNameSearch}>Change Nickname</button><br /></>);
+export default function UserInfo({user = "undefined", gamesPlayed = 0, date=0, changePassword, deleteAccount, joinaRoom}) {
+    //const [newNameField, setNewNameField] = useState(<><button onClick={newNameSearch}>Change Nickname</button><br /></>);
     const [resetPassField, setResetPassField] = useState(<><button onClick={newPassPrompt}>Change Password</button><br /></>);
     const [gameString, setGameString] = useState(gamesPlayed + ' ');
     const [joinRoomField, setJoinRoomField] = useState(<><button onClick={joinRoomPrompt}>Join Room</button><br /></>)
 
-    function newNickname (name) {
-        changeNickname(name);
-        setNewNameField(<><button onClick={newNameSearch}>Change Nickname</button><br /></>)
-    }
+    // function newNickname (name) {
+    //     changeNickname(name);
+    //     setNewNameField(<><button onClick={newNameSearch}>Change Nickname</button><br /></>)
+    // }
 
     function newPassword (pass) {
         console.log(pass);
@@ -38,9 +38,9 @@ export default function UserInfo({user = "undefined", gamesPlayed = 0, date=0, c
         joinaRoom(num);
     }
 
-    function newNameSearch () {
-        setNewNameField(<ElicitInfo funct={newNickname} action="" hidden="false" />);
-    }
+    // function newNameSearch () {
+    //     setNewNameField(<ElicitInfo funct={newNickname} action="" hidden="false" />);
+    // }
 
     function newPassPrompt () {
         setResetPassField(<ElicitInfo funct={newPassword} action="" hidden="true" />)
@@ -63,7 +63,7 @@ export default function UserInfo({user = "undefined", gamesPlayed = 0, date=0, c
         <p>Games Played: {gamesPlayed}</p>
         <br/>
         <br/>
-        {newNameField}
+        {/* {newNameField} */}
         {resetPassField}
         <button onClick={deleteAcc}>Delete Account</button>
         <br/>

@@ -5,70 +5,85 @@ import FriendsList from "./FriendsList.js";
 import UserInfo from "./UserInfo.js";
 
 
-var index = 3;
-var friends = [{"username": "bob", "id": "12345"}, {"username": "Tanya", "id": "1000"}];
+//var friends = [{"username": "bob", "id": "12345"}, {"username": "Tanya", "id": "1000"}];
 //userpage will contain the friends, friendslist, user info, and 3
-const UserPage = ( { handleSetLocation, handleRequest, setOpponentID, userName = "undefined", setUserName, token = "", requestedFriend, removedFriend, userInfo, handleJoinGame}) => {
+const UserPage = ( { handleSetLocation, handleRequest, setOpponentID, userName = "undefined", setUserName, token, requestedFriend, removedFriend, profileInfo, handleJoinGame, setUserID}) => {
     //put some random user id's and then once it's there merge them.
 
+    var profileInfo = { friends: [{"username": "bob", "id": "12345"}, {"username": "Tanya", "id": "1000"}], username: "bobby", gameplayed: 0, userID: 1234 }
+
+    //var friendslist = [{"username": "jim", "id": "12345"}, {"username": "cam", "id": "1000"}, {"username": "jon", "id": "39939"}];
     //var friends = [{"username": "bob", "id": "12345"}, {"username": "Tanya", "id": "1000"}];
 
-    const [items, setItems] = useState(friends.map((friend) =>(<><Friend un={friend.username} removeUser={removeUser} startGame={startGame} id={friend.id}/> <br/></>)));
-    const [gamesPlayed, setGamesPlayed] = useState(0);
+    const [friends, setFriends] = useState(profileInfo.friends);
+    const [items, setItems] = useState([]);
+    const [gamesPlayed, setGamesPlayed] = useState(profileInfo.gamesPlayed);
     const [userToken, setUserToken] = useState(token);
 
+    useEffect(() => { 
+        //setFriends([...friendslist]);
+        setItems(friends.map((friend) =>(<><Friend un={friend.username} removeUser={removeUser} startGame={startGame} id={friend.id}/> <br/></>)));
+        setUserID(profileInfo.userID + " ");
+        setUserName(profileInfo.username);
+
+    }, []);
+
     //get friends list from database and reinstantiate
-    async function addUser (newUserName) {
-        //logic to update the database
-        // let databody = {
-        //     "friendName": {newUserName},
-        // }
-        // requestedFriend(newUserName);
-        // const res = await fetch('http://localhost:5000/addUser', {
-        //     method: 'POST',
-        //     body: JSON.stringify(databody),
-        //     headers: {
-        //         'Content-Type': 'application/json',
-        //         'tokenData': userToken
-        //     },
-        // });
-        // const data_1 = await res.json();
+    async function addUser (newUserID) {
+      //  logic to update the database
+        let databody = {
+            "friend": {newUserID},
+        }
+        requestedFriend(newUserID);
+        const res = await fetch('http://localhost:5000/addUser', {
+            method: 'POST',
+            body: JSON.stringify(databody),
+            headers: {
+                'Content-Type': 'application/json',
+                'tokenData': userToken
+            },
+        });
+        const data_1 = await res.json();
+        if (data_1.userName == null) {
+            window.alert("user does not exist!");
+            return;
+        }
 
         //logic to show and update friends in the front end
         for (let i = 0; i < friends.length; i++) {
-            if (friends[i] === newUserName) {
-                console.log(friends[i]);
-                console.log(newUserName);
+            if (friends[i].username === data_1.userName) {
+                console.log(friends[i].username);
+                console.log(data_1.userName);
                 window.alert("you cannot add a user twice");
                 return;
             }
         }
         //change so that you are getting the ID from the database of that user
         let temp = [...friends];
-        temp.push({"username":newUserName, "id":"13485"});
-        friends = temp.slice(0);
+        temp.push({"username":data_1.userName, "id":newUserID});
+        setFriends([...temp]);
         setItems(temp.map((friend) =>
             (<><Friend un={friend.username} removeUser={removeUser} startGame={startGame} id={friend.id}/> <br/></>)
         ));
-        requestedFriend(newUserName);
+        requestedFriend(data_1.userName);
         //return console.log(data_1); 
     }
     
     //get friends list from database and reinstantiate
     async function removeUser (remUserID, remUserName) {
         console.log("called the remove user function");
-        // let databody = {
-        //     "freindID": {remUserID},
-        // }
-        // const res = await fetch('http://localhost:5000/removeUser', {
-        //     method: 'POST',
-        //     body: JSON.stringify(databody),
-        //     headers: {
-        //         'Content-Type': 'application/json',
-        //         'tokenData': userToken
-        //     },
-        // });
-        // const data_1 = await res.json();
+        let databody = {
+            "freindID": {remUserID},
+        }
+        const res = await fetch('http://localhost:5000/removeUser', {
+            method: 'POST',
+            body: JSON.stringify(databody),
+            headers: {
+                'Content-Type': 'application/json',
+                'tokenData': userToken
+            },
+        });
+        const data_1 = await res.json();
         
      
         let temp = [];
@@ -80,8 +95,8 @@ const UserPage = ( { handleSetLocation, handleRequest, setOpponentID, userName =
                 itemCopy.push(<><Friend un={friends[i].username} removeUser={removeUser} startGame={startGame} id={friends[i].id} /><br /></>)
             }
         }
-        friends = [];
-        friends = temp.slice(0);
+        //friends = [];
+        setFriends([...temp]);
         console.log(friends);
 
         //the below line of code was formulated using help from https://www.youtube.com/watch?v=E1E08i2UJGI
@@ -107,23 +122,23 @@ const UserPage = ( { handleSetLocation, handleRequest, setOpponentID, userName =
         handleJoinGame({room: num});
     }
     
-    async function changeNickname(newname) {
-        console.log("called the change username function");
-        setUserName(newname);
-        let databody = {
-            "newname": {newname},
-        }
-        const res = await fetch('http://localhost:5000/changeName', {
-            method: 'POST',
-            body: JSON.stringify(databody),
-            headers: {
-                'Content-Type': 'application/json',
-                'tokenData': userToken
-            },
-        });
-        const data_1 = await res.json();
-        return console.log(data_1); 
-    }
+    // async function changeNickname(newname) {
+    //     console.log("called the change username function");
+    //     setUserName(newname);
+    //     let databody = {
+    //         "newname": {newname},
+    //     }
+    //     const res = await fetch('http://localhost:5000/changeName', {
+    //         method: 'POST',
+    //         body: JSON.stringify(databody),
+    //         headers: {
+    //             'Content-Type': 'application/json',
+    //             'tokenData': userToken
+    //         },
+    //     });
+    //     const data_1 = await res.json();
+    //     return console.log(data_1); 
+    // }
     
     async function changePassword (pass) {
         console.log("called the change password function");
@@ -165,7 +180,7 @@ const UserPage = ( { handleSetLocation, handleRequest, setOpponentID, userName =
         <div className="container">
             <div className="usercenter">
                 <div className="UserPage">
-                    <UserInfo user={userName} gamesPlayed={gamesPlayed} changeNickname={changeNickname} changePassword={changePassword} deleteAccount={deleteAccount} joinaRoom = {joinaRoom}/>
+                    <UserInfo user={userName} gamesPlayed={gamesPlayed} changePassword={changePassword} deleteAccount={deleteAccount} joinaRoom = {joinaRoom}/>
                     <FriendsList friends={friends} items={items} addUser={addUser} removeUser={removeUser} startGame={startGame} />
                 </div>
             </div>
