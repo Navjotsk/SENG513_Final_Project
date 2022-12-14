@@ -350,7 +350,7 @@ app.post("/profile", tokenVerifier, async function (req, res, next) {
     JOIN users u1 ON f.userid = u1.id 
     JOIN users u2 ON f.friendid = u2.id WHERE f.userid = $1;`, [userId])
   console.log(friendlist.rows)
-  res.json({ friends: friendlist.rows, username: username, gameplayed: gameplayed })
+  res.json({ friends: friendlist.rows, username: username, gameplayed: gameplayed, userID: userId })
 
 })
 
