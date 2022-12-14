@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 //Function for login/register/forgot password
 function Login({ handleSetLocation, handleLoginInfo, handleProfileInfo }) {
@@ -15,40 +15,11 @@ function Login({ handleSetLocation, handleLoginInfo, handleProfileInfo }) {
   const [message, setMessage] = useState("");
 
   //Setters for login and profile result
+  const [loginInput, setLoginInput] = useState(false);
   const [loginResult, setLoginResult] = useState([]);
-  const [profileResult, setProfileResult] = useState([]);
 
-  //If Login form is submitted
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    //If email or password is blank give error
-    if (
-      document.getElementById("email").value === "" ||
-      document.getElementById("password").value === ""
-    ) {
-      setMessage("Please enter your Email and Password");
-    }
-    //Once login is filled out
-    else {
-      //Set email and password based on entry
-      let databody = {
-        email: document.getElementById("email").value,
-        password: document.getElementById("password").value,
-      };
-
-      //Post databody to database
-      const requestOptions = {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(databody),
-      };
-
-      //Fetch from login and set the response to postId
-      fetch("http://localhost:5000/login", requestOptions)
-        .then((response) => response.json())
-        .then((result) => {
-          setLoginResult(result);
-        });
+  useEffect(() => {
+    if (loginInput) {
       console.log("TOKEN FOUND TO BE", loginResult.token);
       //If email or password is not in database give error
       if (loginResult.length == 0 || "error" in loginResult) {
@@ -79,12 +50,45 @@ function Login({ handleSetLocation, handleLoginInfo, handleProfileInfo }) {
         fetch("http://localhost:5000/profile", requestOptions2)
           .then((response) => response.json())
           .then((result) => {
-            setProfileResult(result);
-            console.log("RESULT FROM /profile", result);
+            handleProfileInfo(result);
           });
-
-        handleProfileInfo(profileResult);
       }
+    }
+    
+  }, [loginResult])
+
+  //If Login form is submitted
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    //If email or password is blank give error
+    if (
+      document.getElementById("email").value === "" ||
+      document.getElementById("password").value === ""
+    ) {
+      setMessage("Please enter your Email and Password");
+    }
+    //Once login is filled out
+    else {
+      setLoginInput(true);
+      //Set email and password based on entry
+      let databody = {
+        email: document.getElementById("email").value,
+        password: document.getElementById("password").value,
+      };
+
+      //Post databody to database
+      const requestOptions = {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(databody),
+      };
+
+      //Fetch from login and set the response to postId
+      fetch("http://localhost:5000/login", requestOptions)
+        .then((response) => response.json())
+        .then((result) => {
+          setLoginResult(result);
+        });
     }
 
     //Prevent page from refreshing on submit if it isn't valid

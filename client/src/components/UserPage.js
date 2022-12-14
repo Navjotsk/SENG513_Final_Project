@@ -52,6 +52,8 @@ const UserPage = ({
     // );
     setUserID(profileInfo.userID + " ");
     setUserName(profileInfo.username);
+
+    console.log(profileInfo);
   }, []);
 
   //this function will add a user to the friends list and send the userID to the database to populate
