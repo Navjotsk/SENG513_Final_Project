@@ -14,7 +14,7 @@ function Navbar({ handleSetLocation }) {
     return(
         <div className="bar" style={{left: '0'}}>
             <div className="block">
-                <p className="large-text" onClick={() => handleSetLocation('main')}>GAMETITLE</p>
+                <p className="large-text" onClick={() => handleSetLocation('main')}>MADGAME</p>
             </div>
             <div className="block" id="profileBar" style={{right: '0', display:'none'}}>
                 <p className="large-text" onClick={handleProfile}>PROFILE</p>
