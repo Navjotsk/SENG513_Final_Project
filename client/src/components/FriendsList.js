@@ -5,7 +5,7 @@ import SubmitField from "./SubmitField.js";
 //userpage will contain the friends, friendslist, user info, and 3
 
 
-// var items = [];
+//this contains a list of friends and a submit field to add a new user
 const FriendsList = ( { friends, items, addUser, removeUser, startGame} ) => {
 
     // items = friends.map((friend) =>

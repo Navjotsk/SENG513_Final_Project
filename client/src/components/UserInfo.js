@@ -5,6 +5,8 @@ import Button from './Button.js';
 import ElicitInfo from "./ElicitInfo";
 
 
+//userinfo contains information about a user and buttons to allow them to modify their account. For instance, it will allow a user
+//to change their password.
 export default function UserInfo({user = "undefined", id, gamesPlayed = 0, date=0, changePassword, deleteAccount, joinaRoom}) {
     //const [newNameField, setNewNameField] = useState(<><button onClick={newNameSearch}>Change Nickname</button><br /></>);
     const [resetPassField, setResetPassField] = useState(<><button onClick={newPassPrompt}>Change Password</button><br /></>);
@@ -16,6 +18,7 @@ export default function UserInfo({user = "undefined", id, gamesPlayed = 0, date=
     //     setNewNameField(<><button onClick={newNameSearch}>Change Nickname</button><br /></>)
     // }
 
+    //this function is called when a new password is entered, and sets the field back to a password button.
     function newPassword (pass) {
         console.log(pass);
         changePassword(pass);
@@ -23,16 +26,11 @@ export default function UserInfo({user = "undefined", id, gamesPlayed = 0, date=
 
     }
 
-    function resetPassword () {
-        let pass = window.prompt("enter your new password");
-        changePassword(user, pass);
-    }
-
+    //this function is called when a user wants to delete their account and calls the function in the parent
     function deleteAcc () {
-        window.alert("Account deletion request recieved.");
         deleteAccount();
     }
-
+    //this function is called when a user indicates a room to join, and sets the field back to a button.
     function join (num) {
         setJoinRoomField(<><button onClick={joinRoomPrompt}>Join Room</button><br /></>);
         joinaRoom(num);
@@ -41,11 +39,11 @@ export default function UserInfo({user = "undefined", id, gamesPlayed = 0, date=
     // function newNameSearch () {
     //     setNewNameField(<ElicitInfo funct={newNickname} action="" hidden="false" />);
     // }
-
+    //this function changes the password field into a textbox
     function newPassPrompt () {
         setResetPassField(<ElicitInfo funct={newPassword} action="" hidden="true" />)
     }
-
+    //this function changes the room field into a textbox
     function joinRoomPrompt () {
         setJoinRoomField(<ElicitInfo funct={join} action="" hidden="false" />)
     }
