@@ -1,4 +1,5 @@
 function Main({ handleSetLocation, isLoggedIn }) {
+    
     return(
         <div className="container">
             <div className="center">
