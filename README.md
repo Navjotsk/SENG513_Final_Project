@@ -9,14 +9,17 @@ The frontend is built in React.Js and the backend is done with Express.Js and So
 To run the project on a computer, the following steps need to be followed:
 
 1. Clone the repository, cd into the project folder.
-
-2. Open two command prompts. In the first terminal, cd into the client folder. In the second terminal, cd into the backend folder.
-
-3. In the backend terminal, run npm i which will install the node modules for the backend. After the installation, run the command "node index.js". This will start a server on the local port 5000.
-
-4. In the client terminal, run npm i which will install all of the node modules. After the installation run the command "npm start"
-
-5. Open a new window in the browser and type "localhost/3000". This will start a second react client which will mimic the multiplayer game.
+```
+git clone https://github.com/Navjotsk/SENG513_Final_Project.git
+```
+2. Import and clone the PostgreSQL Database. Use command:
+```
+psql -U {super_user_name} {name_of_db} < /path/to/ProjectDB.sql
+```
+3. Open two command prompts. In the first terminal, cd into the client folder. In the second terminal, cd into the backend folder.
+4. In the backend terminal, run ```npm install``` which will install the node modules for the backend. After the installation, run the command ```node index.js```. This will start a server on ```localport 5000```.
+5. In the client terminal, run ```npm i``` which will install all of the node modules. After the installation run the command ```npm start```
+6. Open a new window in the browser and type ```localhost/3000```. This will start a second react client which will mimic the multiplayer game.
 
 # Screenshots
 
