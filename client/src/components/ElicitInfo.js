@@ -1,5 +1,5 @@
 import React from "react";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 //elicitinfo is a component used as a textbox in the userinfo
 export default function ElicitInfo( {funct, action, hidden="false"} ) {
