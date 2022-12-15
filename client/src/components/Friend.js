@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import userLogo from '../images/userSymbol.png';
 
 //one friend is one component representing an entry in the friendslist
+//user logo is from https://www.pngegg.com/en/png-hezlx
 export default function Friend({un = "Deleted User", removeUser, startGame, id}) {
 
 
