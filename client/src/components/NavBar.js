@@ -1,7 +1,8 @@
-function Navbar({ handleSetLocation }) {
+function Navbar({ handleSetLocation, handleSetLoggedIn }) {
 
     const handleLogout = event => {
         handleSetLocation('login');
+        handleSetLoggedIn(false);
         window.parent.document.getElementById('loginBar').style.display = "block";
         window.parent.document.getElementById('logoutBar').style.display = "none";
         window.parent.document.getElementById('profileBar').style.display = "none";
