@@ -1,4 +1,3 @@
-import { borderBottom } from "@mui/system";
 import React, { useState, useEffect } from "react";
 import Friend from "./Friend.js";
 import FriendsList from "./FriendsList.js";
@@ -24,8 +23,6 @@ const UserPage = ({
   const [friends, setFriends] = useState(profileInfo.friends);
   //items is a list of friends components which will be rendered
   const [items, setItems] = useState([]);
-  //the number of games this player has played previously
-  const [gamesPlayed, setGamesPlayed] = useState(profileInfo.gameplayed);
   //the token is passed in and contains the user's authentication information
   const [userToken, setUserToken] = useState(token);
 
@@ -33,7 +30,6 @@ const UserPage = ({
   //the useeffect functions was formulated using https://www.w3schools.com/react/react_useeffect.asp
   useEffect(() => {
     setFriends(profileInfo.friends);
-    setGamesPlayed(profileInfo.gameplayed);
     setUserToken(token);
     setUserID(profileInfo.userID);
     setUserName(profileInfo.username);
@@ -64,7 +60,6 @@ const UserPage = ({
   //this useeffect will run every time profileInfo is modified, and was made with the help of https://www.w3schools.com/react/react_useeffect.asp
   useEffect (() => {
     setFriends(profileInfo.friends);
-    setGamesPlayed(profileInfo.gameplayed);
     setUserToken(token);
     setUserID(profileInfo.userID + " ");
     setUserName(profileInfo.username);
@@ -104,7 +99,7 @@ const UserPage = ({
     const data_1 = await res.json();
     console.log(data_1);
     //the database should return the user's name who has this ID. If none, let the user know they don't exist.
-    if (data_1.friendusername == null || data_1.friendusername == "") {
+    if (data_1.friendusername === null || data_1.friendusername === "") {
       window.alert("user does not exist!");
       return;
     }
@@ -228,7 +223,6 @@ const UserPage = ({
           <UserInfo
             user={userName}
             id={profileInfo.userID}
-            gamesPlayed={gamesPlayed}
             changePassword={changePassword}
             deleteAccount={deleteAccount}
             joinaRoom={joinaRoom}

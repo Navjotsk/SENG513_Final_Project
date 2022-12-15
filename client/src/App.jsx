@@ -178,7 +178,7 @@ function App() {
       // set player as ready
       setMeReady(true);
       // if the player is the second to join the game, det the player as ready as well
-      if (data.first == false) setOtherReady(true);
+      if (data.first === false) setOtherReady(true);
     });
 
     // second player has joined the game
@@ -205,7 +205,7 @@ function App() {
 
     // player have been requested to a game
     socket.on("requestedToJoin", (data) => {
-      if (userName == data.user) {
+      if (userName === data.user) {
         window.alert(data.requestor + " requested you to join room " + data.room);
       }
 
@@ -213,7 +213,7 @@ function App() {
 
     // player has been followed by other player
     socket.on("requestedFriend", (data) => {
-      if (userID == data.user) {
+      if (userID === data.user) {
         window.alert(data.requestor + " is following you!");
       }
     });

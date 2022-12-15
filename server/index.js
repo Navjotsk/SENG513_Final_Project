@@ -151,52 +151,66 @@ io.on("connection", (socket) => {
 
   // player request to join game
   socket.on("joinGame", (data) => {
+    // if the current player if not joining a game using room number
     if (data.topic != 'joinRequest') {
+      // calculate room number
       let currCount = calcCount(data.topic);
       socket.join(currCount.roomNum);
+      // if it's a game with designated player
       if (data.opponent != null) {
         socket.emit("gameJoined", {room: currCount.roomNum, first: currCount.firstPlayer});
         socket.broadcast.emit("requestedToJoin", {user: data.opponent, room: currCount.roomNum, requestor: data.requestor});
-      } else {
+      } 
+      // if it's a game with random players
+      else {
         socket.emit("gameJoined", {room: currCount.roomNum, first: currCount.firstPlayer});
       }
+      // if current player joining is not the first player, tell the first player that a player has joined
       if (currCount.firstPlayer == false) socket.to(currCount.roomNum).emit("playerJoined");
     }
+    // player already has rrom number
     else {
+      // join the room
       socket.join(Number(data.room));
+      // confirm the player joined room
       socket.emit("gameJoined", {room: Number(data.room), first: false});
+      // tells player already room that another player has joined
       socket.to(Number(data.room)).emit("playerJoined");
     }
     
   });
 
+  // tell other client in room that the madlib input has been type in
   socket.on("typeGame", (data) => {
     socket.to(data.room).emit("receivedType", {id: data.id, content: data.content});
   });
 
+  // tell client in the room that other player has finished
   socket.on("finishGame", (data) => {
     socket.to(data.room).emit("otherFinish");
   });
 
+  // send message to client
   socket.on("sendMessage", (data) => {
     socket.to(data.room).emit("receivedMessage", data.text);
   });
 
+  // socket disconnected
   socket.on("disconnect", () => {
     console.log("A User disconnected")
     console.log( socket.client.conn.server.clientsCount + " users connected" );
   });
 
-   socket.on("startGame", (data) => {
-     console.log("got request to start game with" + data.user2ID.toString());
-   });
+  socket.on("startGame", (data) => {
+    console.log("got request to start game with" + data.user2ID.toString());
+  });
 
-   socket.on("friendRequest", (data) => {
+  // got a friend request
+  socket.on("friendRequest", (data) => {
     socket.broadcast.emit("requestedFriend", data);
     console.log(data.user);
     console.log(data.requestor);
-
-   });
+  });
 });
 
 //DATABASE ROUTES

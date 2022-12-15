@@ -1,17 +1,14 @@
 import React from "react";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import userLogo from '../images/userSymbol.png';
-import Button from './Button.js';
 import ElicitInfo from "./ElicitInfo";
 
 
 //userinfo contains information about a user and buttons to allow them to modify their account. For instance, it will allow a user
 //to change their password.
-export default function UserInfo({user = "undefined", id, gamesPlayed = 0, date=0, changePassword, deleteAccount, joinaRoom}) {
+export default function UserInfo({user = "undefined", id, changePassword, deleteAccount, joinaRoom}) {
     //this is the field rendered for the password reset option
     const [resetPassField, setResetPassField] = useState(<><button onClick={newPassPrompt}>Change Password</button><br /></>);
-    //this is the field rendered for the number of games played
-    const [gameString, setGameString] = useState(gamesPlayed + ' ');
     //this is the field rendered if you choose to join a room
     const [joinRoomField, setJoinRoomField] = useState(<><button onClick={joinRoomPrompt}>Join Room</button><br /></>)
 
@@ -43,10 +40,11 @@ export default function UserInfo({user = "undefined", id, gamesPlayed = 0, date=
 
   return (
     <div className="mainUserInfo">
-        <img src={userLogo} alt="..." />&nbsp;Name: {user}&nbsp;, User Id: {id}
+        <img src={userLogo} alt="..." />
+        <br />
+        Name: {user}
         <br/>
-        <br/>
-        {/* <p>Games Played: {gamesPlayed}</p> */}
+        User Id: {id}
         <br/>
         <br/>
         {resetPassField}

@@ -1,5 +1,4 @@
 import React from "react";
-import { useEffect, useState } from "react";
 import userLogo from '../images/userSymbol.png';
 
 //one friend is one component representing an entry in the friendslist
