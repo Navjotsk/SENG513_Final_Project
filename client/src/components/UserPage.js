@@ -20,9 +20,6 @@ const UserPage = ({
   handleJoinGame,
   setUserID,
 }) => {
-  //COMMENT OUT WHEN READY TO TEST
-  //var profileInfo = { friends: [{"username": "bob", "id": 12345}, {"username": "Tanya", "id": 1000}], username: "bobby", gameplayed: 0, userID: 1234 }
-
   //the friends list of a user, for which we load the initial friends in the database
   const [friends, setFriends] = useState(profileInfo.friends);
   //items is a list of friends components which will be rendered
@@ -33,7 +30,7 @@ const UserPage = ({
   const [userToken, setUserToken] = useState(token);
 
   //these will run on the first render of this page
-  //the useeffect function was formulated using https://www.w3schools.com/react/react_useeffect.asp
+  //the useeffect functions was formulated using https://www.w3schools.com/react/react_useeffect.asp
   useEffect(() => {
     //used https://coursework.vschool.io/mapping-components-in-react/ to help me determine how to populate items using map.
     setFriends(profileInfo.friends);
@@ -45,6 +42,7 @@ const UserPage = ({
     console.log("token", userToken);
   }, []);
 
+  //this useeffect will run every time the friends array is modified
   useEffect(() => {
     //used https://coursework.vschool.io/mapping-components-in-react/ to help me determine how to populate items using map.
     if (friends != null) {
@@ -64,6 +62,7 @@ const UserPage = ({
     }
   }, [friends]);
 
+  //this useeffect will run every time profileInfo is modified
   useEffect (() => {
     setFriends(profileInfo.friends);
     setGamesPlayed(profileInfo.gameplayed);
@@ -75,6 +74,7 @@ const UserPage = ({
   //this function will add a user to the friends list and send the userID to the database to populate
   async function addUser(newUserID) {
     //logic to show and update friends in the front end
+    //if there are friends in the list, determine if the person is trying to add someone who they already have
     if (friends != null) {
       for (let i = 0; i < friends.length; i++) {
         if (friends[i].id === newUserID) {
@@ -84,13 +84,16 @@ const UserPage = ({
         }
       }
     }
+    //we must pass an int to the database
     var intID = parseInt(newUserID);
     console.log(intID);
     //  logic to update the database
     let databody = {
       friendID: intID,
     };
+    //run a function in app.jsx which will use sockets to let the user with intID know they are being requested.
     requestedFriend(intID);
+    //send the new user to the database
     const res = await fetch("http://localhost:5000/addfriend", {
       method: "POST",
       body: JSON.stringify(databody),
@@ -101,7 +104,7 @@ const UserPage = ({
     });
     const data_1 = await res.json();
     console.log(data_1);
-    //the database should return the user's name who has this ID
+    //the database should return the user's name who has this ID. If none, let the user know they don't exist.
     if (data_1.friendusername == null || data_1.friendusername == "") {
       window.alert("user does not exist!");
       return;
@@ -118,31 +121,18 @@ const UserPage = ({
     console.log("friendusername",data_1.friendusername);
     temp.push({ username: data_1.friendusername, id: newUserID });
     setFriends([...temp]);
-    // setItems(
-    //   temp.map((friend) => (
-    //     <>
-    //       <Friend
-    //         un={friend.username}
-    //         removeUser={removeUser}
-    //         startGame={startGame}
-    //         id={friend.id}
-    //       />{" "}
-    //       <br />
-    //     </>
-    //   ))
-    // );
-    // requestedFriend(newUserID);
-    //return console.log(data_1);
   }
 
   //this function will remove a user from the friends list and proceed to send an update to the database
   async function removeUser(remUserID, remUserName) {
     console.log("called the remove user function");
+    //ensure we are sending an integer to the database
     let rem = parseInt(remUserID);
     console.log(rem);
     let databody = {
       friendID: rem,
     };
+    //send a request to the DB to remove this user
     const res = await fetch("http://localhost:5000/removefriend", {
       method: "POST",
       body: JSON.stringify(databody),
@@ -156,6 +146,7 @@ const UserPage = ({
 
     let temp = [];
     let itemCopy = [];
+    //make sure the front end UI renders without this new user
     for (let i = 0; i < friends.length; i++) {
       if (friends[i].id !== remUserID && friends[i].username !== remUserName) {
         let data = { username: friends[i].username, id: friends[i].id };
@@ -173,7 +164,6 @@ const UserPage = ({
         );
       }
     }
-    //friends = [];
     setFriends([...temp]);
     console.log(friends);
   }
@@ -187,35 +177,17 @@ const UserPage = ({
     handleSetLocation("choose");
   }
   //this function is called if you request to join a room
+  //num is the room number
   function joinaRoom(num) {
     console.log(num);
     handleJoinGame({ room: num });
   }
-
-  // async function changeNickname(newname) {
-  //     console.log("called the change username function");
-  //     setUserName(newname);
-  //     let databody = {
-  //         "newname": {newname},
-  //     }
-  //     const res = await fetch('http://localhost:5000/changeName', {
-  //         method: 'POST',
-  //         body: JSON.stringify(databody),
-  //         headers: {
-  //             'Content-Type': 'application/json',
-  //             'tokenData': userToken
-  //         },
-  //     });
-  //     const data_1 = await res.json();
-  //     return console.log(data_1);
-  // }
 
   //this function is called when a user requests to change their password. It will update the database and send the user
   //a confirmation alert if the database updates successfully.
   async function changePassword(pass) {
     console.log("called the change password function");
     let databody = {
-      //  "userID": {UserID},
       newpassword: pass,
     };
     const res = await fetch("http://localhost:5000/changedpassword", {

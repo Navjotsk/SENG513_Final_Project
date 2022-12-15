@@ -8,15 +8,12 @@ import ElicitInfo from "./ElicitInfo";
 //userinfo contains information about a user and buttons to allow them to modify their account. For instance, it will allow a user
 //to change their password.
 export default function UserInfo({user = "undefined", id, gamesPlayed = 0, date=0, changePassword, deleteAccount, joinaRoom}) {
-    //const [newNameField, setNewNameField] = useState(<><button onClick={newNameSearch}>Change Nickname</button><br /></>);
+    //this is the field rendered for the password reset option
     const [resetPassField, setResetPassField] = useState(<><button onClick={newPassPrompt}>Change Password</button><br /></>);
+    //this is the field rendered for the number of games played
     const [gameString, setGameString] = useState(gamesPlayed + ' ');
+    //this is the field rendered if you choose to join a room
     const [joinRoomField, setJoinRoomField] = useState(<><button onClick={joinRoomPrompt}>Join Room</button><br /></>)
-
-    // function newNickname (name) {
-    //     changeNickname(name);
-    //     setNewNameField(<><button onClick={newNameSearch}>Change Nickname</button><br /></>)
-    // }
 
     //this function is called when a new password is entered, and sets the field back to a password button.
     function newPassword (pass) {
@@ -36,9 +33,6 @@ export default function UserInfo({user = "undefined", id, gamesPlayed = 0, date=
         joinaRoom(num);
     }
 
-    // function newNameSearch () {
-    //     setNewNameField(<ElicitInfo funct={newNickname} action="" hidden="false" />);
-    // }
     //this function changes the password field into a textbox
     function newPassPrompt () {
         setResetPassField(<ElicitInfo funct={newPassword} action="" hidden="true" />)
@@ -59,7 +53,6 @@ export default function UserInfo({user = "undefined", id, gamesPlayed = 0, date=
         <p>Games Played: {gamesPlayed}</p>
         <br/>
         <br/>
-        {/* {newNameField} */}
         {resetPassField}
         <button onClick={deleteAcc}>Delete Account</button>
         <br/>
