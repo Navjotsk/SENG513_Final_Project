@@ -22,7 +22,7 @@ function Login({ handleSetLocation, handleLoginInfo, handleProfileInfo, handleSe
     if (loginInput) {
       console.log("TOKEN FOUND TO BE", loginResult.token);
       //If email or password is not in database give error
-      if (loginResult.length == 0 || "error" in loginResult) {
+      if (loginResult.length === 0 || "error" in loginResult) {
         setMessage("Incorrect Email and/or Password");
       } else {
         //Change to the profile page and send login details
