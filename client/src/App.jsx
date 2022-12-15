@@ -182,7 +182,6 @@ function App() {
 
     if (finish && otherFinish) revealText();
     if (meReady && otherReady && madLib.length !== 0) setReady(true);
-    
   });
 
   return (
