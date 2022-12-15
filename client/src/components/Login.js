@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 
 //Function for login/register/forgot password
-function Login({ handleSetLocation, handleLoginInfo, handleProfileInfo }) {
+function Login({ handleSetLocation, handleLoginInfo, handleProfileInfo, handleSetLoggedIn }) {
   //Show login or register page based on which tab is clicked
   const [isShown, setIsShown] = useState(false);
   const loginCard = (event) => {
@@ -28,6 +28,7 @@ function Login({ handleSetLocation, handleLoginInfo, handleProfileInfo }) {
         //Change to the profile page and send login details
         handleSetLocation("userPage");
         handleLoginInfo(loginResult);
+        handleSetLoggedIn(true);
 
         //Change Navbar to the logged in version
         window.parent.document.getElementById("loginBar").style.display =

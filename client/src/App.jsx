@@ -32,6 +32,7 @@ function App() {
   const [userName, setUserName] = useState("");
   const [opponent, setOpponent] = useState("");
   const [request, handleRequest] = useState(false);
+  const [loggedIn, setloggedIn] = useState(false);
 
   const joinGame = (data) => {
     if (data.room !== undefined) {
@@ -187,12 +188,13 @@ function App() {
   return (
     <div className="App">
       <Navbar handleSetLocation={setLocation} />
-      {location === "main" && <Main handleSetLocation={setLocation} />}
+      {location === "main" && <Main handleSetLocation={setLocation} isLoggedIn={loggedIn}/>}
       {location === "login" && (
         <Login
           handleSetLocation={setLocation}
           handleLoginInfo={setLoginInfo}
           handleProfileInfo={setProfileInfo}
+          handleSetLoggedIn={setloggedIn}
         />
       )}
       {location === "userPage" && (
