@@ -175,11 +175,6 @@ io.on("connection", (socket) => {
     console.log(data.requestor);
 
    });
-
-   socket.on("removedFriend", (data) => {
-    socket.broadcast.emit("unfollowed", data);
-
-   });
 });
 
 //DATABASE ROUTES
@@ -358,23 +353,25 @@ app.post("/removefriend", tokenVerifier, async function (req, res, next) {
   //  browser sends token >> server retrieves userid form token
   // server needs to get friend ID from browser
   let userId = req.tokenData.id;
-  let friendId = req.freindID;
-  let data = await pool.query(`SELECT * FROM users WHERE id= $1;`, [
-    friendId,
-  ]);
-  //let friendusernname = data.rows[0].username
-
+  let friendId = req.body.friendID;
+  console.log(userId);
+  console.log(friendId);
   // test:
   // let userId = 1;
   // let friendId = 4;
+  let data = await pool.query(`SELECT * FROM users WHERE id= $1;`, [
+    friendId,
+  ]);
 
-  if (data.rows.length === 0) {
-    res.status(400).json({
-      error: "User does not exist",
-    });
-  }
-  else {
 
+
+  // if (data.rows.length === 0) {
+  //   res.status(400).json({
+  //     error: "User does not exist",
+  //   });
+  // }
+
+  // else {
     await pool.query("DELETE FROM friends WHERE (userid = $1 AND friendid=$2);", [
       userId,
       friendId,
@@ -390,7 +387,8 @@ app.post("/removefriend", tokenVerifier, async function (req, res, next) {
 
     res.json({ friends: friendlist.rows });
     console.log(friendlist);
-  }
+  // }
+
 });
 
 app.post("/addfriend", tokenVerifier, async function (req, res, next) {
@@ -398,32 +396,39 @@ app.post("/addfriend", tokenVerifier, async function (req, res, next) {
   // server needs to get friend username from browser and finds friend ID from DB
   let userId = req.tokenData.id;
   let friendId = req.body.friendID;
+  // let userId = 2;
+  // let friendId = 10;
   let data = await pool.query(`SELECT * FROM users WHERE id= $1;`, [
     friendId,
   ]);
 
+  if (data.rows.length === 0) {
+    res.status(400).json({
+      error: "User does not exist",
+    });
+  }
 
-  // test:
-  // let userId = 1;
-  // let friendId = 4;
-
-
-
-  await pool.query("INSERT INTO friends(userid, friendid) VALUES($1, $2);", [
-    userId,
-    friendId,
-  ]);
+  else {
 
 
-  const friendlist = await pool.query(
-    `SELECT u2.username, u2.id FROM friends f 
-    JOIN users u1 ON f.userid = u1.id 
-    JOIN users u2 ON f.friendid = u2.id WHERE f.userid = $1;`,
-    [userId]
-  );
+    await pool.query("INSERT INTO friends(userid, friendid) VALUES($1, $2);", [
+      userId,
+      friendId,
+    ]);
 
-  res.json({ friends: friendlist.rows, friendusername: data.rows[0].username });
-  console.log(friendlist);
+
+    const friendlist = await pool.query(
+      `SELECT u2.username, u2.id FROM friends f 
+      JOIN users u1 ON f.userid = u1.id 
+      JOIN users u2 ON f.friendid = u2.id WHERE f.userid = $1;`,
+      [userId]
+    );
+
+    console.log(data.rows[0].username);
+    res.json({ friends: friendlist.rows, friendusername: data.rows[0].username });
+    console.log(friendlist);
+  }
+
 });
 
 app.post("/deleteaccount", tokenVerifier, async function (req, res, next) {

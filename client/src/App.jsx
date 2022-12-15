@@ -56,10 +56,6 @@ function App() {
     socket.emit("friendRequest", { user: newUserID, requestor: userName });
   };
 
-  const removedFriend = (removeID) => {
-    socket.emit("friendRemoved", { userID: removeID, requestor: userName });
-  };
-
   const typeGame = (data) => {
     socket.emit("typeGame", { id: data.id, content: data.content, room: room });
   };
@@ -179,16 +175,10 @@ function App() {
     });
 
     socket.on("requestedFriend", (data) => {
-      if (userName == data.user) {
+      if (userID == data.user) {
         window.alert(data.requestor + " is following you!");
       }
     });
-
-    socket.on("unfollowed", (data) => {
-      if (userID == data.user) {
-        window.alert(data.requestor + " has unfollowed you!");
-      }
-    })
 
     if (finish && otherFinish) revealText();
     if (meReady && otherReady && madLib.length !== 0) setReady(true);
@@ -215,7 +205,6 @@ function App() {
           setUserName={setUserName}
           token={loginInfo.token}
           requestedFriend={requestedFriend}
-          removedFriend={removedFriend}
           profileInfo={profileInfo}
           handleJoinGame={joinGame}
           setUserID={setUserID}

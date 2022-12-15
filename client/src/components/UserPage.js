@@ -16,7 +16,6 @@ const UserPage = ({
   setUserName,
   token,
   requestedFriend,
-  removedFriend,
   profileInfo,
   handleJoinGame,
   setUserID,
@@ -78,9 +77,8 @@ const UserPage = ({
     //logic to show and update friends in the front end
     if (friends != null) {
       for (let i = 0; i < friends.length; i++) {
-        if (friends[i].username === data_1.friendusername) {
+        if (friends[i].id === newUserID) {
           console.log(friends[i].username);
-          console.log(data_1.friendusername);
           window.alert("you cannot add a user twice");
           return;
         }
@@ -92,7 +90,7 @@ const UserPage = ({
     let databody = {
       friendID: intID,
     };
-    requestedFriend(newUserID);
+    requestedFriend(intID);
     const res = await fetch("http://localhost:5000/addfriend", {
       method: "POST",
       body: JSON.stringify(databody),
@@ -140,8 +138,10 @@ const UserPage = ({
   //this function will remove a user from the friends list and proceed to send an update to the database
   async function removeUser(remUserID, remUserName) {
     console.log("called the remove user function");
+    let rem = parseInt(remUserID);
+    console.log(rem);
     let databody = {
-      freindID: remUserID,
+      friendID: rem,
     };
     const res = await fetch("http://localhost:5000/removefriend", {
       method: "POST",
@@ -152,11 +152,7 @@ const UserPage = ({
       },
     });
     const data_1 = await res.json();
-    if (data_1.friendusername == remUserName) {
-      window.alert("You have removed " + remUserName);
-    } else {
-      window.alert("issue with removing user.");
-    }
+    window.alert(remUserName + " has been deleted");
 
     let temp = [];
     let itemCopy = [];
@@ -180,12 +176,6 @@ const UserPage = ({
     //friends = [];
     setFriends([...temp]);
     console.log(friends);
-
-    //the below line of code was formulated using help from https://www.youtube.com/watch?v=E1E08i2UJGI
-    // let copyItems = [...itemCopy].filter((friend) => friend.id !== remUserID);
-    // setItems(copyItems);
-    removedFriend(remUserID);
-    // return console.log(data_1);
   }
 
   //this function is called to start a new game. user2Name is who you are requesting to play with
@@ -252,15 +242,11 @@ const UserPage = ({
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        tokenData: userToken,
+        Authorization: userToken,
       },
     });
     const data_1 = await res.json();
-    if (data_1 == "user has been removed from DB") {
-      window.alert("your account has been deleted.");
-    } else {
-      window.alert("error in deleting your account...");
-    }
+    window.alert("you have been deleted. If you attempt to log back in, your account will no longer exist.");
     return console.log(data_1);
   }
 
