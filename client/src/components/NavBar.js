@@ -1,11 +1,8 @@
-function Navbar({ handleSetLocation, handleSetLoggedIn }) {
+function Navbar({ handleSetLocation, handleSetLoggedIn, isLoggedIn }) {
 
     const handleLogout = event => {
         handleSetLocation('login');
         handleSetLoggedIn(false);
-        window.parent.document.getElementById('loginBar').style.display = "block";
-        window.parent.document.getElementById('logoutBar').style.display = "none";
-        window.parent.document.getElementById('profileBar').style.display = "none";
     };
 
     const handleProfile = event => {
@@ -17,15 +14,19 @@ function Navbar({ handleSetLocation, handleSetLoggedIn }) {
             <div className="block">
                 <p className="large-text" onClick={() => handleSetLocation('main')}>MADGAME</p>
             </div>
-            <div className="block" id="profileBar" style={{right: '0', display:'none'}}>
-                <p className="large-text" onClick={handleProfile}>PROFILE</p>
-            </div>
-            <div className="block" id="logoutBar" style={{right: '200px',display:'none'}}>
-                <p className="large-text" onClick={handleLogout}>LOGOUT</p>
-            </div>
-            <div className="block" id="loginBar" style={{right: '0'}}>
-                <p className="large-text" onClick={() => handleSetLocation('login')}>LOGIN</p>
-            </div>
+            {isLoggedIn ? (
+                <div>
+                    <div className="block" id="profileBar" style={{right: '0'}}>
+                        <p className="large-text" onClick={handleProfile}>PROFILE</p>
+                    </div>
+                    <div className="block" id="logoutBar" style={{right: '200px'}}>
+                        <p className="large-text" onClick={handleLogout}>LOGOUT</p>
+                    </div>  
+                </div>) : (
+                    <div className="block" id="loginBar" style={{right: '0'}}>
+                        <p className="large-text" onClick={() => handleSetLocation('login')}>LOGIN</p>
+                    </div>
+                )}
         </div>
     )
 }

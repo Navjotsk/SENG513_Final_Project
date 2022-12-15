@@ -30,14 +30,6 @@ function Login({ handleSetLocation, handleLoginInfo, handleProfileInfo, handleSe
         handleLoginInfo(loginResult);
         handleSetLoggedIn(true);
 
-        //Change Navbar to the logged in version
-        window.parent.document.getElementById("loginBar").style.display =
-          "none";
-        window.parent.document.getElementById("logoutBar").style.display =
-          "block";
-        window.parent.document.getElementById("profileBar").style.display =
-          "block";
-
         //Post databody to database
         const requestOptions2 = {
           method: "POST",

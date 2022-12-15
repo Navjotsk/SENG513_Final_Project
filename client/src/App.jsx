@@ -187,7 +187,7 @@ function App() {
 
   return (
     <div className="App">
-      <Navbar handleSetLocation={setLocation} handleSetLoggedIn={setloggedIn}/>
+      <Navbar handleSetLocation={setLocation} handleSetLoggedIn={setloggedIn} isLoggedIn={loggedIn}/>
       {location === "main" && <Main handleSetLocation={setLocation} isLoggedIn={loggedIn}/>}
       {location === "login" && (
         <Login
