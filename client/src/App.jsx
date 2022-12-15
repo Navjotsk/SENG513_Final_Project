@@ -37,13 +37,17 @@ function App() {
 
   // user want to join a game
   const joinGame = (data) => {
+    // if joining a designated room from profile
     if (data.room !== undefined) {
-      console.log("in undefined");
       socket.emit("joinGame", { topic: "joinRequest", room: data.room });
       setLocation("game");
-    } else if (opponent === "") {
+    } 
+    // if joining from random matching
+    else if (opponent === "") {
       socket.emit("joinGame", { topic: data, opponent: null, requestor: null });
-    } else {
+    } 
+    // if requesting game from follow
+    else {
       socket.emit("joinGame", {
         topic: "request",
         opponent: opponent,
@@ -73,12 +77,15 @@ function App() {
 
   // the game is finished, so unblur the text
   const revealText = () => {
+    // get all the span and input in text-container
     let dom_span = document.querySelectorAll(".text-container span");
     let dom_input = document.querySelectorAll(".text-container input");
+    // set colour of span text to black and remove text shadow
     for (let i = 0; i < dom_span.length; i++) {
       dom_span[i].style.color = "#000000";
       dom_span[i].style.textShadow = "none";
     }
+    // convert the tetfield inputs to span and make it bold
     let story = madLib.story_sentence;
     for (let i = 0; i < dom_input.length; i++) {
       dom_span[i].innerHTML = `${story[i]}<b>${dom_input[i].value}</b>`;
@@ -112,19 +119,25 @@ function App() {
   // send a message in the chat
   const sendMessage = () => {
     if (input !== "") {
+      // emit sendMessage to the server with the message inputed and the room number
       socket.emit("sendMessage", { text: input, room: room });
+      // add the message to state
       addMessage({ me: true, text: input });
+      // empty the input state
       setInput("");
+      // empty the input textfield
       document.getElementById("text-field").value = "";
     }
   };
 
   // message is saved to be displayed on the chatbox
   const addMessage = (data) => {
+    // create new message
     const newMessage = {
       me: data.me,
       text: data.text,
     };
+    // add to messages
     const newMessages = [...messages, newMessage];
     setMessages(newMessages);
   };

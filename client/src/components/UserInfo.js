@@ -20,7 +20,6 @@ export default function UserInfo({user = "undefined", id, gamesPlayed = 0, date=
         console.log(pass);
         changePassword(pass);
         setResetPassField(<><button onClick={newPassPrompt}>Change Password</button><br /></>);
-
     }
 
     //this function is called when a user wants to delete their account and calls the function in the parent
@@ -42,9 +41,6 @@ export default function UserInfo({user = "undefined", id, gamesPlayed = 0, date=
         setJoinRoomField(<ElicitInfo funct={join} action="" hidden="false" />)
     }
 
-
-
-
   return (
     <div className="mainUserInfo">
         <img src={userLogo} alt="..." />&nbsp;Name: {user}&nbsp;, User Id: {id}
@@ -57,11 +53,6 @@ export default function UserInfo({user = "undefined", id, gamesPlayed = 0, date=
         <button onClick={deleteAcc}>Delete Account</button>
         <br/>
         {joinRoomField}
-
-
     </div>
-
-
-
   );
 }
