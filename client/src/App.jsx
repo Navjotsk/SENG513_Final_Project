@@ -1,3 +1,4 @@
+// imports
 import "./App.css";
 import { useState, useEffect } from "react";
 import Navbar from "./components/NavBar";
@@ -34,6 +35,7 @@ function App() {
   const [request, handleRequest] = useState(false);
   const [loggedIn, setloggedIn] = useState(false);
 
+  // user want to join a game
   const joinGame = (data) => {
     if (data.room !== undefined) {
       console.log("in undefined");
@@ -53,19 +55,23 @@ function App() {
     setOpponent("");
   };
 
+  // user request to follw a friend
   const requestedFriend = (newUserID) => {
     socket.emit("friendRequest", { user: newUserID, requestor: userName });
   };
 
+  // the input in the madlib textboxes has been changed, emit to server
   const typeGame = (data) => {
     socket.emit("typeGame", { id: data.id, content: data.content, room: room });
   };
 
+  // player has pressed finish button
   const finishGame = (data) => {
     setFinish(true);
     socket.emit("finishGame", { room: room });
   };
 
+  // the game is finished, so unblur the text
   const revealText = () => {
     let dom_span = document.querySelectorAll(".text-container span");
     let dom_input = document.querySelectorAll(".text-container input");
@@ -79,6 +85,7 @@ function App() {
     }
   };
 
+  // return the user to the main page
   const finishToMain = () => {
     setLocation("main");
     setRoom(-1);
@@ -91,6 +98,7 @@ function App() {
     setMessages([]);
   };
 
+  // get the madlib and store it
   const getMadLib = async (id) => {
     try {
       const response = await fetch(`http://localhost:5000/madlibs/${id}`);
@@ -101,6 +109,7 @@ function App() {
     }
   };
 
+  // send a message in the chat
   const sendMessage = () => {
     if (input !== "") {
       socket.emit("sendMessage", { text: input, room: room });
@@ -110,6 +119,7 @@ function App() {
     }
   };
 
+  // message is saved to be displayed on the chatbox
   const addMessage = (data) => {
     const newMessage = {
       me: data.me,
@@ -119,6 +129,7 @@ function App() {
     setMessages(newMessages);
   };
 
+  // calculate the id of the madlib to be fetched from the database
   const getId = (data) => {
     let id = -1;
     if (data > 7000) id = data % 1000;
@@ -145,29 +156,41 @@ function App() {
   };
 
   useEffect(() => {
+    // catch gameJoined from the server
     socket.on("gameJoined", (data) => {
+      // save the room number
       setRoom(data.room);
+      // get the madlib
       getMadLib(getId(Number(data.room)));
+      // set player as ready
       setMeReady(true);
+      // if the player is the second to join the game, det the player as ready as well
       if (data.first == false) setOtherReady(true);
     });
 
+    // second player has joined the game
     socket.on("playerJoined", () => {
+      // set second player as ready
       setOtherReady(true);
     });
 
+    // received that the other player has typed something into madlib textboxes
     socket.on("receivedType", (data) => {
+      // reflect change on webpage
       document.getElementById(data.id).value = data.content; 
     });
 
+    // other player has clicked finish
     socket.on("otherFinish", () => {
       setOtherFinish(true);
     });
 
+    // received message in chatbos from other player
     socket.on("receivedMessage", (data) => {
       addMessage({me: false, text: data});
     });
 
+    // player have been requested to a game
     socket.on("requestedToJoin", (data) => {
       if (userName == data.user) {
         window.alert(data.requestor + " requested you to join room " + data.room);
@@ -175,16 +198,20 @@ function App() {
 
     });
 
+    // player has been followed by other player
     socket.on("requestedFriend", (data) => {
       if (userID == data.user) {
         window.alert(data.requestor + " is following you!");
       }
     });
 
+    // check if madlib text should unblurred
     if (finish && otherFinish) revealText();
+    // check if the game is ready to be started
     if (meReady && otherReady && madLib.length !== 0) setReady(true);
   });
 
+  // html for the actual website
   return (
     <div className="App">
       <Navbar handleSetLocation={setLocation} handleSetLoggedIn={setloggedIn} isLoggedIn={loggedIn}/>

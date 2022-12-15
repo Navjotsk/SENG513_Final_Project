@@ -35,46 +35,63 @@ pool.connect((err) => {
   }
 });
 
+// objects to keep count of the room numbers for the games
+// food topic rooms
 let food = {
   numPlayers: 0,
   count: 1000
 }
+// sport topic rooms
 let sport = {
   numPlayers: 0,
   count: 2000
 }
+// school topic rooms
 let school = {
   numPlayers: 0,
   count: 3000
 }
+//animal topic rooms
 let anime = {
   numPlayers: 0,
   count: 4000
 }
+// games topic rooms
 let games = {
   numPlayers: 0,
   count: 5000
 }
+// fantasy topic rooms
 let fantasy = {
   numPlayers: 0,
   count: 6000
 }
+// room for requests
 let request = {
   numPlayers: 0,
   count: 7000
 }
 
+// calculate the room numbers
 const calcCount = (arg) => {
   let count;
+  // the player currently requesting the room number is not the first player
   let first = false;
+  // if the topic chosen is food
   if (arg == 'food') {
+    // add one to the number of players
     food.numPlayers++;
+    // if the current number of players is odd
     if ((food.numPlayers + 1)%2 == 0) {
+      // add one to the room number count
       food.count++;
+      // the current player is the first player in the room
       first = true;
     }
+    // assign room number to count
     count = food.count;
   }
+  // if the topic chosen is sport
   else if (arg == 'sport') {
     sport.numPlayers++;
     if ((sport.numPlayers + 1)%2 == 0) {
@@ -83,6 +100,7 @@ const calcCount = (arg) => {
     }
     count = sport.count;
   }
+  // if the topic chosen is school
   else if (arg == 'school') {
     school.numPlayers++;
     if ((school.numPlayers + 1)%2 == 0) {
@@ -91,7 +109,8 @@ const calcCount = (arg) => {
     }
     count = school.count;
   }
-  else if (arg == 'anime') {
+  // if the topic chosen is animal
+  else if (arg == 'animal') {
     anime.numPlayers++;
     if ((anime.numPlayers + 1)%2 == 0) {
       anime.count++;
@@ -99,6 +118,7 @@ const calcCount = (arg) => {
     }
     count = anime.count;
   }
+  // if the topic chosen is games
   else if (arg == 'games') {
     games.numPlayers++;
     if ((games.numPlayers + 1)%2 == 0) {
@@ -107,6 +127,7 @@ const calcCount = (arg) => {
     }
     count = games.count;
   }
+  // if the topic chosen is fantasy
   else if (arg == 'fantasy') {
     fantasy.numPlayers++;
     if ((fantasy.numPlayers + 1)%2 == 0) {
@@ -115,6 +136,7 @@ const calcCount = (arg) => {
     }
     count = fantasy.count;
   }
+  // if the game is by request
   else if (arg == 'request') {
     request.numPlayers += 2;
     request.count++;

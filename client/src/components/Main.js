@@ -1,3 +1,4 @@
+// view for the main, landing page
 function Main({ handleSetLocation, isLoggedIn }) {
     
     return(

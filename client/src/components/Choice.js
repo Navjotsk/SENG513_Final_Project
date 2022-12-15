@@ -1,5 +1,7 @@
+// view for the choice page where user choose their topic
 function Choice({ handleSetLocation, handleJoinGame }) {
 
+    // handle when user has clicked on a button to join a game
     const handleJoin = (data) => {
         handleJoinGame(data);
         handleSetLocation('game');

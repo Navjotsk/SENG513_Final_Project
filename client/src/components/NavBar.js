@@ -1,10 +1,13 @@
+// component for the navigation bar
 function Navbar({ handleSetLocation, handleSetLoggedIn, isLoggedIn }) {
 
+    // handle when logout button is clicked
     const handleLogout = event => {
         handleSetLocation('login');
         handleSetLoggedIn(false);
     };
 
+    // handle when the profile button is clicked
     const handleProfile = event => {
         handleSetLocation('userPage');
     };
