@@ -1,78 +1,56 @@
 import React from "react";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import userLogo from '../images/userSymbol.png';
-import Button from './Button.js';
 import ElicitInfo from "./ElicitInfo";
 
 
-export default function UserInfo({user = "undefined", gamesPlayed = 0, date=0, changeNickname, changePassword, deleteAccount, joinaRoom}) {
-    const [newNameField, setNewNameField] = useState(<><button onClick={newNameSearch}>Change Nickname</button><br /></>);
+//userinfo contains information about a user and buttons to allow them to modify their account. For instance, it will allow a user
+//to change their password.
+export default function UserInfo({user = "undefined", id, changePassword, deleteAccount, joinaRoom}) {
+    //this is the field rendered for the password reset option
     const [resetPassField, setResetPassField] = useState(<><button onClick={newPassPrompt}>Change Password</button><br /></>);
-    const [gameString, setGameString] = useState(gamesPlayed + ' ');
+    //this is the field rendered if you choose to join a room
     const [joinRoomField, setJoinRoomField] = useState(<><button onClick={joinRoomPrompt}>Join Room</button><br /></>)
 
-    function newNickname (name) {
-        changeNickname(name);
-        setNewNameField(<><button onClick={newNameSearch}>Change Nickname</button><br /></>)
-    }
-
+    //this function is called when a new password is entered, and sets the field back to a password button.
     function newPassword (pass) {
         console.log(pass);
         changePassword(pass);
         setResetPassField(<><button onClick={newPassPrompt}>Change Password</button><br /></>);
-
     }
 
-    function resetPassword () {
-        let pass = window.prompt("enter your new password");
-        changePassword(user, pass);
-    }
-
+    //this function is called when a user wants to delete their account and calls the function in the parent
     function deleteAcc () {
-        window.alert("Account deletion request recieved.");
         deleteAccount();
     }
-
+    //this function is called when a user indicates a room to join, and sets the field back to a button.
     function join (num) {
         setJoinRoomField(<><button onClick={joinRoomPrompt}>Join Room</button><br /></>);
         joinaRoom(num);
     }
 
-    function newNameSearch () {
-        setNewNameField(<ElicitInfo funct={newNickname} action="" hidden="false" />);
-    }
-
+    //this function changes the password field into a textbox
     function newPassPrompt () {
         setResetPassField(<ElicitInfo funct={newPassword} action="" hidden="true" />)
     }
-
+    //this function changes the room field into a textbox
     function joinRoomPrompt () {
         setJoinRoomField(<ElicitInfo funct={join} action="" hidden="false" />)
     }
 
-
-
-
   return (
     <div className="mainUserInfo">
-        <img src={userLogo} alt="..." />&nbsp;{user}&nbsp;
+        <img src={userLogo} alt="..." />
+        <br />
+        Name: {user}
+        <br/>
+        User Id: {id}
         <br/>
         <br/>
-        <p>Joined: 2022-12-13</p>
-        <br/>
-        <p>Games Played: {gamesPlayed}</p>
-        <br/>
-        <br/>
-        {newNameField}
         {resetPassField}
         <button onClick={deleteAcc}>Delete Account</button>
         <br/>
         {joinRoomField}
-
-
     </div>
-
-
-
   );
 }
