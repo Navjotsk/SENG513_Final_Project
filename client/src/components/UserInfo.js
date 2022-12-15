@@ -47,10 +47,10 @@ export default function UserInfo({user = "undefined", id, gamesPlayed = 0, date=
 
   return (
     <div className="mainUserInfo">
-        <img src={userLogo} alt="..." />&nbsp;Name: {user}&nbsp;User Id: {id}
+        <img src={userLogo} alt="..." />&nbsp;Name: {user}&nbsp;, User Id: {id}
         <br/>
         <br/>
-        <p>Games Played: {gamesPlayed}</p>
+        {/* <p>Games Played: {gamesPlayed}</p> */}
         <br/>
         <br/>
         {resetPassField}

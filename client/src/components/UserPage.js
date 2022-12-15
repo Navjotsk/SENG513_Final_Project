@@ -4,7 +4,7 @@ import Friend from "./Friend.js";
 import FriendsList from "./FriendsList.js";
 import UserInfo from "./UserInfo.js";
 
-//the usersymbol on this page is from https://www.pngegg.com/en/png-ofcqn
+//the usersymbol on this page is from https://www.pngegg.com/en/png-hezlx
 
 //var friends = [{"username": "bob", "id": "12345"}, {"username": "Tanya", "id": "1000"}];
 //userpage will contain the friends, friendslist, and the userinfo. It contains all functionality and functions which are used on the user profile page
@@ -32,7 +32,6 @@ const UserPage = ({
   //these will run on the first render of this page
   //the useeffect functions was formulated using https://www.w3schools.com/react/react_useeffect.asp
   useEffect(() => {
-    //used https://coursework.vschool.io/mapping-components-in-react/ to help me determine how to populate items using map.
     setFriends(profileInfo.friends);
     setGamesPlayed(profileInfo.gameplayed);
     setUserToken(token);
@@ -44,7 +43,7 @@ const UserPage = ({
 
   //this useeffect will run every time the friends array is modified
   useEffect(() => {
-    //used https://coursework.vschool.io/mapping-components-in-react/ to help me determine how to populate items using map.
+    //used https://coursework.vschool.io/mapping-components-in-react/ and https://www.geeksforgeeks.org/how-to-render-an-array-of-objects-in-reactjs/ to help me determine how to populate items using map.
     if (friends != null) {
       setItems(
         friends.map((friend) => (
@@ -62,7 +61,7 @@ const UserPage = ({
     }
   }, [friends]);
 
-  //this useeffect will run every time profileInfo is modified
+  //this useeffect will run every time profileInfo is modified, and was made with the help of https://www.w3schools.com/react/react_useeffect.asp
   useEffect (() => {
     setFriends(profileInfo.friends);
     setGamesPlayed(profileInfo.gameplayed);
